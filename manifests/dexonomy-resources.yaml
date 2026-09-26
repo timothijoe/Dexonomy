@@ -1,0 +1,85 @@
+schema_version: 1
+prepared_from_bundle: dexonomy_2026-09-25
+bundle_notice: ../docs/agent/data_pipeline/chronicles/2026-09-25-dataset-receipt-and-installation.md
+resources:
+  - name: DGN_5k_processed
+    purpose: DGN object meshes, collision models, scene configurations, and splits
+    source: https://huggingface.co/datasets/JiayiChenPKU/Dexonomy
+    license: CC-BY-NC-4.0
+    archive: DGN_5k_processed.tar.gz
+    sha256: dda297aee2d2779142da98d4037edd89616286129c85eb7395b96c46e03a6231
+    target: datasets/object/DGN_5k
+    required: true
+    restore: extract archive into datasets/object
+
+  - name: objaverse_5k_processed
+    purpose: Objaverse object meshes, collision models, scene configurations, and splits
+    source: https://huggingface.co/datasets/JiayiChenPKU/Dexonomy
+    license: CC-BY-NC-4.0
+    archive: objaverse_5k_processed.tar.gz
+    sha256: bff0df55a671273e49c7d397c363bb6461102475390bd316a09c9c34adcf2fd8
+    target: datasets/object/objaverse_5k
+    required: false
+    restore: extract archive into datasets/object
+
+  - name: DGN_5k_vision
+    purpose: DGN single-view point clouds and camera extrinsics
+    source: https://huggingface.co/datasets/JiayiChenPKU/Dexonomy
+    license: CC-BY-NC-4.0
+    archive: DGN_5k_vision.tar.gz
+    sha256: febc89cf4884dbacb11f5780b5bf42ed811a70bd1b7cf8e91161e3b7b86fb7ea
+    target: datasets/object/DGN_5k/vision_data
+    required: false
+    restore: extract archive into datasets/object
+
+  - name: objaverse_5k_vision
+    purpose: Objaverse single-view point clouds and camera extrinsics
+    source: https://huggingface.co/datasets/JiayiChenPKU/Dexonomy
+    license: CC-BY-NC-4.0
+    archive: objaverse_5k_vision.tar.gz
+    sha256: 0202aa2ebcd01d1860b40558688906ec62f008515ec58e301d427957557bd88d
+    target: datasets/object/objaverse_5k/vision_data
+    required: false
+    restore: extract archive into datasets/object
+
+  - name: Dexonomy_GRASP_shadow
+    purpose: Successful Shadow Hand grasps for 31 taxonomy classes
+    source: https://huggingface.co/datasets/JiayiChenPKU/Dexonomy
+    license: CC-BY-NC-4.0
+    archive: Dexonomy_GRASP_shadow.tar.gz
+    sha256: 9aebdbc564cc6f65399befbb5984aa58114a8d09292e34a83493b1976d416b14
+    target: datasets/object/Dexonomy_GRASP_shadow
+    required: false
+    restore: extract archive into datasets/object
+
+  - name: allegro_fingertip
+    purpose: Allegro fingertip grasp results for DGN and Objaverse objects
+    source: https://huggingface.co/datasets/JiayiChenPKU/Dexonomy
+    license: CC-BY-NC-4.0
+    archive: allegro_fingertip.tar.gz
+    sha256: e2ce25a68c4a733e96c1b85b5b57e57e656cff21f04c881d9405c87b62c242e9
+    target: datasets/object
+    required: false
+    restore: extract archive into datasets/object
+
+  - name: dexonomy_learning_ckpt
+    purpose: Conditional normalizing-flow checkpoint and Hydra training configuration
+    source: https://huggingface.co/datasets/JiayiChenPKU/Dexonomy
+    license: CC-BY-NC-4.0
+    archive: dexonomy_learning_ckpt.tar.gz
+    sha256: 4adc31c4892925d4e0f5f0534e22efaa13811c51cf231b13194f698453e53fec
+    target: datasets/object/dexonomy_shadow_nflow_cond
+    required: false
+    restore: extract archive into datasets/object
+
+  - name: wuji_hand2_beta2
+    purpose: Wuji Hand 2 Beta 2 left and right URDF, MJCF, and meshes
+    source: https://github.com/wuji-technology/wuji-description
+    version: v2026.9.11
+    commit: c2cd7f8d1ef8b6dc8cb907c17daa5a88b4442d95
+    license: MIT
+    archive: robot_assets/wuji_hand2_beta2_c2cd7f8d.tar.gz
+    sha256: 64fc37373f018be784c435ea3c003139f9bed5670ae54f5b3b68b5d55e064f91
+    target: robot_assets/wuji-description
+    required: false
+    restore: extract with extract_wuji2.sh into robot_assets

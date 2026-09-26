@@ -77,6 +77,18 @@ where `dexrun` is the alias for `python -m dexonomy.main` and `dexsyn` is the al
 ## Tutorial
 For a detailed walkthrough of **template annotation** and **code usage**, please refer to [getting_started](https://github.com/JYChen18/Dexonomy/tree/main/getting_started).
 
+## Local Documentation
+
+- [Current handoff](HANDOFF.md): current deployment, visualization status, known failures, and next steps.
+- [Development documentation](docs/README.md): current capabilities, interfaces, design notes, and Agent knowledge base.
+- [Operator tutorials](tutorials/README.md): environment setup, data installation, visualization, and troubleshooting.
+- [Resource manifests](manifests/README.md): external dataset and robot-model metadata.
+
+Large datasets and generated outputs are kept outside Git. On the current development machine,
+the external resource root is `/data/robotic_data/ztDexonomy`, with repository entry points at
+`assets/object` and `assets/wuji-description`. These paths are local deployment details; see
+[local resource layout](docs/agent/interfaces/local-resources.md) for the portable contract.
+
 ## License
 
 This work and the dataset are licensed under [CC BY-NC 4.0][cc-by-nc].

@@ -15,6 +15,7 @@ dependencies = [
     "trimesh[easy]==4.5.3",
     "matplotlib==3.10.3",
     "imageio==2.37.0",
+    "pillow",
     "qpsolvers[clarabel]==4.8.0",
     "transforms3d==0.4.2",
     "hydra-core==1.3.2",
