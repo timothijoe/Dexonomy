@@ -8,6 +8,7 @@ const el = id => document.getElementById(id);
 const viewer = el('viewer');
 const poster = el('poster');
 let viewerModule;
+let contextLossListenerAdded = false;
 
 function classParts(name) {
   const match = name.match(/^(\d+)_(.*)$/);
@@ -66,6 +67,57 @@ function ensureViewer() {
   }
   return viewerModule;
 }
+function canRender3d() {
+  try {
+    const canvas = document.createElement('canvas');
+    return Boolean(canvas.getContext('webgl2') || canvas.getContext('webgl'));
+  } catch (_) {
+    return false;
+  }
+}
+async function validateLoadedModel(id) {
+  try {
+    await verify3dFrame();
+  } catch (error) {
+    if (id === state.loadId && state.mode === '3d') {
+      setStatic('3D 模型已加载，但浏览器未能绘制手部；可下载当前 GLB 用三维查看器打开。');
+    }
+    console.error(error);
+    return;
+  }
+  if (id === state.loadId && state.mode === '3d') show3dReady();
+}
+async function verify3dFrame() {
+  if (typeof viewer.toBlob !== 'function' || typeof createImageBitmap !== 'function') {
+    throw new Error('3D frame capture is unavailable');
+  }
+  let lastError;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    await new Promise(resolve => setTimeout(resolve, 350));
+    try {
+      const blob = await Promise.race([
+        viewer.toBlob({ mimeType: 'image/png' }),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('3D frame capture timed out')), 3000)),
+      ]);
+      const bitmap = await createImageBitmap(blob);
+      const canvas = document.createElement('canvas');
+      canvas.width = canvas.height = 64;
+      const context = canvas.getContext('2d', { willReadFrequently: true });
+      context.drawImage(bitmap, 0, 0, 64, 64);
+      bitmap.close?.();
+      const pixels = context.getImageData(0, 0, 64, 64).data;
+      let bluePixels = 0;
+      for (let i = 0; i < pixels.length; i += 4) {
+        if (pixels[i + 2] > pixels[i] + 25 && pixels[i + 2] > pixels[i + 1] + 8 && pixels[i + 2] > 100) bluePixels++;
+      }
+      if (bluePixels >= 10) return;
+      lastError = new Error('3D frame does not contain the hand');
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  throw lastError;
+}
 async function loadModel() {
   const record = activeRecord();
   const path = record.phases[state.phase].glb;
@@ -79,6 +131,10 @@ async function loadModel() {
   el('viewerMode').textContent = '切换到静态';
   el('loadDetail').textContent = PHASE_META[state.phase].label + ' · ' + path.split('/').pop();
   setStatus('ready', '静态预览可用 · 正在载入 3D');
+  if (!canRender3d()) {
+    setStatic('此浏览器无法创建 WebGL 画面；可下载当前 GLB 用三维查看器打开。');
+    return;
+  }
   try {
     await ensureViewer();
   } catch (error) {
@@ -87,8 +143,17 @@ async function loadModel() {
     return;
   }
   if (id !== state.loadId || state.mode !== '3d') return;
+  if (!contextLossListenerAdded) {
+    const canvas = viewer.shadowRoot?.querySelector('canvas');
+    if (canvas) {
+      canvas.addEventListener('webglcontextlost', () => {
+        if (state.mode === '3d') setStatic('浏览器的 3D 上下文已中断；可下载当前 GLB 用三维查看器打开。');
+      });
+      contextLossListenerAdded = true;
+    }
+  }
   if (viewer.loaded && state.modelPath === path) {
-    show3dReady();
+    validateLoadedModel(id);
     return;
   }
   state.modelPath = path;
@@ -157,6 +222,9 @@ function renderRecord() {
   el('sampleIndex').textContent = record.sample_index;
   el('sampleTotal').textContent = record.sample_count_in_file;
   el('sourcePath').textContent = record.source;
+  const download = el('downloadModel');
+  download.href = versioned(record.phases[state.phase].glb);
+  download.download = record.class_name + '_sample_' + String(record.sample_number).padStart(2, '0') + '_' + state.phase + '.glb';
   el('phaseDescription').textContent = PHASE_META[state.phase].description;
   renderPhases();
   if (state.mode === '3d') loadModel(); else setStatic();
@@ -198,7 +266,7 @@ function resetCamera() {
 
 viewer.addEventListener('load', () => {
   if (state.mode !== '3d' || !viewer.loaded) return;
-  show3dReady();
+  validateLoadedModel(state.loadId);
 });
 viewer.addEventListener('error', event => {
   if (state.mode === '3d') setStatic('3D 在当前浏览器中加载失败，已显示同阶段静态预览。');
