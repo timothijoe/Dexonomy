@@ -1,5 +1,9 @@
 # Dexonomy 项目交接（更新于 2026-09-29）
 
+## Wuji2 三阶段对照可视化补充
+
+`tools/export_wuji2_comparison.py` 已为 16 条开发样本生成 `output/wuji2_comparison`：每条三阶段、原手/Wuji2、同物体/纯手型、两个离线角度，共 384 张 WebP、192 个 GLB。纯手型按掌心和指根方向对齐，网页同时显示同物体指尖误差和对齐后的指尖距离。静态网页无需 WebGL；本机 Chrome 已检查筛选、阶段和视角切换。复现与访问见[操作教程](tutorials/visualize_wuji2_comparison.md)，对齐定义和结果限制见[设计说明](docs/design/wuji2-comparison.md)。这仍是运动学对照，16 例六方向评估均未通过。
+
 ## 后续 Wuji2 开发样本补充
 
 已建立 [`benchmarks/wuji2_retarget_v1.json`](benchmarks/wuji2_retarget_v1.json) 的 16 条 Shadow/Allegro 样本及 `tools/run_wuji2_benchmark.py` 批量入口。Shadow 覆盖 5 个抓取类别；Allegro 覆盖 DGN、Objaverse 和两种指尖模板，开发/保留按对象隔离。16/16 可运行运动学迁移，但最大手物穿透普遍较大，六方向评估 0/16 通过。放松腕部先验虽降低指尖误差，却未显著降低穿透，因此保留基线参数。实际数字和复现命令见[开发样本文档](docs/design/wuji2-benchmark.md)。下文单例状态描述为扩展前的历史结果。

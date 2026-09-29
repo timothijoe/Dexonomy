@@ -16,6 +16,7 @@
 | Wuji Hand 2 模型 | `assets/wuji-description` | 模型已安装 | Beta2 模型可读，已装入一个真实物体场景的 MuJoCo 优化环境；尚无 Wuji2 抓取结果 |
 | Shadow 网页图鉴 | `tools/export_taxonomy_preview.py` | 静态首屏获用户确认 | 3 类 × 3 样本 × 3 阶段，27 个 GLB、27 张 PNG 和 1620 个预渲染视角引用；三方向模式获用户正面反馈，实时 3D 在用户浏览器不可用 |
 | Wuji2 抓取迁移 | `tools/retarget_wuji2_sample.py`、[开发样本](design/wuji2-benchmark.md) | 16 例运动学原型已运行 | Shadow/Allegro 双来源、开发/保留集与批量报告；16 例均有物理缺陷，六方向评估 0/16 通过 |
+| Wuji2 三阶段对照 | `tools/export_wuji2_comparison.py`、[可视化设计](design/wuji2-comparison.md) | 本机离线导出与浏览器检查通过 | 16 例 × 3 阶段，手物与掌心对齐纯手型各两手、两角度；无 WebGL 可看图片，GLB 可下载，不能证明抓取成功 |
 
 ## 当前数据分类
 
