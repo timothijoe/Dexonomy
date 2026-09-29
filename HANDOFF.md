@@ -1,5 +1,9 @@
 # Dexonomy 项目交接（更新于 2026-09-29）
 
+## 2026-09-29 Wuji2 单样本补充
+
+当前仓库已新增 `tools/retarget_wuji2_sample.py`，用 `.viz-env`、`MUJOCO_GL=egl PYTHONPATH=.` 在根目录运行即可生成 `output/wuji2_single_sample/result.json` 和 `comparison.png`。固定 `14_Tripod` 源文件索引 1，应用 `scene_scale`，拟合三阶段 27 维 Wuji2 姿态。抓取阶段五指误差为 0.37/3.48/1.84/2.62/1.54 mm，但 Wuji2 抓取姿态最大手物穿透 15.63 mm；接触力局部细化候选被拒绝，六方向评估未通过。因此**尚无 Wuji2 碰撞合格或稳定抓取**。逐阶段、逐指与候选细节见[迁移设计](docs/design/wuji2-retargeting.md)；下文早期“尚未运行”表述是本补充之前的交接状态。
+
 新 agent 可先读本文，再读[Wuji2 迁移设计](docs/design/wuji2-retargeting.md)；实现细节按文中代码路径查阅。三方向图鉴已有独立[设计说明](docs/design/shadow-taxonomy-preview.md)，无需从旧对话重建。
 
 ## 当前目标和结论
