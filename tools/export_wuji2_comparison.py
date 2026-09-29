@@ -19,6 +19,8 @@ from tools.retarget_wuji2_sample import PHASES, SOURCE_SPECS, WUJI, source_scene
 
 
 CAMERAS = ((135, -25), (45, 15))
+ORBIT_AZIMUTHS = tuple(135 + 30 * step for step in range(12))
+ORBIT_ELEVATIONS = (-65, -45, -25, -5, 15)
 SOURCE_BASES = {
     "shadow": ("rh_palm", "rh_ffknuckle", "rh_mfknuckle", "rh_rfknuckle"),
     "allegro": ("palm", "ff_base", "mf_base", "rf_base"),
@@ -92,7 +94,7 @@ def export_glb(env, q, include_object, role, destination):
     scene.export(destination)
 
 
-def render_image(env, renderer, q, bounds, camera_angles, role, include_object, destination):
+def render_image(env, renderer, q, bounds, camera_angles, role, include_object, destination, quality=84):
     env.reset_qpos(q)
     if not include_object:
         # Visual-only hand frame. Move the free object away from the camera;
@@ -119,7 +121,7 @@ def render_image(env, renderer, q, bounds, camera_angles, role, include_object, 
     renderer.disable_segmentation_rendering()
     rgb = np.where(mask[:, :, None], rgb, np.asarray((245, 247, 251), dtype=np.uint8))
     destination.parent.mkdir(parents=True, exist_ok=True)
-    Image.fromarray(rgb).save(destination, quality=84)
+    Image.fromarray(rgb).save(destination, quality=quality)
 
 
 def export_case(case, result, output, width, height):
@@ -164,7 +166,21 @@ def export_case(case, result, output, width, height):
                         image = stem.with_name(stem.name + f"_view{view_index}").with_suffix(".webp")
                         render_image(env, renderer, pose, bounds, angles, role, include_object, output / image)
                         images.append(image.as_posix())
-                    assets.setdefault(phase, {}).setdefault(mode, {})[role] = {"images": images, "glb": glb.as_posix()}
+                    orbit_grid = []
+                    for pitch_index, elevation in enumerate(ORBIT_ELEVATIONS):
+                        row = []
+                        for yaw_index, azimuth in enumerate(ORBIT_AZIMUTHS):
+                            angles = (azimuth % 360, elevation)
+                            if angles in CAMERAS:
+                                row.append(images[CAMERAS.index(angles)])
+                                continue
+                            orbit = Path("orbit") / case["id"] / f"{phase}_{mode}_{role}_p{pitch_index:02d}_y{yaw_index:02d}.webp"
+                            render_image(env, renderer, pose, bounds, angles, role, include_object, output / orbit, quality=76)
+                            row.append(orbit.as_posix())
+                        orbit_grid.append(row)
+                    assets.setdefault(phase, {}).setdefault(mode, {})[role] = {
+                        "images": images, "glb": glb.as_posix(), "orbit_grid": orbit_grid,
+                    }
     return {"id": case["id"], "split": case["split"], "hand": case["hand"], "family": case["family"],
             "category": case["category"], "source": case["source"], "sample_index": case["index"],
             "scene_scale": scale, "phase_stats": result["phase_stats"],
@@ -198,6 +214,7 @@ def main():
         print(f"exported {case['id']}", flush=True)
     index = {"title": "Wuji2 grasp migration comparison", "manifest": str(args.manifest),
              "camera_angles": [{"azimuth": azimuth, "elevation": elevation} for azimuth, elevation in CAMERAS],
+             "orbit_azimuths": ORBIT_AZIMUTHS, "orbit_elevations": ORBIT_ELEVATIONS,
              "hand_alignment": "palm origin; index-to-ring and palm-to-middle-base axes at grasp phase",
              "phases": PHASES, "records": records}
     (args.output / "index.json").write_text(json.dumps(index, indent=2), encoding="utf-8")
