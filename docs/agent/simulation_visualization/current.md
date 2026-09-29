@@ -5,7 +5,7 @@
 ## 当前能力
 
 - [MuJoCo 环境](evolution/mujoco-environment.md)：代码支持模型装配、运动学、接触、优化和评估。
-- [31 类图鉴](evolution/grasp-taxonomy-visualization.md)：3 类 × 3 样本原型已有 27 个 GLB、27 张三阶段图片，以及每阶段 12 个环绕视角；本机浏览器已检查实时 3D 和无 WebGL 回退。
+- [31 类图鉴](evolution/grasp-taxonomy-visualization.md)：3 类 × 3 样本原型已有 27 个 GLB、27 张三阶段图片，以及每阶段 12 × 5 个水平/俯仰视角；本机浏览器已检查实时 3D 和无 WebGL 回退。
 
 ## 当前证据
 
@@ -22,6 +22,6 @@
 - 现有 OBJ 输出偏向单样本诊断，不适合作为 31 类浏览产品。
 - 数据集有 31 类而不是完整 33 类。
 - Wuji2 交接样例只证明运动学拟合，不证明无碰撞或抓取稳定。
-- 用户侧确认静态画面可见，并报告浏览器无法创建 WebGL 画面。页面已支持预渲染环绕视角，但用户侧尚未复测；当前只导出了 31 类中的 3 类。
+- 用户侧确认静态画面可见，并报告浏览器无法创建 WebGL 画面。页面已支持三组箭头控制的预渲染多视角，但用户侧尚未复测；当前只导出了 31 类中的 3 类。
 
 历史见[2026-09-25 可视化方案审计](chronicles/2026-09-25-taxonomy-visualization-audit.md)和[2026-09-26 静态优先预览](chronicles/2026-09-26-static-first-preview.md)。

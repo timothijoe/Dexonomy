@@ -27,6 +27,7 @@ PHASES = ["pregrasp", "grasp", "squeeze"]
 PREVIEW_WIDTH = 960
 PREVIEW_HEIGHT = 720
 ORBIT_AZIMUTHS = [135 + 30 * step for step in range(12)]
+ORBIT_ELEVATIONS = [-65, -45, -25, -5, 15]
 
 
 def parse_args() -> argparse.Namespace:
@@ -97,6 +98,7 @@ def render_preview(
     bounds: np.ndarray,
     destination: Path,
     azimuth: float = 135,
+    elevation: float = -25,
 ) -> None:
     """Render the same pose as the GLB with a shared camera for all phases."""
     env.forward_kinematics(qpos)
@@ -106,7 +108,7 @@ def render_preview(
     camera.lookat[:] = bounds.mean(axis=0)
     camera.distance = max(float(np.max(bounds[1] - bounds[0])) * 1.9, 0.25)
     camera.azimuth = azimuth
-    camera.elevation = -25
+    camera.elevation = elevation
     renderer.update_scene(env._data, camera=camera)
     for geom in list(renderer.scene.geoms)[: renderer.scene.ngeom]:
         if geom.objid < 0:
@@ -195,12 +197,19 @@ def main() -> None:
                     qpos = data[f"{phase}_qpos"][sample_index]
                     png = phase_record["png"]
                     render_preview(env, renderer, qpos, shared_bounds, output / png)
-                    orbit = [png]
-                    for frame, azimuth in enumerate(ORBIT_AZIMUTHS[1:], start=1):
-                        relative = Path("orbit") / class_name / f"{stem}_{phase}_{frame:02d}.webp"
-                        render_preview(env, renderer, qpos, shared_bounds, output / relative, azimuth)
-                        orbit.append(relative.as_posix())
-                    phase_record["orbit"] = orbit
+                    orbit_grid = []
+                    for pitch_index, elevation in enumerate(ORBIT_ELEVATIONS):
+                        row = []
+                        for yaw_index, azimuth in enumerate(ORBIT_AZIMUTHS):
+                            if elevation == -25 and yaw_index == 0:
+                                row.append(png)
+                                continue
+                            relative = Path("orbit") / class_name / f"{stem}_{phase}_p{pitch_index:02d}_y{yaw_index:02d}.webp"
+                            render_preview(env, renderer, qpos, shared_bounds, output / relative, azimuth, elevation)
+                            row.append(relative.as_posix())
+                        orbit_grid.append(row)
+                    phase_record["orbit"] = orbit_grid[ORBIT_ELEVATIONS.index(-25)]
+                    phase_record["orbit_grid"] = orbit_grid
             records.append(record)
             print(f"exported {class_name} {stem}: {relative_source} [{sample_index}]")
 
@@ -209,6 +218,7 @@ def main() -> None:
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "classes": args.classes,
         "phases": PHASES,
+        "orbit_elevations": ORBIT_ELEVATIONS,
         "records": records,
     }
     (output / "index.json").write_text(json.dumps(index, indent=2), encoding="utf-8")

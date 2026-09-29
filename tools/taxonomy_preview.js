@@ -3,7 +3,7 @@ const PHASE_META = {
   grasp: { label: '抓取', english: 'Grasp', description: '手指已经围绕物体形成主要接触，是判断抓取类型和手物关系的核心阶段。' },
   squeeze: { label: '收紧', english: 'Squeeze', description: '在抓取姿态基础上继续闭合手指，用于形成更稳定的接触和约束。' },
 };
-const state = { data: null, className: null, recordIndex: 0, phase: 'grasp', mode: 'static', orbitIndex: 0, playing: false, playTimer: null, loadTimer: null, loadId: 0, modelPath: null };
+const state = { data: null, className: null, recordIndex: 0, phase: 'grasp', mode: 'static', orbitYaw: 0, orbitPitch: 0, orbitRoll: 0, playing: false, playTimer: null, loadTimer: null, loadId: 0, modelPath: null };
 const el = id => document.getElementById(id);
 const viewer = el('viewer');
 const poster = el('poster');
@@ -56,30 +56,49 @@ function setStatic(message = '') {
   note(message);
   setStatus('ready', '静态预览可用');
 }
+function orbitGrid() {
+  const phase = activeRecord().phases[state.phase];
+  return phase.orbit_grid || (phase.orbit?.length ? [phase.orbit] : []);
+}
 function updateOrbitImage() {
-  const frames = activeRecord().phases[state.phase].orbit;
-  if (!frames?.length) return;
-  state.orbitIndex = (state.orbitIndex + frames.length) % frames.length;
-  orbitImage.src = versioned(frames[state.orbitIndex]);
-  el('orbitCount').textContent = (state.orbitIndex + 1) + ' / ' + frames.length;
+  const grid = orbitGrid();
+  if (!grid.length) return;
+  state.orbitPitch = Math.max(0, Math.min(grid.length - 1, state.orbitPitch));
+  const frames = grid[state.orbitPitch];
+  state.orbitYaw = (state.orbitYaw % frames.length + frames.length) % frames.length;
+  state.orbitRoll = (state.orbitRoll % 12 + 12) % 12;
+  const path = frames[state.orbitYaw];
+  if (orbitImage.dataset.path !== path) {
+    orbitImage.dataset.path = path;
+    orbitImage.src = versioned(path);
+  }
+  orbitImage.style.transform = `rotate(${state.orbitRoll * 30}deg)`;
+  el('yawCount').textContent = (state.orbitYaw + 1) + ' / ' + frames.length;
+  el('pitchCount').textContent = (state.orbitPitch + 1) + ' / ' + grid.length;
+  el('rollCount').textContent = state.orbitRoll * 30 + '°';
 }
 function setOrbit(message = '') {
-  const frames = activeRecord().phases[state.phase].orbit;
-  if (!frames?.length) {
+  const grid = orbitGrid();
+  if (!grid.length) {
     setStatic(message || '此样本没有多视角画面；可下载当前 GLB 用三维查看器打开。');
     return;
   }
+  const keepView = state.mode === 'orbit';
   invalidateLoad();
   state.mode = 'orbit';
-  state.orbitIndex = 0;
+  if (!keepView) {
+    state.orbitYaw = 0;
+    state.orbitPitch = Math.floor(grid.length / 2);
+    state.orbitRoll = 0;
+  }
   el('stage').classList.remove('three-d');
   el('stage').classList.add('orbit');
   el('errorState').classList.remove('visible');
   el('viewerMode').textContent = '切换到静态';
-  el('viewerHint').textContent = '预渲染多视角 · 拖动或点击箭头切换方向';
+  el('viewerHint').textContent = '预渲染多视角 · 三组箭头控制水平、俯仰和滚转';
   showPoster();
   updateOrbitImage();
-  note(message || '预渲染多视角：拖动画面或点击箭头旋转视角。');
+  note(message || '预渲染多视角：拖动调整水平与俯仰，三组箭头分别控制三个方向。');
   setStatus('ready', '多视角预览可用');
 }
 function show3dReady() {
@@ -291,7 +310,9 @@ function moveSample(delta) {
 }
 function resetCamera() {
   if (state.mode === 'orbit') {
-    state.orbitIndex = 0;
+    state.orbitYaw = 0;
+    state.orbitPitch = Math.floor(orbitGrid().length / 2);
+    state.orbitRoll = 0;
     updateOrbitImage();
     return;
   }
@@ -319,19 +340,22 @@ orbitImage.addEventListener('error', () => {
   if (state.mode === 'orbit') setStatic('多视角图片加载失败，已返回静态画面。');
 });
 el('viewerMode').onclick = () => state.mode === 'static' ? loadModel() : setStatic();
-el('orbitPrevious').onclick = () => { state.orbitIndex--; updateOrbitImage(); };
-el('orbitNext').onclick = () => { state.orbitIndex++; updateOrbitImage(); };
+el('yawPrevious').onclick = () => { state.orbitYaw--; updateOrbitImage(); };
+el('yawNext').onclick = () => { state.orbitYaw++; updateOrbitImage(); };
+el('pitchPrevious').onclick = () => { state.orbitPitch--; updateOrbitImage(); };
+el('pitchNext').onclick = () => { state.orbitPitch++; updateOrbitImage(); };
+el('rollPrevious').onclick = () => { state.orbitRoll--; updateOrbitImage(); };
+el('rollNext').onclick = () => { state.orbitRoll++; updateOrbitImage(); };
 let orbitDrag = null;
 orbitImage.addEventListener('pointerdown', event => {
   if (state.mode !== 'orbit') return;
-  orbitDrag = { x: event.clientX, index: state.orbitIndex };
+  orbitDrag = { x: event.clientX, y: event.clientY, yaw: state.orbitYaw, pitch: state.orbitPitch };
   orbitImage.setPointerCapture(event.pointerId);
 });
 orbitImage.addEventListener('pointermove', event => {
   if (!orbitDrag || state.mode !== 'orbit') return;
-  const frames = activeRecord().phases[state.phase].orbit;
-  state.orbitIndex = orbitDrag.index + Math.round((orbitDrag.x - event.clientX) / 24);
-  state.orbitIndex = (state.orbitIndex + frames.length * 100) % frames.length;
+  state.orbitYaw = orbitDrag.yaw + Math.round((orbitDrag.x - event.clientX) / 24);
+  state.orbitPitch = orbitDrag.pitch + Math.round((orbitDrag.y - event.clientY) / 36);
   updateOrbitImage();
 });
 orbitImage.addEventListener('pointerup', () => { orbitDrag = null; });
