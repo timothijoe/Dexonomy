@@ -207,6 +207,9 @@ def main():
         template.replace("__WUJI2_INDEX_JSON__", embedded_index), encoding="utf-8"
     )
     shutil.copyfile(Path(__file__).with_name("wuji2_comparison.js"), args.output / "app.js")
+    vendor = args.output / "vendor"
+    vendor.mkdir(exist_ok=True)
+    shutil.copyfile(Path(__file__).with_name("vendor") / "model-viewer.min.js", vendor / "model-viewer.min.js")
     print(f"wrote {args.output / 'index.html'}")
 
 

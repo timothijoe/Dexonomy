@@ -2,7 +2,7 @@
 
 ## Wuji2 三阶段对照可视化补充
 
-`tools/export_wuji2_comparison.py` 已为 16 条开发样本生成 `output/wuji2_comparison`：每条三阶段、原手/Wuji2、同物体/纯手型、两个离线角度，共 384 张 WebP、192 个 GLB。纯手型按掌心和指根方向对齐，网页同时显示同物体指尖误差和对齐后的指尖距离。静态网页无需 WebGL；本机 Chrome 已检查筛选、阶段和视角切换。复现与访问见[操作教程](tutorials/visualize_wuji2_comparison.md)，对齐定义和结果限制见[设计说明](docs/design/wuji2-comparison.md)。这仍是运动学对照，16 例六方向评估均未通过。
+`tools/export_wuji2_comparison.py` 已为 16 条开发样本生成 `output/wuji2_comparison`：每条三阶段、原手/Wuji2、同物体/纯手型、两个离线角度，共 384 张 WebP、192 个 GLB。纯手型按掌心和指根方向对齐，网页同时显示同物体指尖误差和对齐后的指尖距离。静态网页无需 WebGL；点击「开启 3D 旋转」可加载四格 GLB，拖动时同步观察方向，失败时保留静态图。本机 Chrome 已检查筛选、阶段、视角、旋转和 Shadow/Allegro 模型切换。复现与访问见[操作教程](tutorials/visualize_wuji2_comparison.md)，对齐定义和结果限制见[设计说明](docs/design/wuji2-comparison.md)。这仍是运动学对照，16 例六方向评估均未通过。
 
 ## 后续 Wuji2 开发样本补充
 
