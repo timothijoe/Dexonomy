@@ -10,6 +10,8 @@ import argparse
 import hashlib
 import json
 import math
+import os
+import copy
 from pathlib import Path
 
 import mujoco
@@ -31,6 +33,38 @@ FINGERS = ("thumb", "index", "middle", "ring", "pinky")
 SHADOW_DISTAL = ("rh_thdistal", "rh_ffdistal", "rh_mfdistal", "rh_rfdistal", "rh_lfdistal")
 WUJI_SITES = tuple(f"hand-r_{finger if finger == 'thumb' else finger + '_finger'}_tip" if finger != "pinky" else "hand-r_pinky_tip" for finger in FINGERS)
 WUJI_PADS = tuple(f"r_{finger if finger == 'thumb' else finger + '_finger'}_tip_sensor_frame" if finger != "pinky" else "r_pinky_tip_sensor_frame" for finger in FINGERS)
+SOURCE_SPECS = {
+    "shadow": {"xml": SHADOW, "fingers": FINGERS, "distal": SHADOW_DISTAL, "palm": "rh_palm"},
+    "allegro": {"xml": Path("assets/hand/allegro/right.xml"), "fingers": FINGERS[:4],
+                "distal": ("th_tip", "ff_tip", "mf_tip", "rf_tip"), "palm": "palm"},
+}
+
+
+def source_scene(data, source_hand, index):
+    if source_hand == "shadow":
+        scene = load_scene_cfg(str(data["scene_path"]))
+        scale = float(np.asarray(data["scene_scale"])[index])
+        if not np.isfinite(scale) or scale <= 0:
+            raise ValueError("Invalid scene_scale")
+        obj = scene["scene"][scene["task"]["obj_name"]]
+        obj["scale"] = np.asarray(obj["scale"], dtype=float) * scale
+        return scene, scale, str(data["scene_path"])
+    # Allegro results embed a legacy scene with names from an older install.
+    # Only the two known renamed object roots are supported here.
+    scene = copy.deepcopy(data["scene_cfg"])
+    scene["task"] = {"type": "force_closure", "obj_name": scene["interest_obj_name"]}
+    for obj in scene["scene"].values():
+        if obj["type"] != "rigid_mesh":
+            raise ValueError(f"Unsupported Allegro scene type: {obj['type']}")
+        obj["type"] = "rigid_object"
+        for key, value in obj.items():
+            if key.endswith("_path"):
+                value = value.replace("assets/object/DGN_obj_v2/", "assets/object/DGN_5k/")
+                value = value.replace("assets/object/objaverse/", "assets/object/objaverse_5k/")
+                obj[key] = os.path.normpath(value)
+                if not Path(obj[key]).is_file():
+                    raise FileNotFoundError(obj[key])
+    return scene, 1.0, "embedded legacy scene_cfg"
 
 
 def jsonable(value):
@@ -80,7 +114,7 @@ def fingertip_positions(env, q, ids, local=None):
     return np.array([env._data.xpos[i] + env._data.xmat[i].reshape(3, 3) @ p for i, p in zip(ids, local)])
 
 
-def fit_pose(env, target, palm_target, anchor, prior, limits, site_ids, max_nfev=140):
+def fit_pose(env, target, palm_target, anchor, prior, limits, site_ids, weights, max_nfev=140):
     mid = np.clip(prior[7:], limits[:, 0] + 0.002, limits[:, 1] - 0.002)
     x0 = variables_from_pose(np.r_[anchor[:7], mid])
     lower = np.r_[anchor[:3] - 0.18, [-6.3] * 3, limits[:, 0] + 0.001]
@@ -93,18 +127,18 @@ def fit_pose(env, target, palm_target, anchor, prior, limits, site_ids, max_nfev
         env.reset_qpos(q)
         tips = np.array([env._data.site_xpos[i] for i in site_ids])
         return np.r_[
-            ((tips - target) * 100).ravel(),
-            (env._data.xpos[palm_id] - palm_target) * 25,
-            (x[:3] - anchor[:3]) * 8,
+            ((tips - target) * weights["tip"]).ravel(),
+            (env._data.xpos[palm_id] - palm_target) * weights["palm"],
+            (x[:3] - anchor[:3]) * weights["wrist"],
             (x[3:6] - variables_from_pose(anchor)[3:6]) * 0.8,
-            (x[6:] - prior[7:]) * 0.75,
+            (x[6:] - prior[7:]) * weights["joint"],
         ]
 
     result = least_squares(residual, x0, bounds=(lower, upper), max_nfev=max_nfev, ftol=1e-7)
     return pose_from_variables(result.x), {"success": bool(result.success), "nfev": result.nfev, "cost": result.cost}
 
 
-def render_comparison(shadow, wuji, source_q, result_q, output):
+def render_comparison(shadow, wuji, source_q, result_q, output, source_hand):
     width, height = 640, 480
     bounds = []
     for env, poses in ((shadow, source_q), (wuji, result_q)):
@@ -139,7 +173,7 @@ def render_comparison(shadow, wuji, source_q, result_q, output):
     from PIL import ImageDraw
     canvas = Image.new("RGB", (width * 3, height * 2 + 32), "white")
     draw = ImageDraw.Draw(canvas)
-    for row, hand in enumerate(("Shadow source", "Wuji2 kinematic")):
+    for row, hand in enumerate((source_hand.title() + " source", "Wuji2 kinematic")):
         draw.text((8, row * height + 8), hand, fill="black")
         for col, phase in enumerate(PHASES):
             canvas.paste(images[row * 3 + col], (col * width, row * height + 32))
@@ -150,39 +184,55 @@ def render_comparison(shadow, wuji, source_q, result_q, output):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, default=SOURCE)
-    parser.add_argument("--index", type=int, default=1)
+    parser.add_argument("--index", type=int)
+    parser.add_argument("--source-hand", choices=tuple(SOURCE_SPECS), help="Inferred from the path if omitted")
     parser.add_argument("--output", type=Path, default=Path("output/wuji2_single_sample"))
+    parser.add_argument("--no-render", action="store_true", help="Skip PNG export for batch runs")
+    parser.add_argument("--no-eval", action="store_true", help="Skip force-closure simulation for batch runs")
+    parser.add_argument("--tip-weight", type=float, default=100)
+    parser.add_argument("--palm-weight", type=float, default=25)
+    parser.add_argument("--wrist-weight", type=float, default=8)
+    parser.add_argument("--joint-weight", type=float, default=.75)
     args = parser.parse_args()
+    weights = {key: getattr(args, key + "_weight") for key in ("tip", "palm", "wrist", "joint")}
+    if any(value < 0 or not np.isfinite(value) for value in weights.values()):
+        raise ValueError("Objective weights must be finite and nonnegative")
     output = args.output
     output.mkdir(parents=True, exist_ok=True)
+    source_hand = args.source_hand or ("allegro" if "allegro" in str(args.source) else "shadow")
+    spec = SOURCE_SPECS[source_hand]
+    index = args.index if args.index is not None else (1 if source_hand == "shadow" else 0)
+    fingers = spec["fingers"]
+    distal = spec["distal"]
+    tip_sites = WUJI_SITES[:len(fingers)]
+    pads = WUJI_PADS[:len(fingers)]
     data = np.load(args.source, allow_pickle=True).item()  # trusted local dataset only
-    if any(key not in data for key in ("scene_path", "scene_scale", *(f"{p}_qpos" for p in PHASES))):
+    if any(key not in data for key in (f"{p}_qpos" for p in PHASES)):
         raise ValueError("Source record lacks required pose or scene fields")
-    scale = float(np.asarray(data["scene_scale"])[args.index])
-    if not np.isfinite(scale) or scale <= 0:
-        raise ValueError("Invalid scene_scale")
-    scene = load_scene_cfg(str(data["scene_path"]))
+    scene, scale, scene_path = source_scene(data, source_hand, index)
     obj_name = scene["task"]["obj_name"]
     obj = scene["scene"][obj_name]
     if obj["type"] != "rigid_object":
         raise ValueError("This prototype requires a rigid object")
-    obj["scale"] = np.asarray(obj["scale"], dtype=float) * scale
-    shadow = MuJoCo_VisEnv(HandCfg(str(SHADOW), freejoint=True), scene, vis_mode="visual")
+    shadow = MuJoCo_VisEnv(HandCfg(str(spec["xml"]), freejoint=True), scene, vis_mode="visual")
     wuji = MuJoCo_VisEnv(HandCfg(str(WUJI), freejoint=True), scene, vis_mode="visual")
-    sh_opt = MuJoCo_OptEnv(HandCfg(str(SHADOW), freejoint=True), scene, MuJoCo_OptCfg(obj_margin=0, hand_margin=0))
+    sh_opt = MuJoCo_OptEnv(HandCfg(str(spec["xml"]), freejoint=True), scene, MuJoCo_OptCfg(obj_margin=0, hand_margin=0))
     w_opt = MuJoCo_OptEnv(HandCfg(str(WUJI), freejoint=True), scene, MuJoCo_OptCfg(obj_margin=0, hand_margin=0))
-    source_q = [np.asarray(data[f"{p}_qpos"][args.index], dtype=float) for p in PHASES]
+    source_q = []
+    for phase in PHASES:
+        poses = np.asarray(data[f"{phase}_qpos"], dtype=float)
+        source_q.append(poses[index] if poses.ndim == 2 else poses)
     # Calibrate source landmarks from the distal visual mesh: center of its
     # most distal 10% along local +Z. This is deterministic and mesh based.
     local = []
-    for name in SHADOW_DISTAL:
+    for name in distal:
         vertices = shadow.get_body_mesh(name).vertices
         cap = vertices[vertices[:, 2] >= np.quantile(vertices[:, 2], 0.9)]
         local.append(cap.mean(axis=0))
-    sh_ids = [shadow._model.body("hand-" + name).id for name in SHADOW_DISTAL]
-    site_ids = [wuji._model.site(name).id for name in WUJI_SITES]
+    sh_ids = [shadow._model.body("hand-" + name).id for name in distal]
+    site_ids = [wuji._model.site(name).id for name in tip_sites]
     targets = [fingertip_positions(shadow, q, sh_ids, local) for q in source_q]
-    palm_id = shadow._model.body("hand-rh_palm").id
+    palm_id = shadow._model.body("hand-" + spec["palm"]).id
     palms = []
     for q in source_q:
         shadow.reset_qpos(q)
@@ -196,11 +246,11 @@ def main():
     initial_error = np.linalg.norm(fingertip_positions(wuji, base, site_ids) - targets[1], axis=1) * 1000
     fitted = [None] * 3
     solver = {}
-    fitted[1], solver["grasp"] = fit_pose(wuji, targets[1], palms[1], anchor, base, limits, site_ids)
+    fitted[1], solver["grasp"] = fit_pose(wuji, targets[1], palms[1], anchor, base, limits, site_ids, weights)
     for i in (0, 2):
         phase_anchor = fitted[1].copy()
         phase_anchor[:3] += source_q[i][:3] - source_q[1][:3]
-        fitted[i], solver[PHASES[i]] = fit_pose(wuji, targets[i], palms[i], phase_anchor, fitted[1], limits, site_ids)
+        fitted[i], solver[PHASES[i]] = fit_pose(wuji, targets[i], palms[i], phase_anchor, fitted[1], limits, site_ids, weights)
 
     phase_stats = {}
     for i, phase in enumerate(PHASES):
@@ -212,7 +262,7 @@ def main():
         actual = fingertip_positions(wuji, fitted[i], site_ids)
         margin = np.minimum(fitted[i][7:] - limits[:, 0], limits[:, 1] - fitted[i][7:])
         phase_stats[phase] = {"source_contact": source_stats, "wuji_contact": wuji_stats,
-            "finger_error_mm": dict(zip(FINGERS, np.linalg.norm(actual - targets[i], axis=1) * 1000)),
+            "finger_error_mm": dict(zip(fingers, np.linalg.norm(actual - targets[i], axis=1) * 1000)),
             "min_joint_limit_margin_rad": float(margin.min()), "joint_limit_violations": int(np.sum(margin < 0)),
             "solver": solver[phase],
             "previous_stage_wrist_shift_mm": None if i == 0 else float(np.linalg.norm(fitted[i][:3] - fitted[i-1][:3]) * 1000),
@@ -223,11 +273,15 @@ def main():
     # its actual collision sensor-pad meshes, then expressed in body frames.
     sh_opt.reset_qpos(source_q[1])
     source_contacts, _ = sh_opt.get_contacts(0.001)
+    if source_hand == "allegro":
+        source_contacts = {"bn1": data["hand_contact_body_names"],
+                           "pos": np.asarray(data["obj_worldframe_contacts"])[:, :3],
+                           "normal": np.asarray(data["obj_worldframe_contacts"])[:, 3:]}
     w_opt.reset_qpos(fitted[1])
     collision_vis = MuJoCo_VisEnv(HandCfg(str(WUJI), freejoint=True), scene, vis_mode="collision")
     hand_cbody, hand_cpn_w, obj_cpn_w = [], [], []
     source_contact_report = []
-    for finger, sh_body, pad, tip in zip(FINGERS, SHADOW_DISTAL, WUJI_PADS, targets[1]):
+    for finger, sh_body, pad, tip in zip(fingers, distal, pads, targets[1]):
         candidates = [j for j, name in enumerate(source_contacts["bn1"]) if name == sh_body]
         if not candidates:
             source_contact_report.append({"finger": finger, "source_contact": False})
@@ -268,37 +322,44 @@ def main():
             "initial_gap_mm": before * 1000, "final_gap_mm": after * 1000,
             "candidate_qpos": candidate, "candidate_contact": stats,
             "min_joint_limit_margin_rad": float(margin.min()),
-            "accepted": bool(np.all(margin >= 0) and np.max(after) < np.max(before) and stats["min_hand_object_distance_m"] > -0.002)}
+            "accepted": bool(np.all(margin >= 0) and np.mean(after) < np.mean(before)
+                             and np.max(after) < 0.005
+                             and stats["min_hand_object_distance_m"] > -0.002
+                             and stats["min_self_distance_m"] > -0.002)}
 
     # Evaluate the accepted pose only; a failed local refinement must not be
     # advertised as a grasp. MuJoCo's six-direction force-closure check is used.
-    eval_pose = optimization["candidate_qpos"] if optimization.get("accepted") else fitted[1]
-    eval_env = MuJoCo_EvalEnv(HandCfg(str(WUJI), freejoint=True), scene, debug_view=False)
-    target_obj_pose = eval_env.get_active_obj_pose().copy()
-    trajectory = [fitted[0], eval_pose, fitted[2]]
-    try:
-        passed, _, _ = eval_env.eval_fc(trajectory, ["ee_pose", "ee_pose"], [None, None], target_obj_pose, 0.02, 0.2)
-        evaluation = {"criterion": "eval_fc six gravity-scale directions, 20 mm / 0.2 rad", "passed": bool(passed),
-                      "object_translation_m": float(np.linalg.norm(eval_env.get_active_obj_pose()[:3] - target_obj_pose[:3]))}
-    except Exception as exc:
-        evaluation = {"passed": False, "error": str(exc)}
+    evaluation = {"skipped": True} if args.no_eval else None
+    if not args.no_eval:
+        eval_pose = optimization["candidate_qpos"] if optimization.get("accepted") else fitted[1]
+        eval_env = MuJoCo_EvalEnv(HandCfg(str(WUJI), freejoint=True), scene, debug_view=False)
+        target_obj_pose = eval_env.get_active_obj_pose().copy()
+        trajectory = [fitted[0], eval_pose, fitted[2]]
+        try:
+            passed, _, _ = eval_env.eval_fc(trajectory, ["ee_pose", "ee_pose"], [None, None], target_obj_pose, 0.02, 0.2)
+            evaluation = {"criterion": "eval_fc six gravity-scale directions, 20 mm / 0.2 rad", "passed": bool(passed),
+                          "object_translation_m": float(np.linalg.norm(eval_env.get_active_obj_pose()[:3] - target_obj_pose[:3]))}
+        except Exception as exc:
+            evaluation = {"passed": False, "error": str(exc)}
 
-    render_comparison(shadow, wuji, source_q, fitted, output)
-    result = {"status": "kinematic_retargeting", "source": str(args.source), "sample_index": args.index,
-        "scene_path": str(data["scene_path"]), "scene_scale": scale, "object_scale": obj["scale"],
-        "shadow_model": str(SHADOW), "wuji_model": str(WUJI),
+    if not args.no_render:
+        render_comparison(shadow, wuji, source_q, fitted, output, source_hand)
+    result = {"status": "kinematic_retargeting", "source": str(args.source), "source_hand": source_hand, "sample_index": index,
+        "objective_weights": weights,
+        "scene_path": scene_path, "scene_scale": scale, "object_scale": obj["scale"],
+        "source_model": str(spec["xml"]), "wuji_model": str(WUJI),
         "wuji_model_sha256": hashlib.sha256(WUJI.read_bytes()).hexdigest(),
-        "source_contact_fields_present": sorted(set(data) & {"hand_cbody", "hand_cpn_w", "obj_cpn_w", "required_cbody"}),
-        "shadow_tip_definition": dict(zip(FINGERS, (dict(body=b, local_point_m=p) for b, p in zip(SHADOW_DISTAL, local)))),
-        "wuji_tip_sites": dict(zip(FINGERS, WUJI_SITES)), "joint_names": joint_names,
-        "shadow_qpos": dict(zip(PHASES, source_q)), "wuji_qpos": dict(zip(PHASES, fitted)),
-        "initial_grasp_finger_error_mm": dict(zip(FINGERS, initial_error)),
+        "source_contact_fields_present": sorted(set(data) & {"hand_cbody", "hand_cpn_w", "obj_cpn_w", "required_cbody", "hand_contact_body_names", "obj_worldframe_contacts"}),
+        "source_tip_definition": dict(zip(fingers, (dict(body=b, local_point_m=p) for b, p in zip(distal, local)))),
+        "wuji_tip_sites": dict(zip(fingers, tip_sites)), "joint_names": joint_names,
+        "source_qpos": dict(zip(PHASES, source_q)), "wuji_qpos": dict(zip(PHASES, fitted)),
+        "initial_grasp_finger_error_mm": dict(zip(fingers, initial_error)),
         "phase_stats": phase_stats, "contact_target_reconstruction": source_contact_report,
         "local_contact_optimization": optimization, "evaluation": evaluation,
-        "comparison_png": "comparison.png"}
+        "comparison_png": None if args.no_render else "comparison.png"}
     (output / "result.json").write_text(json.dumps(jsonable(result), indent=2, allow_nan=False), encoding="utf-8")
     print(json.dumps({"output": str(output), "finger_error_mm": phase_stats["grasp"]["finger_error_mm"],
-                      "optimization_accepted": optimization.get("accepted"), "evaluation_passed": evaluation["passed"]}, indent=2))
+                      "optimization_accepted": optimization.get("accepted"), "evaluation_passed": evaluation.get("passed")}, indent=2))
 
 
 if __name__ == "__main__":

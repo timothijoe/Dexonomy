@@ -1,0 +1,166 @@
+{
+  "name": "wuji2_retarget_v1",
+  "purpose": "Small, fixed development and holdout set spanning grasp taxonomy, object source, source hand, and Allegro template",
+  "cases": [
+    {
+      "id": "sh_large_obj",
+      "split": "dev",
+      "hand": "shadow",
+      "family": "objaverse",
+      "category": "1_Large_Diameter",
+      "source": "assets/object/Dexonomy_GRASP_shadow/succ_collect/1_Large_Diameter/0004e882b42844eda8b4ab7379cb04c8/floating/scale005.npy",
+      "index": 15,
+      "sha256": "13633140dcf780602f65eea1eed297d46a048b8925b17622745e847078a42eec"
+    },
+    {
+      "id": "sh_tripod_obj",
+      "split": "dev",
+      "hand": "shadow",
+      "family": "objaverse",
+      "category": "14_Tripod",
+      "source": "assets/object/Dexonomy_GRASP_shadow/succ_collect/14_Tripod/0004e882b42844eda8b4ab7379cb04c8/floating/scale005.npy",
+      "index": 1,
+      "sha256": "e75b5ac2c05d1293572e39c944b36978735a70d085d6a82b7e6004f810e1be24"
+    },
+    {
+      "id": "sh_pinch_obj",
+      "split": "dev",
+      "hand": "shadow",
+      "family": "objaverse",
+      "category": "24_Tip_Pinch",
+      "source": "assets/object/Dexonomy_GRASP_shadow/succ_collect/24_Tip_Pinch/0004e882b42844eda8b4ab7379cb04c8/floating/scale005.npy",
+      "index": 9,
+      "sha256": "383083e7fe9bc549a5391ef35591914e2cefece41d9100ccd55e39c420c91897"
+    },
+    {
+      "id": "sh_sphere_dgn",
+      "split": "dev",
+      "hand": "shadow",
+      "family": "dgn",
+      "category": "11_Power_Sphere",
+      "source": "assets/object/Dexonomy_GRASP_shadow/succ_collect/11_Power_Sphere/core_bottle_523cddb320608c09a37f3fc191551700/floating/scale008.npy",
+      "index": 2,
+      "sha256": "7936a008120c3ae0c36dda7f8371b04e544d36177a3f86c767d1d5bd6cfd0cb8"
+    },
+    {
+      "id": "sh_large_dgn",
+      "split": "holdout",
+      "hand": "shadow",
+      "family": "dgn",
+      "category": "1_Large_Diameter",
+      "source": "assets/object/Dexonomy_GRASP_shadow/succ_collect/1_Large_Diameter/core_cellphone_d4407c240737b0c73455cac94a339dea/floating/scale005.npy",
+      "index": 2,
+      "sha256": "abcb047fd35c1108655a8030a1b96daef5fa5f0d5345b22b8212489976129bb1"
+    },
+    {
+      "id": "sh_tripod_dgn",
+      "split": "holdout",
+      "hand": "shadow",
+      "family": "dgn",
+      "category": "14_Tripod",
+      "source": "assets/object/Dexonomy_GRASP_shadow/succ_collect/14_Tripod/core_cellphone_bc301249d58b89b638d913262f25e96d/floating/scale005.npy",
+      "index": 0,
+      "sha256": "9672c0e08c945a13e19a77aae416d3677ecc651c2ac3f893da8874aab2da179c"
+    },
+    {
+      "id": "sh_pinch_dgn",
+      "split": "holdout",
+      "hand": "shadow",
+      "family": "dgn",
+      "category": "24_Tip_Pinch",
+      "source": "assets/object/Dexonomy_GRASP_shadow/succ_collect/24_Tip_Pinch/core_cellphone_da1fcb7a374f9c43397c13131c65cbca/floating/scale011.npy",
+      "index": 0,
+      "sha256": "76e9ac51a50e103a159da95daa798dfaac0937c63a45daa4ca3b42a7e8c411ed"
+    },
+    {
+      "id": "sh_lateral_dgn",
+      "split": "holdout",
+      "hand": "shadow",
+      "family": "dgn",
+      "category": "16_Lateral",
+      "source": "assets/object/Dexonomy_GRASP_shadow/succ_collect/16_Lateral/sem_CellPhone_63d7e19327f1bca6fbd525df60e2bb14/floating/scale011.npy",
+      "index": 0,
+      "sha256": "75517dc590add2cc09c9a1ed402f9833b142c1c42d88cd465974e609088108fb"
+    },
+    {
+      "id": "al_small_dgn",
+      "split": "dev",
+      "hand": "allegro",
+      "family": "dgn",
+      "category": "fingertip_small",
+      "source": "assets/object/rss_DGN_allegro/succgrasp/fingertip_small/floating_core_bottle_1071fa4cddb2da2fc8724d5673a063a6_scale005/0_16_grasp.npy",
+      "index": 0,
+      "sha256": "0fc15bdf1fb1fa6e2df195d4c98e6d1124edda52f536533239f6aa32ca837437"
+    },
+    {
+      "id": "al_mid_dgn",
+      "split": "dev",
+      "hand": "allegro",
+      "family": "dgn",
+      "category": "fingertip_mid",
+      "source": "assets/object/rss_DGN_allegro/succgrasp/fingertip_mid/floating_core_bottle_1071fa4cddb2da2fc8724d5673a063a6_scale005/0_20_grasp.npy",
+      "index": 0,
+      "sha256": "2a6f1b89dd3a95bd3255346c0e56f2cd7705f3a68ea80298ca1f6686afcc2cee"
+    },
+    {
+      "id": "al_small_obj",
+      "split": "dev",
+      "hand": "allegro",
+      "family": "objaverse",
+      "category": "fingertip_small",
+      "source": "assets/object/rss_objaverse_allegro/succgrasp/fingertip_small/floating_0004e882b42844eda8b4ab7379cb04c8_scale005/0_4_grasp.npy",
+      "index": 0,
+      "sha256": "4dbbf3b2d666ef2748df8b4ca90b1d038d2f153c00d7daffedd1862cc892cfd0"
+    },
+    {
+      "id": "al_mid_obj",
+      "split": "dev",
+      "hand": "allegro",
+      "family": "objaverse",
+      "category": "fingertip_mid",
+      "source": "assets/object/rss_objaverse_allegro/succgrasp/fingertip_mid/floating_0004e882b42844eda8b4ab7379cb04c8_scale005/0_1_grasp.npy",
+      "index": 0,
+      "sha256": "5adbb542099a1441a7fdaf29610b70d69d432d023ace522268b4a545cd82b61b"
+    },
+    {
+      "id": "al_small_remote",
+      "split": "holdout",
+      "hand": "allegro",
+      "family": "dgn",
+      "category": "fingertip_small",
+      "source": "assets/object/rss_DGN_allegro/succgrasp/fingertip_small/floating_core_remote_a6a121234c2077d6dcd16fe97fafc2c6_scale020/0_60_grasp.npy",
+      "index": 0,
+      "sha256": "aec2bfd80ecb42295760191295f4a1d02cb85d876cb6c725b3233ec9523de292"
+    },
+    {
+      "id": "al_mid_remote",
+      "split": "holdout",
+      "hand": "allegro",
+      "family": "dgn",
+      "category": "fingertip_mid",
+      "source": "assets/object/rss_DGN_allegro/succgrasp/fingertip_mid/floating_core_remote_a6a121234c2077d6dcd16fe97fafc2c6_scale020/0_61_grasp.npy",
+      "index": 0,
+      "sha256": "03b1ca56753371cdab65a08e262c774be6d68788882056cb50b86a0fdb55bf9d"
+    },
+    {
+      "id": "al_small_obj2",
+      "split": "holdout",
+      "hand": "allegro",
+      "family": "objaverse",
+      "category": "fingertip_small",
+      "source": "assets/object/rss_objaverse_allegro/succgrasp/fingertip_small/floating_35b8b3d0cc354a31806c4aafea11876c_scale005/0_2_grasp.npy",
+      "index": 0,
+      "sha256": "2046449defc3f2f10b32c0b9ef51b4f0ca6fd2aaa804d0ee9d07d93bb4cf4f32"
+    },
+    {
+      "id": "al_mid_obj2",
+      "split": "holdout",
+      "hand": "allegro",
+      "family": "objaverse",
+      "category": "fingertip_mid",
+      "source": "assets/object/rss_objaverse_allegro/succgrasp/fingertip_mid/floating_35b8b3d0cc354a31806c4aafea11876c_scale005/0_1_grasp.npy",
+      "index": 0,
+      "sha256": "af1585d65e54a8f2d80fd7582071eb661d51d00339407d0fea6d5416fc88b257"
+    }
+  ]
+}

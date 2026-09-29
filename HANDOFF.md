@@ -1,5 +1,9 @@
 # Dexonomy 项目交接（更新于 2026-09-29）
 
+## 后续 Wuji2 开发样本补充
+
+已建立 [`benchmarks/wuji2_retarget_v1.json`](benchmarks/wuji2_retarget_v1.json) 的 16 条 Shadow/Allegro 样本及 `tools/run_wuji2_benchmark.py` 批量入口。Shadow 覆盖 5 个抓取类别；Allegro 覆盖 DGN、Objaverse 和两种指尖模板，开发/保留按对象隔离。16/16 可运行运动学迁移，但最大手物穿透普遍较大，六方向评估 0/16 通过。放松腕部先验虽降低指尖误差，却未显著降低穿透，因此保留基线参数。实际数字和复现命令见[开发样本文档](docs/design/wuji2-benchmark.md)。下文单例状态描述为扩展前的历史结果。
+
 ## 2026-09-29 Wuji2 单样本补充
 
 当前仓库已新增 `tools/retarget_wuji2_sample.py`，用 `.viz-env`、`MUJOCO_GL=egl PYTHONPATH=.` 在根目录运行即可生成 `output/wuji2_single_sample/result.json` 和 `comparison.png`。固定 `14_Tripod` 源文件索引 1，应用 `scene_scale`，拟合三阶段 27 维 Wuji2 姿态。抓取阶段五指误差为 0.37/3.48/1.84/2.62/1.54 mm，但 Wuji2 抓取姿态最大手物穿透 15.63 mm；接触力局部细化候选被拒绝，六方向评估未通过。因此**尚无 Wuji2 碰撞合格或稳定抓取**。逐阶段、逐指与候选细节见[迁移设计](docs/design/wuji2-retargeting.md)；下文早期“尚未运行”表述是本补充之前的交接状态。

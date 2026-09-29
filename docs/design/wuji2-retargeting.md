@@ -66,3 +66,5 @@ MUJOCO_GL=egl PYTHONPATH=. .viz-env/bin/python tools/retarget_wuji2_sample.py
 针对成功文件缺失的接触字段，脚本在 1 mm 接触裕量下从源抓取姿态取得拇指、食指、中指候选，再投影到 Wuji2 的真实传感垫碰撞网格，构造 `hand_cbody`、`hand_cpn_w`、`hand_cpn_b`、`obj_cpn_w` 和 `required_cbody`。初始接触点间隙分别为 12.02、0.59、1.34 mm。短程运行 `MuJoCo_OptEnv.apply_contact_forces` 后间隙增至 23.44、28.23、16.13 mm，故候选被拒绝，没有作为优化后的抓取输出。当前尚未把这些字段写成完整 `init_data`，也未运行 `op=grasp` 或 ADMM。
 
 随后用原运动学三阶段轨迹调用 `MuJoCo_EvalEnv.eval_fc` 的六方向评估，结果未通过。该检查不构成抓取成功。下一步应先降低食指/中指近节与物体的穿透，处理源收紧姿态穿透，再重建几何合理的接触法向与掌侧目标，并在碰撞合格后接入完整过滤器和 `op=grasp`。旧 `reproduction` 演示脚本仍不在工作区，其历史数字未用于本次结果。
+
+后续已将单例脚本扩展为 Shadow/Allegro 双来源，并建立 16 条固定开发/保留样本及批量结果；筛选方法、场景兼容层和参数比较见[Wuji2 开发样本 v1](wuji2-benchmark.md)。

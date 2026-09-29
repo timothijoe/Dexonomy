@@ -15,7 +15,7 @@
 | DGN/Objaverse 对象与视觉数据 | `assets/object` | 数据已安装 | 归档校验通过，解压后可读 |
 | Wuji Hand 2 模型 | `assets/wuji-description` | 模型已安装 | Beta2 模型可读，已装入一个真实物体场景的 MuJoCo 优化环境；尚无 Wuji2 抓取结果 |
 | Shadow 网页图鉴 | `tools/export_taxonomy_preview.py` | 静态首屏获用户确认 | 3 类 × 3 样本 × 3 阶段，27 个 GLB、27 张 PNG 和 1620 个预渲染视角引用；三方向模式获用户正面反馈，实时 3D 在用户浏览器不可用 |
-| Wuji2 抓取迁移 | `tools/retarget_wuji2_sample.py`、[迁移设计](design/wuji2-retargeting.md) | 单样本运动学原型已运行 | 三阶段 27 维姿态、对照图和误差可重建；手物穿透较大，局部接触优化候选被拒绝，六方向评估未通过 |
+| Wuji2 抓取迁移 | `tools/retarget_wuji2_sample.py`、[开发样本](design/wuji2-benchmark.md) | 16 例运动学原型已运行 | Shadow/Allegro 双来源、开发/保留集与批量报告；16 例均有物理缺陷，六方向评估 0/16 通过 |
 
 ## 当前数据分类
 

@@ -16,7 +16,7 @@
 - 流水线通过日志文本判断完成，并会重复调用阶段命令；异常条件下可能长期运行。
 - 默认 `n_worker=32`，评估进程池使用 `3 * n_worker`，不适合作为首次验证配置。
 - ADMM 中存在异常捕获后回退到原始优化的路径，运行统计应区分实际 ADMM 完成与回退。
-- Wuji2 单样本运动学迁移已运行，并尝试重建缺失的接触字段及短程 MuJoCo 接触力优化；候选未通过碰撞/间隙筛选，尚未运行完整 `grasp`/ADMM。结果见[Wuji2 迁移设计](../../design/wuji2-retargeting.md)。
+- Wuji2 迁移已扩展到 16 条 Shadow/Allegro 开发和保留样本；接触目标与短程 MuJoCo 接触力优化已逐例尝试，仍有严重穿透，六方向评估 0/16 通过。尚未运行完整 `grasp`/ADMM；结果见[Wuji2 开发样本](../../design/wuji2-benchmark.md)。
 - 教程和当前配置中的部分旧目录名需要后续统一。
 
 相关历史见 [2026-09-25 接收与审计](chronicles/2026-09-25-repository-and-data-audit.md)。
