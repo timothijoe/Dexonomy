@@ -1,0 +1,61 @@
+{
+  "version": "hand_action_correspondence_v1",
+  "description": "Object-independent anatomical landmarks for Shadow, Allegro, and Wuji Hand 2 Beta 2",
+  "hands": {
+    "shadow": {
+      "palm_body": "rh_palm",
+      "frame_bodies": {"index": "rh_ffknuckle", "middle": "rh_mfknuckle", "ring": "rh_rfknuckle"},
+      "finger_bases": {
+        "thumb": "rh_thbase", "index": "rh_ffknuckle", "middle": "rh_mfknuckle",
+        "ring": "rh_rfknuckle", "pinky": "rh_lfknuckle"
+      },
+      "tips": {
+        "thumb": {"kind": "distal_visual_cap", "body": "rh_thdistal"},
+        "index": {"kind": "distal_visual_cap", "body": "rh_ffdistal"},
+        "middle": {"kind": "distal_visual_cap", "body": "rh_mfdistal"},
+        "ring": {"kind": "distal_visual_cap", "body": "rh_rfdistal"},
+        "pinky": {"kind": "distal_visual_cap", "body": "rh_lfdistal"}
+      }
+    },
+    "allegro": {
+      "palm_body": "palm",
+      "frame_bodies": {"index": "ff_base", "middle": "mf_base", "ring": "rf_base"},
+      "finger_bases": {
+        "thumb": "th_base", "index": "ff_base", "middle": "mf_base", "ring": "rf_base"
+      },
+      "tips": {
+        "thumb": {"kind": "distal_visual_cap", "body": "th_tip"},
+        "index": {"kind": "distal_visual_cap", "body": "ff_tip"},
+        "middle": {"kind": "distal_visual_cap", "body": "mf_tip"},
+        "ring": {"kind": "distal_visual_cap", "body": "rf_tip"}
+      }
+    },
+    "wuji2": {
+      "palm_body": "r_wrist",
+      "frame_bodies": {
+        "index": "r_index_finger_proximal", "middle": "r_middle_finger_proximal",
+        "ring": "r_ring_finger_proximal"
+      },
+      "finger_bases": {
+        "thumb": "r_thumb_proximal", "index": "r_index_finger_proximal",
+        "middle": "r_middle_finger_proximal", "ring": "r_ring_finger_proximal",
+        "pinky": "r_pinky_proximal"
+      },
+      "tips": {
+        "thumb": {"kind": "site", "name": "hand-r_thumb_tip"},
+        "index": {"kind": "site", "name": "hand-r_index_finger_tip"},
+        "middle": {"kind": "site", "name": "hand-r_middle_finger_tip"},
+        "ring": {"kind": "site", "name": "hand-r_ring_finger_tip"},
+        "pinky": {"kind": "site", "name": "hand-r_pinky_tip"}
+      }
+    }
+  },
+  "pairs": {
+    "shadow_to_wuji2": {
+      "thumb": "thumb", "index": "index", "middle": "middle", "ring": "ring", "pinky": "pinky"
+    },
+    "allegro_to_wuji2": {
+      "thumb": "thumb", "index": "index", "middle": "middle", "ring": "ring"
+    }
+  }
+}

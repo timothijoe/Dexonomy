@@ -6,3 +6,4 @@
 - [Shadow 抓取迁移到 Wuji2](wuji2-retargeting.md)
 - [Wuji2 迁移开发样本 v1](wuji2-benchmark.md)
 - [Shadow / Allegro 与 Wuji2 三阶段可视化对照](wuji2-comparison.md)
+- [Shadow / Allegro 与 Wuji2 的独立手部动作对应](wuji2-hand-action-correspondence.md)
