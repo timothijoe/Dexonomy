@@ -15,6 +15,7 @@ Shadow 图鉴首屏显示真实场景的 2D PNG，点击“切换到 3D”才载
 - `tools/vendor/model-viewer.min.js`：本地 3D 组件。
 - `output/taxonomy_preview`：当前生成产物，已被 Git 忽略。重新运行导出器会同步网页副本和三阶段资产。
 - `tutorials/visualize_taxonomy.md`：运行与远程访问命令。
+- `docs/design/shadow-taxonomy-preview.md`：图鉴模式、三方向视角、资产数据流和验证边界。
 - `docs/design/wuji2-retargeting.md`：Wuji2 换手及重新优化方案。
 
 在仓库根目录：
