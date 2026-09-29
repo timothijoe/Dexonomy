@@ -1,5 +1,9 @@
 # Dexonomy 项目交接（更新于 2026-09-29）
 
+## 两个独立的 Wuji2 结果版本
+
+用户要求将“与物体交互的优化”和“仅手型的优化”分开展示。现有 `output/wuji2_comparison/` 是前者，新增 `output/wuji2_hand_only_viewer/` 是后者：源手与只按手部动作拟合的 Wuji2 两栏、三阶段、离线可旋转视角和 GLB，不显示物体。复现与同一端口访问两个页面的命令见[操作教程](tutorials/visualize_wuji2_hand_only.md)，解释和限制见[设计文档](docs/design/wuji2-hand-only-viewer.md)。纯手型拟合不是可抓取姿态。
+
 ## 手部动作对应补充
 
 新增[独立手部动作对应设计](docs/design/wuji2-hand-action-correspondence.md)：按各手掌心解剖坐标、逐指中性指长归一化，区分形状、相对中性手型的动作、收拢与阶段动作；提供 16 例报告和单独关节拟合。动作拟合把平均动作误差从 0.530 降至 0.083，但抓取阶段世界指尖误差从 1.73 mm 增到 55.45 mm。下一步应联合物体和动作目标，继续约束碰撞与稳定性；单独手部拟合不是成功抓取。

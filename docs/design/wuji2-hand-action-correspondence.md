@@ -26,6 +26,8 @@ MUJOCO_GL=egl PYTHONPATH=. .viz-env/bin/python tools/analyze_wuji2_hand_action.p
 
 输出在 `output/wuji2_hand_action_v1/`：`summary.csv`、`summary.json` 和逐例 JSON。可用 `--ids sh_tripod_obj` 复现单例。源文件 SHA256、样本索引和基线结果身份均会校验。
 
+独立的两手可视化页面见[纯手型动作优化可视化](wuji2-hand-only-viewer.md)，与原先带物体的优化结果分开。
+
 ## 当前 16 例结果
 
 | 指标，跨 16 例均值 | 原物体场景拟合 | 独立手部动作拟合 |

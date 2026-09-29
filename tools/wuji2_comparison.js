@@ -214,6 +214,11 @@ function renderList() {
 }
 async function start() {
   try {
+    // The older 8767 service serves this directory as its root. In that
+    // layout the sibling viewer lives on the shared output service at 8768.
+    if (!location.pathname.includes('/wuji2_comparison/')) {
+      el('handOnlyLink').href = `${location.protocol}//${location.hostname}:8768/wuji2_hand_only_viewer/`;
+    }
     const embeddedIndex = el('embeddedIndex')?.textContent.trim();
     if (embeddedIndex && embeddedIndex !== '__WUJI2_INDEX_JSON__') {
       state.index = JSON.parse(embeddedIndex);

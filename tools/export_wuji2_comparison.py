@@ -196,7 +196,16 @@ def main():
     parser.add_argument("--ids", nargs="*", help="Optional case IDs for a short smoke export")
     parser.add_argument("--width", type=int, default=640)
     parser.add_argument("--height", type=int, default=480)
+    parser.add_argument("--index-only", action="store_true", help="Refresh the page shell from an existing export")
     args = parser.parse_args()
+    if args.index_only:
+        index = json.loads((args.output / "index.json").read_text(encoding="utf-8"))
+        template = Path(__file__).with_name("wuji2_comparison.html").read_text(encoding="utf-8")
+        embedded_index = json.dumps(index, ensure_ascii=False).replace("<", "\\u003c")
+        (args.output / "index.html").write_text(template.replace("__WUJI2_INDEX_JSON__", embedded_index), encoding="utf-8")
+        shutil.copyfile(Path(__file__).with_name("wuji2_comparison.js"), args.output / "app.js")
+        print(f"refreshed {args.output / 'index.html'}")
+        return
     manifest = json.loads(args.manifest.read_text())
     cases = [case for case in manifest["cases"] if not args.ids or case["id"] in args.ids]
     if args.ids and len(cases) != len(set(args.ids)):

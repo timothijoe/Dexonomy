@@ -1,5 +1,7 @@
 # 查看 Wuji2 迁移对照
 
+这是**手与物体交互版本**。只优化手部动作、去掉物体的第二个版本见[纯手型可视化教程](visualize_wuji2_hand_only.md)。两个页面可通过同一 `output` 目录的 HTTP 服务访问并互相跳转。
+
 先确保[开发样本](../docs/design/wuji2-benchmark.md)的基线结果存在。在仓库根目录依次执行：
 
 ```bash
