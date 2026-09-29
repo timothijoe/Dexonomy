@@ -3,10 +3,11 @@ const PHASE_META = {
   grasp: { label: '抓取', english: 'Grasp', description: '手指已经围绕物体形成主要接触，是判断抓取类型和手物关系的核心阶段。' },
   squeeze: { label: '收紧', english: 'Squeeze', description: '在抓取姿态基础上继续闭合手指，用于形成更稳定的接触和约束。' },
 };
-const state = { data: null, className: null, recordIndex: 0, phase: 'grasp', mode: 'static', playing: false, playTimer: null, loadTimer: null, loadId: 0, modelPath: null };
+const state = { data: null, className: null, recordIndex: 0, phase: 'grasp', mode: 'static', orbitIndex: 0, playing: false, playTimer: null, loadTimer: null, loadId: 0, modelPath: null };
 const el = id => document.getElementById(id);
 const viewer = el('viewer');
 const poster = el('poster');
+const orbitImage = el('orbitImage');
 let viewerModule;
 let contextLossListenerAdded = false;
 
@@ -47,16 +48,46 @@ function setStatic(message = '') {
   invalidateLoad();
   state.mode = 'static';
   el('stage').classList.remove('three-d');
+  el('stage').classList.remove('orbit');
   el('errorState').classList.remove('visible');
   el('viewerMode').textContent = '切换到 3D';
+  el('viewerHint').textContent = '拖动旋转 · 滚轮缩放 · 双击聚焦';
   showPoster();
   note(message);
   setStatus('ready', '静态预览可用');
+}
+function updateOrbitImage() {
+  const frames = activeRecord().phases[state.phase].orbit;
+  if (!frames?.length) return;
+  state.orbitIndex = (state.orbitIndex + frames.length) % frames.length;
+  orbitImage.src = versioned(frames[state.orbitIndex]);
+  el('orbitCount').textContent = (state.orbitIndex + 1) + ' / ' + frames.length;
+}
+function setOrbit(message = '') {
+  const frames = activeRecord().phases[state.phase].orbit;
+  if (!frames?.length) {
+    setStatic(message || '此样本没有多视角画面；可下载当前 GLB 用三维查看器打开。');
+    return;
+  }
+  invalidateLoad();
+  state.mode = 'orbit';
+  state.orbitIndex = 0;
+  el('stage').classList.remove('three-d');
+  el('stage').classList.add('orbit');
+  el('errorState').classList.remove('visible');
+  el('viewerMode').textContent = '切换到静态';
+  el('viewerHint').textContent = '预渲染多视角 · 拖动或点击箭头切换方向';
+  showPoster();
+  updateOrbitImage();
+  note(message || '预渲染多视角：拖动画面或点击箭头旋转视角。');
+  setStatus('ready', '多视角预览可用');
 }
 function show3dReady() {
   invalidateLoad();
   poster.classList.add('hidden');
   el('stage').classList.add('three-d');
+  el('stage').classList.remove('orbit');
+  el('viewerHint').textContent = '拖动旋转 · 滚轮缩放 · 双击聚焦';
   note('');
   setStatus('ready', '三维模型已就绪');
 }
@@ -80,7 +111,7 @@ async function validateLoadedModel(id) {
     await verify3dFrame();
   } catch (error) {
     if (id === state.loadId && state.mode === '3d') {
-      setStatic('3D 模型已加载，但浏览器未能绘制手部；可下载当前 GLB 用三维查看器打开。');
+      setOrbit('实时 3D 渲染失败，已切换到预渲染多视角；拖动画面旋转。');
     }
     console.error(error);
     return;
@@ -125,6 +156,7 @@ async function loadModel() {
   const id = state.loadId;
   state.mode = '3d';
   el('stage').classList.remove('three-d');
+  el('stage').classList.remove('orbit');
   showPoster();
   note('');
   el('errorState').classList.remove('visible');
@@ -132,13 +164,13 @@ async function loadModel() {
   el('loadDetail').textContent = PHASE_META[state.phase].label + ' · ' + path.split('/').pop();
   setStatus('ready', '静态预览可用 · 正在载入 3D');
   if (!canRender3d()) {
-    setStatic('此浏览器无法创建 WebGL 画面；可下载当前 GLB 用三维查看器打开。');
+    setOrbit('此浏览器无法创建 WebGL 画面；已切换到预渲染多视角，拖动画面旋转。');
     return;
   }
   try {
     await ensureViewer();
   } catch (error) {
-    if (id === state.loadId) setStatic('3D 组件不可用，已显示同阶段静态预览。');
+    if (id === state.loadId) setOrbit('3D 组件不可用，已切换到预渲染多视角。');
     console.error(error);
     return;
   }
@@ -147,7 +179,7 @@ async function loadModel() {
     const canvas = viewer.shadowRoot?.querySelector('canvas');
     if (canvas) {
       canvas.addEventListener('webglcontextlost', () => {
-        if (state.mode === '3d') setStatic('浏览器的 3D 上下文已中断；可下载当前 GLB 用三维查看器打开。');
+        if (state.mode === '3d') setOrbit('浏览器的 3D 上下文已中断，已切换到预渲染多视角。');
       });
       contextLossListenerAdded = true;
     }
@@ -159,7 +191,7 @@ async function loadModel() {
   state.modelPath = path;
   state.loadTimer = setTimeout(() => {
     if (id === state.loadId && state.mode === '3d') {
-      setStatic('3D 加载超时，已显示同阶段静态预览。');
+      setOrbit('3D 加载超时，已切换到预渲染多视角。');
     }
   }, 20000);
   viewer.src = versioned(path);
@@ -227,7 +259,7 @@ function renderRecord() {
   download.download = record.class_name + '_sample_' + String(record.sample_number).padStart(2, '0') + '_' + state.phase + '.glb';
   el('phaseDescription').textContent = PHASE_META[state.phase].description;
   renderPhases();
-  if (state.mode === '3d') loadModel(); else setStatic();
+  if (state.mode === '3d') loadModel(); else if (state.mode === 'orbit') setOrbit(); else setStatic();
 }
 function renderAll() { renderClasses(); renderSamples(); renderRecord(); }
 function selectPhase(phase) {
@@ -258,6 +290,11 @@ function moveSample(delta) {
   renderRecord();
 }
 function resetCamera() {
+  if (state.mode === 'orbit') {
+    state.orbitIndex = 0;
+    updateOrbitImage();
+    return;
+  }
   viewer.cameraOrbit = '135deg 70deg auto';
   viewer.cameraTarget = 'auto auto auto';
   viewer.fieldOfView = '30deg';
@@ -269,7 +306,7 @@ viewer.addEventListener('load', () => {
   validateLoadedModel(state.loadId);
 });
 viewer.addEventListener('error', event => {
-  if (state.mode === '3d') setStatic('3D 在当前浏览器中加载失败，已显示同阶段静态预览。');
+  if (state.mode === '3d') setOrbit('3D 在当前浏览器中加载失败，已切换到预渲染多视角。');
   console.error(event);
 });
 poster.addEventListener('error', () => {
@@ -278,7 +315,27 @@ poster.addEventListener('error', () => {
     setStatus('error', '静态图片不可用');
   }
 });
-el('viewerMode').onclick = () => state.mode === '3d' ? setStatic() : loadModel();
+orbitImage.addEventListener('error', () => {
+  if (state.mode === 'orbit') setStatic('多视角图片加载失败，已返回静态画面。');
+});
+el('viewerMode').onclick = () => state.mode === 'static' ? loadModel() : setStatic();
+el('orbitPrevious').onclick = () => { state.orbitIndex--; updateOrbitImage(); };
+el('orbitNext').onclick = () => { state.orbitIndex++; updateOrbitImage(); };
+let orbitDrag = null;
+orbitImage.addEventListener('pointerdown', event => {
+  if (state.mode !== 'orbit') return;
+  orbitDrag = { x: event.clientX, index: state.orbitIndex };
+  orbitImage.setPointerCapture(event.pointerId);
+});
+orbitImage.addEventListener('pointermove', event => {
+  if (!orbitDrag || state.mode !== 'orbit') return;
+  const frames = activeRecord().phases[state.phase].orbit;
+  state.orbitIndex = orbitDrag.index + Math.round((orbitDrag.x - event.clientX) / 24);
+  state.orbitIndex = (state.orbitIndex + frames.length * 100) % frames.length;
+  updateOrbitImage();
+});
+orbitImage.addEventListener('pointerup', () => { orbitDrag = null; });
+orbitImage.addEventListener('pointercancel', () => { orbitDrag = null; });
 el('retryButton').onclick = () => loadModel();
 el('resetCamera').onclick = resetCamera;
 el('fullscreenButton').onclick = () => document.fullscreenElement ? document.exitFullscreen() : el('stage').requestFullscreen();

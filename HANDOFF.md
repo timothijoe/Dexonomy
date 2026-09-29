@@ -1,14 +1,14 @@
-# Dexonomy 项目交接（2026-09-26）
+# Dexonomy 项目交接（更新于 2026-09-29）
 
 ## 当前目标和结论
 
 用户希望先看到 Shadow Hand 与物体的抓取交互，优先 3D，可用 2D 兜底；随后计划把手换成 Wuji Hand 2 Beta 2 并重新优化抓取。
 
-Shadow 图鉴首屏显示真实场景的 2D PNG，只有点击“切换到 3D”才载入交互模型；三个阶段分别有对应图片和 GLB。当前仅覆盖 `1_Large_Diameter`、`14_Tripod`、`24_Tip_Pinch`，每类三个样本，总计 9 条记录、27 个 GLB 和 27 张 PNG。用户曾反馈自动切换 3D 时画面闪现后消失，因此取消了自动切换。用户随后确认“现在至少可以看了”，但又反馈 3D 似乎无法显示。静态首屏在用户访问路径上已可见；3D 交互仍未获用户确认。
+Shadow 图鉴首屏显示真实场景的 2D PNG，点击“切换到 3D”才载入交互模型；三个阶段分别有对应图片和 GLB。当前仅覆盖 `1_Large_Diameter`、`14_Tripod`、`24_Tip_Pinch`，每类三个样本，总计 9 条记录、27 个 GLB、27 张 PNG。用户确认静态图可见，但浏览器报告“无法创建 WebGL 画面”。因此增加每阶段 12 个预渲染环绕视角：WebGL 不可用时可以拖动或点击箭头切换角度。此模式不是实时 3D，用户侧仍待确认。
 
 ## 文件和运行
 
-- `tools/export_taxonomy_preview.py`：读取可信 Shadow NPY，使用 MuJoCo 和 Trimesh 导出 GLB、PNG、JSON。
+- `tools/export_taxonomy_preview.py`：读取可信 Shadow NPY，使用 MuJoCo 和 Trimesh 导出 GLB、PNG、环绕视角 WebP、JSON。
 - `tools/taxonomy_preview.html`、`tools/taxonomy_preview.js`：浏览器界面与交互代码。
 - `tools/vendor/model-viewer.min.js`：本地 3D 组件。
 - `output/taxonomy_preview`：当前生成产物，已被 Git 忽略。重新运行导出器会同步网页副本和三阶段资产。
@@ -32,6 +32,7 @@ MUJOCO_GL=egl PYTHONPATH=. .viz-env/bin/python tools/export_taxonomy_preview.py
 - 浏览器脚本检查了阶段、类别、样本切换，3D 模型加载与可见，模拟 3D 错误后静态预览恢复。
 - 针对用户反馈取消了自动进入 3D，并改成点击时才导入 3D 组件；本机 Chrome 在打开后第 1 秒和第 24 秒均保持图片可见，3D 组件未加载。手动进入 3D 和返回静态也已检查。
 - 针对用户侧 3D 问题加入 WebGL 检查、模型渲染帧检查和当前 GLB 下载入口；本机检查了正常渲染、禁用 WebGL、模拟空白帧和多个样本切换。用户侧仍需复测。
+- 2026-09-29 增加 297 张 WebP 形成 27 组各 12 个环绕视角；禁用 WebGL 的 Chrome 中验证模式自动切换、箭头换角度、阶段切换和图片加载；正常 Chrome 中再次验证实时 3D 加载。
 - 运行了 `node --check`、Python `compileall`、`git diff --check`，并核对模板与输出副本。
 
 自动检查仅覆盖本机浏览器。用户已在自己的访问路径确认静态画面可见；不能据此推断 3D 在用户浏览器中可用。
@@ -42,7 +43,7 @@ MUJOCO_GL=egl PYTHONPATH=. .viz-env/bin/python tools/export_taxonomy_preview.py
 
 ## 后续工作
 
-1. 在用户浏览器中确认手动 3D 切换、旋转和阶段切换；若 3D 仍为空白，保留静态模式并收集浏览器与控制台信息。
+1. 在用户浏览器中确认多视角回退模式可用；若希望恢复实时 3D，排查浏览器硬件加速、WebGL 开关和远程桌面图形环境。
 2. 评估样本代表性、静态图构图和不同浏览器的兼容性。
 3. 按 Wuji2 方案完成单样本迁移、约束优化和动力学评估，再考虑批量覆盖 31 类。
 

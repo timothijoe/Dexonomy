@@ -26,6 +26,7 @@ DEFAULT_CLASSES = [
 PHASES = ["pregrasp", "grasp", "squeeze"]
 PREVIEW_WIDTH = 960
 PREVIEW_HEIGHT = 720
+ORBIT_AZIMUTHS = [135 + 30 * step for step in range(12)]
 
 
 def parse_args() -> argparse.Namespace:
@@ -95,6 +96,7 @@ def render_preview(
     qpos: np.ndarray,
     bounds: np.ndarray,
     destination: Path,
+    azimuth: float = 135,
 ) -> None:
     """Render the same pose as the GLB with a shared camera for all phases."""
     env.forward_kinematics(qpos)
@@ -103,7 +105,7 @@ def render_preview(
     camera.type = mujoco.mjtCamera.mjCAMERA_FREE
     camera.lookat[:] = bounds.mean(axis=0)
     camera.distance = max(float(np.max(bounds[1] - bounds[0])) * 1.9, 0.25)
-    camera.azimuth = 135
+    camera.azimuth = azimuth
     camera.elevation = -25
     renderer.update_scene(env._data, camera=camera)
     for geom in list(renderer.scene.geoms)[: renderer.scene.ngeom]:
@@ -121,7 +123,12 @@ def render_preview(
     background = np.array((245, 247, 251), dtype=np.uint8)
     rgb = np.where(mask[:, :, None], rgb, background)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    Image.fromarray(rgb).save(destination)
+    image = Image.fromarray(rgb)
+    if destination.suffix == ".webp":
+        image = image.resize((640, 480), Image.Resampling.LANCZOS)
+        image.save(destination, quality=78)
+    else:
+        image.save(destination)
 
 
 def main() -> None:
@@ -184,8 +191,16 @@ def main() -> None:
             env._model.vis.global_.offheight = PREVIEW_HEIGHT
             with mujoco.Renderer(env._model, height=PREVIEW_HEIGHT, width=PREVIEW_WIDTH) as renderer:
                 for phase in PHASES:
-                    png = record["phases"][phase]["png"]
-                    render_preview(env, renderer, data[f"{phase}_qpos"][sample_index], shared_bounds, output / png)
+                    phase_record = record["phases"][phase]
+                    qpos = data[f"{phase}_qpos"][sample_index]
+                    png = phase_record["png"]
+                    render_preview(env, renderer, qpos, shared_bounds, output / png)
+                    orbit = [png]
+                    for frame, azimuth in enumerate(ORBIT_AZIMUTHS[1:], start=1):
+                        relative = Path("orbit") / class_name / f"{stem}_{phase}_{frame:02d}.webp"
+                        render_preview(env, renderer, qpos, shared_bounds, output / relative, azimuth)
+                        orbit.append(relative.as_posix())
+                    phase_record["orbit"] = orbit
             records.append(record)
             print(f"exported {class_name} {stem}: {relative_source} [{sample_index}]")
 
