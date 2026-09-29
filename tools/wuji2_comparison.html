@@ -27,6 +27,7 @@
       <div class="details"><section class="info"><h2>当前阶段的接触与验证</h2><div class="metrics"><div class="metric"><strong id="sourcePen">—</strong><span>原手最大手物穿透</span></div><div class="metric"><strong id="wujiPen">—</strong><span>Wuji2 最大手物穿透</span></div><div class="metric"><strong id="selfPen">—</strong><span>Wuji2 最大自碰撞穿透</span></div><div class="metric"><strong id="evalStatus">—</strong><span>六方向 MuJoCo 评估</span></div></div><p>穿透取接触距离的负值；“未见接触”只表示当前碰撞查询没有接触。视觉相似和指尖接近都不代表稳定抓取。</p></section><section class="info"><h2>逐指位置误差</h2><table class="finger-table"><thead><tr><th>手指</th><th>同物体世界坐标</th><th>掌心对齐后</th></tr></thead><tbody id="fingerErrors"></tbody></table><p>第二列衡量抓取目标接近程度；第三列衡量去掉腕位置和朝向后的手型差异。</p><p id="sourcePath" class="path"></p></section></div>
     </main>
   </div>
+  <script id="embeddedIndex" type="application/json">__WUJI2_INDEX_JSON__</script>
   <script src="app.js" defer></script>
 </body>
 </html>

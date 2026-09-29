@@ -74,9 +74,14 @@ function renderList() {
 }
 async function start() {
   try {
-    const response = await fetch('index.json');
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    state.index = await response.json();
+    const embeddedIndex = el('embeddedIndex')?.textContent.trim();
+    if (embeddedIndex && embeddedIndex !== '__WUJI2_INDEX_JSON__') {
+      state.index = JSON.parse(embeddedIndex);
+    } else {
+      const response = await fetch('index.json');
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      state.index = await response.json();
+    }
     state.caseId = state.index.records[0]?.id;
     if (!state.caseId) throw new Error('索引中没有样本');
     el('handFilter').addEventListener('change',renderList);

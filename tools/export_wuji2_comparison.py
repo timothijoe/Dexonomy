@@ -201,8 +201,12 @@ def main():
              "hand_alignment": "palm origin; index-to-ring and palm-to-middle-base axes at grasp phase",
              "phases": PHASES, "records": records}
     (args.output / "index.json").write_text(json.dumps(index, indent=2), encoding="utf-8")
-    for template, destination in (("wuji2_comparison.html", "index.html"), ("wuji2_comparison.js", "app.js")):
-        shutil.copyfile(Path(__file__).with_name(template), args.output / destination)
+    template = Path(__file__).with_name("wuji2_comparison.html").read_text(encoding="utf-8")
+    embedded_index = json.dumps(index, ensure_ascii=False).replace("<", "\\u003c")
+    (args.output / "index.html").write_text(
+        template.replace("__WUJI2_INDEX_JSON__", embedded_index), encoding="utf-8"
+    )
+    shutil.copyfile(Path(__file__).with_name("wuji2_comparison.js"), args.output / "app.js")
     print(f"wrote {args.output / 'index.html'}")
 
 
