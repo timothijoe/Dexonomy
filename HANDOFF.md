@@ -1,12 +1,14 @@
 # Dexonomy 项目交接（更新于 2026-09-29）
 
+新 agent 可先读本文，再读[Wuji2 迁移设计](docs/design/wuji2-retargeting.md)；实现细节按文中代码路径查阅。三方向图鉴已有独立[设计说明](docs/design/shadow-taxonomy-preview.md)，无需从旧对话重建。
+
 ## 当前目标和结论
 
 用户希望先看到 Shadow Hand 与物体的抓取交互，优先 3D，可用 2D 兜底；随后计划把手换成 Wuji Hand 2 Beta 2 并重新优化抓取。
 
-Shadow 图鉴首屏显示真实场景的 2D PNG，点击“切换到 3D”才载入交互模型；三个阶段分别有对应图片和 GLB。当前仅覆盖 `1_Large_Diameter`、`14_Tripod`、`24_Tip_Pinch`，每类三个样本，总计 9 条记录、27 个 GLB、27 张 PNG。用户确认静态图可见，但浏览器报告“无法创建 WebGL 画面”。因此增加预渲染多视角：WebGL 不可用时可以拖动或点击箭头切换角度。此模式不是实时 3D，用户侧仍待确认。
+Shadow 图鉴首屏显示真实场景的 2D PNG，点击“切换到 3D”才载入交互模型；三个阶段分别有对应图片和 GLB。当前仅覆盖 `1_Large_Diameter`、`14_Tripod`、`24_Tip_Pinch`，每类三个样本，总计 9 条记录、27 个 GLB、27 张 PNG。用户确认静态图可见，但浏览器报告“无法创建 WebGL 画面”。因此增加预渲染多视角：WebGL 不可用时可以拖动或点击箭头切换角度。用户对三方向版本给予正面反馈，尚未记录逐项用户侧验收；此模式不是实时 3D。
 
-2026-09-29 继续按用户要求将多视角模式扩展为三组左右箭头：水平环绕、上下俯仰、画面滚转。水平与俯仰来自 12 × 5 个离线相机视角，滚转在浏览器中旋转画面。27 个阶段共 1620 个视角引用均已导出并检查；用户侧新版本仍待验收。
+2026-09-29 继续按用户要求将多视角模式扩展为三组左右箭头：水平环绕、上下俯仰、画面滚转。水平与俯仰来自 12 × 5 个离线相机视角，滚转在浏览器中旋转画面。27 个阶段共 1620 个视角引用均已导出并检查；用户给出正面反馈，逐项用户侧验收尚无记录。
 
 ## 文件和运行
 
@@ -41,14 +43,16 @@ MUJOCO_GL=egl PYTHONPATH=. .viz-env/bin/python tools/export_taxonomy_preview.py
 
 自动检查仅覆盖本机浏览器。用户已在自己的访问路径确认静态画面可见；不能据此推断 3D 在用户浏览器中可用。
 
-## Wuji2 边界
+## 下一位 agent：Wuji2 单样本迁移
 
-官方 Beta 2 右手 MJCF 在 `assets/wuji-description/hand2/hand2_beta2/body/mjcf/right.xml`，含 20 个驱动关节及五个指尖 site。Shadow 数据为 7 维腕加 22 个关节，不能直接换模型重放。交接包 `reproduction/retarget_shadow_wuji2_demo.py` 曾完成一条样本的指尖位置拟合，但存在源姿态穿透和未做动力学验证的问题。下一步先复现并校准单样本，再做碰撞约束优化、MuJoCo 评估；详细步骤见方案文档。
+**当前优先目标**：用 Shadow 手型与物体接触关系初始化 Wuji2，做出一个可复现的 `pregrasp/grasp/squeeze` 对照样本；然后逐步加入接触优化和动力学评估。详细设计与分层验收见[Wuji2 迁移设计](docs/design/wuji2-retargeting.md)。
 
-## 后续工作
+- Wuji2 右手 MJCF：`assets/wuji-description/hand2/hand2_beta2/body/mjcf/right.xml`。本地 MuJoCo 已确认独立模型有 20 个关节、20 个执行器、五个指尖 site；接入 Dexonomy 自由手腕后姿态为 27 维，并能和一个真实物体场景编译进 `MuJoCo_OptEnv`。这还不是 Wuji2 抓取实验。
+- Shadow 成功抓取数据：`assets/object/Dexonomy_GRASP_shadow/succ_collect`；抽查文件的三阶段姿态为 29 维，只有 `scene_path`、`scene_scale` 等基础字段，没有优化器所需的接触身体/接触点字段。不能简单改 XML 或复制关节数组；必须先建立 Shadow 指尖/接触目标到 Wuji2 关节、碰撞身体的映射。
+- 建议首个样本：`14_Tripod/0004e882b42844eda8b4ab7379cb04c8/floating/scale005.npy` 的索引 1。按 `scene_scale` 重建后，Shadow 的 `grasp` 姿态有 5 个手物接触、0 个自接触，最小手物接触距离约 0.55 mm；仍需复查三阶段穿透、目标接触及抓取质量。
+- `dexonomy/op/gen_init.py` 依赖手型专属模板，不能直接复用 Shadow 模板；`dexonomy/op/gen_grasp.py` 和 `gen_grasp_admm.py` 要求 `hand_cbody`、`hand_cpn_w`、`obj_cpn_w` 等输入。先做独立的 27 维 Wuji2 逆运动学与接触目标构建，再接优化器。
+- 旧文档曾引用 `reproduction/retarget_shadow_wuji2_demo.py` 和指尖误差，但该脚本**当前不在工作区**，不可把其数值作为本次可复现基线。
 
-1. 在用户浏览器中确认多视角回退模式可用；若希望恢复实时 3D，排查浏览器硬件加速、WebGL 开关和远程桌面图形环境。
-2. 评估样本代表性、静态图构图和不同浏览器的兼容性。
-3. 按 Wuji2 方案完成单样本迁移、约束优化和动力学评估，再考虑批量覆盖 31 类。
+**建议顺序**：固定源样本和场景尺度 → 提取 Shadow 指尖/接触目标 → 拟合 Wuji2 三阶段 27 维姿态 → 把接触投影到 Wuji2 碰撞网格并局部优化 → MuJoCo 评估 → 导出 Shadow/Wuji2 对照。首个交付应保留源路径与索引、模型版本、逐指误差、限位和穿透统计、接触身体、物体位移及评估结果。运动学拟合只能称为姿态迁移，不能称为成功抓取。
 
-没有运行完整抓取生成或 Wuji2 动力学实验。提交状态以当前 Git 记录为准。
+图鉴继续工作时阅读[图鉴设计](docs/design/shadow-taxonomy-preview.md)、[纪传体当前能力](docs/agent/simulation_visualization/evolution/grasp-taxonomy-visualization.md)和[2026-09-29 编年记录](docs/agent/simulation_visualization/chronicles/2026-09-29-three-axis-controls.md)。当前 `output/taxonomy_preview` 是 Git 忽略的生成目录；重建命令见上文。完整抓取生成、Wuji2 接触优化和动力学实验尚未完成。提交状态以当前 Git 记录为准。

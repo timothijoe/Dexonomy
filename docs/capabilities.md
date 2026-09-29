@@ -13,9 +13,9 @@
 | 统计计算 | `dexrun op=stat` | 代码已确认 | 读取结果目录并计算覆盖、多样性等指标；尚未运行 |
 | 31 类 Shadow 抓取数据 | 外部数据根目录 | 数据已安装 | 约 150 万个 NPY 文件；缺少分类 19 和 21 |
 | DGN/Objaverse 对象与视觉数据 | `assets/object` | 数据已安装 | 归档校验通过，解压后可读 |
-| Wuji Hand 2 模型 | `assets/wuji-description` | 模型已安装 | 固定版本模型可读；仅交接样例曾做运动学映射 |
-| Shadow 网页图鉴 | `tools/export_taxonomy_preview.py` | 静态首屏获用户确认 | 已生成 3 类 × 3 样本 × 3 阶段，共 27 个 GLB 和 27 张真实场景 PNG；用户侧 3D 尚未验收 |
-| Wuji2 抓取迁移 | 官方 Beta 2 模型与交接样例 | 方案阶段 | 单样本指尖运动学拟合已有交接证据；碰撞约束优化和动力学抓取尚未完成 |
+| Wuji Hand 2 模型 | `assets/wuji-description` | 模型已安装 | Beta2 模型可读，已装入一个真实物体场景的 MuJoCo 优化环境；尚无 Wuji2 抓取结果 |
+| Shadow 网页图鉴 | `tools/export_taxonomy_preview.py` | 静态首屏获用户确认 | 3 类 × 3 样本 × 3 阶段，27 个 GLB、27 张 PNG 和 1620 个预渲染视角引用；三方向模式获用户正面反馈，实时 3D 在用户浏览器不可用 |
+| Wuji2 抓取迁移 | [迁移设计](design/wuji2-retargeting.md) | 方案阶段 | 旧交接提到运动学拟合，但脚本不在当前工作区；碰撞约束优化和动力学抓取尚未完成 |
 
 ## 当前数据分类
 

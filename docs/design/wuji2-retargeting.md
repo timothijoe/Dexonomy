@@ -1,19 +1,52 @@
-# Shadow 抓取迁移到 Wuji Hand 2 Beta 2
+# 用 Shadow 抓取初始化 Wuji Hand 2 Beta 2
 
-## 已有基础
+## 目标与边界
 
-资源入口 `assets/wuji-description/hand2/hand2_beta2/body/mjcf/right.xml` 指向官方 Beta 2 右手模型。模型有 20 个可控关节、五个指尖 site 和可视/碰撞网格；Shadow 抓取文件的姿态为 7 维自由腕加 22 个手关节，因此不能直接替换 XML 后重放 29 维姿态。
+目标是让已有的 Wuji2 右手模型在同一个物体上形成与 Shadow 抓取**功能相近**的 `pregrasp → grasp → squeeze` 姿态，并检验接触和稳定性。Wuji2 的几何模型已经存在；此工作要生成的是它自己的手腕位姿、20 个关节角和抓取数据。最终姿态无需逐关节模仿 Shadow，因为两只手的运动学和接触表面不同。
 
-交接包 `reproduction/retarget_shadow_wuji2_demo.py` 已在一条样本上做指尖位置最小二乘拟合，三阶段平均指尖误差约 0.34–0.36 mm。它使用 Shadow 远端指节偏移近似指尖，且交接记录指出原 Shadow 样例按当前场景重建时已有明显穿透。该结果只证明运动学拟合可行，不证明 Wuji2 抓取稳定。
+先完成一个物体、一个抓取样本的可复现闭环，再扩展到其他样本和抓取类别。运动学拟合、碰撞合格、动力学抓取成功是三个不同的验收层级；可视化图像本身不能证明抓取成功。
 
-## 建议实施顺序
+## 已核实的本地输入
 
-1. **建立可复现基线。** 固定 Wuji2 XML/网格版本，核对 20 个关节与执行器顺序、角度和控制范围、五个指尖 site。图鉴导出已确认 `scene_scale` 要乘到场景配置活动刚体的尺度；迁移时沿用并在更多对象上复核。同时测量原 Shadow 三阶段的手物穿透和接触。若源场景已穿透，先标记该样本，不把它当优化真值。
-2. **做单样本可视迁移。** 将交接脚本的指尖拟合整理为仓库内工具，输出 Wuji2 的 27 维腕/关节姿态、拟合误差和三阶段 GLB/PNG。初值沿用上一阶段姿态，保证阶段连续。图鉴可以增加 Shadow/Wuji2 选择和并排对照，但此时应标注“运动学拟合”。
-3. **加入手物约束重新优化。** 在固定物体场景中，以指尖/接触目标、关节限位、手物及手手穿透、姿态连续性为目标优化 Wuji2 腕位姿与 20 个关节。接触点需投影到 Wuji2 实际碰撞网格，不能复用 Shadow 的身体名称与接触点。对原数据中的高穿透样本先剔除或重新建立目标接触。
-4. **物理评估。** 用 Wuji2 真实质量、关节驱动和摩擦参数在 MuJoCo 中重放 `pregrasp → grasp → squeeze`，检查接触、物体位移/旋转、扰动保持及失败原因。仅把评估通过的结果作为 Wuji2 成功抓取。先做一个样本、一个类型，再扩展到多个物体和全部可用类型。
-5. **接入 Dexonomy 生成流水线。** 为 Wuji2 新增 Hydra 手配置、`body_group.yaml`、`skeleton.yaml`、必要的 `keypoint.yaml` 和人工模板；在单模板 smoke test 通过后，分别复验 `init`、`grasp` 或 `grasp_admm`、`eval`。ADMM 当前有 QP 失败后回退路径，统计时要分开记录。
+| 项目 | 当前事实 |
+| --- | --- |
+| Wuji2 模型 | `assets/wuji-description/hand2/hand2_beta2/body/mjcf/right.xml` 能由 MuJoCo 读取；独立模型有 20 个关节、20 个执行器和 5 个指尖 site。装入 Dexonomy 自由手腕环境后，手姿态为 7 + 20 = 27 维。 |
+| Shadow 数据 | `assets/object/Dexonomy_GRASP_shadow/succ_collect` 中抽查的文件有 `pregrasp_qpos`、`grasp_qpos`、`squeeze_qpos`，各姿态为 7 + 22 = 29 维，并有 `scene_path`、`scene_scale`。抽查文件没有 `hand_cbody`、`hand_cpn_w`、`obj_cpn_w`、`required_cbody`。 |
+| 仿真装配 | `MuJoCo_VisEnv` 和 `MuJoCo_OptEnv` 均可装入 Wuji2。已用 `14_Tripod` 的一个真实物体场景编译 Wuji2 优化环境，但尚未运行 Wuji2 逆运动学或抓取优化。 |
+| 可选起点 | 当前图鉴索引中的 `14_Tripod` 样本 01、文件内索引 1，经 `scene_scale` 重建后，在 Shadow 抓取姿态下观察到 5 个手物接触、0 个自接触，最小手物接触距离约 0.55 mm。这只是源姿态筛选线索，不是 Wuji2 成功证据。 |
+| 旧演示 | 早期交接说明提到 `reproduction/retarget_shadow_wuji2_demo.py` 及指尖拟合误差，但该脚本在当前工作区不存在；误差数字不能作为当前可复现结果。 |
 
-## 每阶段应保留的证据
+Wuji2 模型的指尖 site 是运动学查询点，接触优化必须使用实际碰撞身体和碰撞网格。Beta2 指尖传感垫有独立身体，应在接触映射时检查。模型版本和网格路径在实验记录中固定。
 
-记录源 NPY 路径与索引、模型版本、场景尺度、20 关节名称、优化前后指尖误差、最大穿透、接触身体、关节限位余量、物体位移和评估结果。三阶段图片/GLB 可展示姿态；只有动力学评估通过才可称为成功抓取。真机控制属于独立的后续验收。
+## 推荐实现：从 Shadow 目标到 Wuji2 优化
+
+### 1. 重建并检查源场景
+
+从图鉴 `output/taxonomy_preview/index.json` 或直接从成功抓取 NPY 选取源文件与文件内索引。读取 `scene_path`，将该条抓取的 `scene_scale` 乘到活动刚体的场景尺度；沿用同一物体位姿重建 Shadow 与 Wuji2 环境。先在 Shadow 的三个阶段记录手物接触、自碰撞和最大穿透。明显穿透的样本不能直接当作接触真值。
+
+### 2. 生成 27 维 Wuji2 初值
+
+以 Shadow 手腕位姿和五指指尖世界坐标作为**目标**，利用 Wuji2 五个指尖 site 优化 7 维自由腕与 20 维关节。Shadow 当前 XML 没有对应的五个命名指尖 site，须先在远端指节定义一致的局部标记或根据指腹网格求目标点，并记录该定义；不能把旧演示里的近似指尖偏移当作已校准真值。两只手的腕坐标系也应先对齐。目标函数至少包含指尖/掌心位置误差、关节限位、偏离自然初始姿态的代价以及相邻阶段的连续性；必要时加入指尖方向或指腹朝向约束。先拟合 `grasp`，再用它初始化 `pregrasp` 与 `squeeze`。不要把 Shadow 的 22 个关节角截断或按数组位置复制给 Wuji2。
+
+记录优化前后五指误差、关节限位余量、阶段间位姿差，并导出三阶段图像或 GLB。到这一步的结果只标为“运动学迁移”。
+
+### 3. 重建 Wuji2 接触目标并细化
+
+现有 `succ_collect` 文件没有 `grasp`/ADMM 优化器要求的接触输入。需要从 Shadow 源姿态与物体表面提取候选接触区域，再把目标接触点投影到 Wuji2 的实际指腹/碰撞网格，建立 Wuji2 的 `hand_cbody`、手局部接触点、物体世界接触点和必要接触组。不能沿用 Shadow 的身体名称或把指尖 site 当作物理接触点。
+
+先在单样本脚本中调用 `MuJoCo_OptEnv` 做接触力驱动的局部细化，检查穿透、接触身体和关节限制。确认输入模式可靠后，再整理成 Dexonomy `init_data` 结构，复用 `dexonomy/op/gen_grasp.py`；`dexonomy/op/gen_grasp_admm.py` 可作为后续对照。`op=init` 使用**同一只手的模板**匹配物体，不能直接把 Shadow 模板换一个 XML 用作 Wuji2 初始化。若要运行完整流水线，还需 Wuji2 的 Hydra 手配置、`body_group.yaml`、`skeleton.yaml`、必要的 `keypoint.yaml` 与初始模板。
+
+### 4. 动力学评估与展示
+
+用 Wuji2 的质量、执行器与碰撞几何重放三阶段轨迹，检查手物穿透、目标接触是否保持、关节与控制范围、物体位姿变化，以及受扰动后的保持能力。只有通过对应 `eval` 判据的样本才可标为“Wuji2 成功抓取”。把 Wuji2 的三阶段 PNG/GLB 与 Shadow 并排展示，并标明“运动学迁移 / 接触优化 / 评估通过”的状态。
+
+## 与当前代码的衔接
+
+- `tools/export_taxonomy_preview.py` 示范了 `scene_scale`、三阶段样本索引、GLB 和图片的导出方式；它目前固定 Shadow 数据与模型，Wuji2 结果应使用独立输出目录和清晰的手型标识。
+- `dexonomy/sim/mujoco_env.py` 提供手模型装配、正向运动学、接触查询、局部接触力优化和仿真评估入口。
+- `dexonomy/op/gen_grasp.py` 要求已经准备好的 Wuji2 接触身体和目标接触点；`dexonomy/op/gen_grasp_admm.py` 同样依赖这些输入，并存在 QP 失败后的回退路径，实验记录要区分 ADMM 实际执行和回退。
+- `dexonomy/op/gen_init.py` 与 `dexonomy/data/hand_loader.py` 基于手型专属模板和骨架配置；它们适合在单样本迁移成熟后用于批量生成。
+
+## 单样本交付与验收
+
+新 agent 首个交付应包含：可复现脚本、固定的源 NPY 路径与索引、模型版本、场景尺度、三阶段 27 维 Wuji2 姿态、逐指误差、接触/穿透/限位统计、评估结果，以及 Shadow/Wuji2 对照图。先完成可运行的运动学迁移，再依次加入接触细化和动力学评估；各层结果分别命名，避免把视觉相似误称为稳定抓取。
