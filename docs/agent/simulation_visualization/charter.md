@@ -16,4 +16,4 @@
 
 可视化能力变更至少应验证一个真实手物场景、三个抓取阶段、物体尺度、相机范围和导出文件可重新打开。物理评估变更还需独立运行成功与失败样本。
 
-详细当前事实见[MuJoCo 环境](evolution/mujoco-environment.md)和[31 类图鉴](evolution/grasp-taxonomy-visualization.md)。
+详细当前事实见[MuJoCo 环境](evolution/mujoco-environment.md)、[31 类图鉴](evolution/grasp-taxonomy-visualization.md)和[Wuji2 双版本对照](evolution/wuji2-dual-viewers.md)。
