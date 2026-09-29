@@ -2,7 +2,7 @@
 
 ## Wuji2 三阶段对照可视化补充
 
-`tools/export_wuji2_comparison.py` 已为 16 条开发样本生成 `output/wuji2_comparison`：每条三阶段、原手/Wuji2、同物体/纯手型，共 11,520 张 WebP（含 12 水平 × 5 俯仰的离线视角网格）和 192 个 GLB。纯手型按掌心和指根方向对齐，网页同时显示同物体指尖误差和对齐后的指尖距离。无法使用 WebGL 时页面自动进入离线多视角，拖动一格同步旋转四格，也可调整画面滚转；支持 WebGL 的浏览器仍可选择实时 3D。禁用 WebGL 的 Chrome 已验证拖动、角度同步和阶段切换。复现与访问见[操作教程](tutorials/visualize_wuji2_comparison.md)，对齐定义和结果限制见[设计说明](docs/design/wuji2-comparison.md)。这仍是运动学对照，16 例六方向评估均未通过。
+`tools/export_wuji2_comparison.py` 已为 16 条开发样本生成 `output/wuji2_comparison`：每条三阶段、原手/Wuji2、同物体/纯手型，共 11,520 张 WebP（含 12 水平 × 5 俯仰的离线视角网格）和 192 个 GLB。纯手型按掌心和指根方向对齐，网页同时显示同物体指尖误差和对齐后的指尖距离。无法使用 WebGL 时页面自动进入离线多视角，三排滑条分别控制水平、俯仰和滚转，拖动一格也可同步旋转四格；实时 3D 按钮明确标为不可用。支持 WebGL 的浏览器仍可选择实时 3D。禁用 WebGL 的 Chrome 已验证三个滑条、画面拖动、角度同步和阶段切换。复现与访问见[操作教程](tutorials/visualize_wuji2_comparison.md)，对齐定义和结果限制见[设计说明](docs/design/wuji2-comparison.md)。这仍是运动学对照，16 例六方向评估均未通过。
 
 ## 后续 Wuji2 开发样本补充
 

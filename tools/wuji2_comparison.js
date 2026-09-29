@@ -1,7 +1,7 @@
 const PHASES = {pregrasp:'预抓取', grasp:'抓取', squeeze:'收紧'};
 const FINGERS = {thumb:'拇指',index:'食指',middle:'中指',ring:'无名指',pinky:'小指'};
 const state = {index:null, caseId:null, phase:'grasp', view:0, mode:'image', viewerReady:false,
-               orbitYaw:0, orbitPitch:2, orbitRoll:0};
+               orbitYaw:0, orbitPitch:2, orbitRoll:0, realtimeUnavailable:false};
 const el = id => document.getElementById(id);
 const CARDS = [['scene','source'],['scene','wuji'],['hand','source'],['hand','wuji']];
 const CAMERA_ORBITS = ['135deg 70deg auto','45deg 75deg auto'];
@@ -29,8 +29,11 @@ function setMode(mode) {
   document.body.classList.toggle('is-3d', mode === '3d');
   document.body.classList.toggle('is-orbit', mode === 'orbit');
   el('orbitControls').hidden = mode !== 'orbit';
-  el('viewerMode').textContent = mode === '3d' ? '返回图片' : '实时 3D';
-  el('viewerMode').setAttribute('aria-pressed', String(mode === '3d'));
+  const realtimeButton = el('viewerMode');
+  realtimeButton.disabled = state.realtimeUnavailable && mode !== '3d';
+  realtimeButton.textContent = mode === '3d' ? '返回图片' : state.realtimeUnavailable ? '实时 3D 不可用' : '实时 3D';
+  realtimeButton.title = state.realtimeUnavailable ? '当前浏览器无法显示实时 3D，请使用下面的三个视角滑条' : '加载可交互的 GLB 模型';
+  realtimeButton.setAttribute('aria-pressed', String(mode === '3d'));
   el('orbitMode').textContent = mode === 'orbit' ? '返回图片' : '多视角旋转';
   el('orbitMode').setAttribute('aria-pressed', String(mode === 'orbit'));
 }
@@ -58,6 +61,9 @@ function updateOrbitFrames() {
   el('yawCount').textContent = `${state.orbitYaw + 1} / ${grid[0].length}`;
   el('pitchCount').textContent = `${state.orbitPitch + 1} / ${grid.length}`;
   el('rollCount').textContent = `${state.orbitRoll * 30}°`;
+  el('yawRange').value = state.orbitYaw;
+  el('pitchRange').value = state.orbitPitch;
+  el('rollRange').value = state.orbitRoll;
 }
 function setOrbitMode(message = '') {
   if (!orbitGrid()?.length) {setMode('image');note('此样本尚无多视角图片，请重新导出。');return;}
@@ -69,7 +75,11 @@ function setOrbitMode(message = '') {
   }
   setMode('orbit');
   render();
-  note(message || '离线多视角：拖动任一画面同步调整四格的水平与俯仰；下方按钮还可调整画面滚转。');
+  note(message || '离线多视角：使用水平、俯仰、滚转三个滑条，或拖动任一画面同步调整四格。');
+}
+function fallbackFrom3d(message) {
+  state.realtimeUnavailable = true;
+  setOrbitMode(message);
 }
 async function verifyFrame(viewer, role) {
   if (typeof viewer.toBlob !== 'function' || typeof createImageBitmap !== 'function') throw new Error('无法检查 3D 画面');
@@ -104,20 +114,20 @@ function updateViewer(mode, role, asset) {
   viewer.dataset.glb = asset.glb;
   loadTimers.set(viewer, setTimeout(() => {
     if (state.mode === '3d' && viewer.dataset.glb === asset.glb && !media.classList.contains('ready')) {
-      setOrbitMode('实时 3D 加载超时，已切换到离线多视角。');
+      fallbackFrom3d('实时 3D 加载超时，已切换到离线多视角。');
     }
   }, 15000));
   viewer.src = asset.glb;
 }
 async function enable3d() {
-  if (!canRender3d()) { setOrbitMode('此浏览器无法创建 WebGL 画面，已切换到离线多视角。'); return; }
+  if (!canRender3d()) { fallbackFrom3d('此浏览器无法创建 WebGL 画面，已切换到离线多视角。'); return; }
   setMode('3d');
   note('正在载入四个可旋转模型…');
   try {
     viewerModule ||= import('./vendor/model-viewer.min.js').then(() => customElements.whenDefined('model-viewer'));
     await viewerModule;
   } catch (error) {
-    setOrbitMode('3D 组件加载失败，已切换到离线多视角。');
+    fallbackFrom3d('3D 组件加载失败，已切换到离线多视角。');
     console.error(error);
     return;
   }
@@ -240,6 +250,9 @@ async function start() {
                                     ['rollPrevious','orbitRoll',-1],['rollNext','orbitRoll',1]]) {
       el(id).addEventListener('click',()=>moveOrbit(axis,delta));
     }
+    for (const [id, axis] of [['yawRange','orbitYaw'],['pitchRange','orbitPitch'],['rollRange','orbitRoll']]) {
+      el(id).addEventListener('input',event=>{state[axis]=Number(event.target.value);updateOrbitFrames();});
+    }
     el('resetOrbit').addEventListener('click',()=>{
       state.orbitYaw=0;state.orbitPitch=2;state.orbitRoll=0;updateOrbitFrames();
     });
@@ -278,7 +291,7 @@ async function start() {
         } catch (error) {
           if (state.mode === '3d' && viewer.dataset.glb === path) {
             clearTimeout(loadTimers.get(viewer));
-            setOrbitMode('实时 3D 画面未能正常渲染，已切换到离线多视角。');
+            fallbackFrom3d('实时 3D 画面未能正常渲染，已切换到离线多视角。');
           }
           console.error(error);
         }
@@ -287,7 +300,7 @@ async function start() {
         if (state.mode !== '3d') return;
         clearTimeout(loadTimers.get(viewer));
         media.classList.remove('ready');
-        setOrbitMode('实时 3D 模型加载失败，已切换到离线多视角。');
+        fallbackFrom3d('实时 3D 模型加载失败，已切换到离线多视角。');
       });
       viewer.addEventListener('camera-change', event => {
         if (state.mode !== '3d' || event.detail?.source !== 'user-interaction') return;
@@ -300,7 +313,7 @@ async function start() {
     }
     window.addEventListener('keydown',event=>{if (['1','2','3'].includes(event.key)) {state.phase=Object.keys(PHASES)[Number(event.key)-1];render();}});
     renderList();
-    if (!canRender3d()) setOrbitMode('此浏览器无法创建 WebGL 画面，现已显示离线多视角；拖动任一画面即可旋转。');
+    if (!canRender3d()) fallbackFrom3d('此浏览器无法创建 WebGL 画面，现已显示离线多视角；请用三个滑条或拖动画面旋转。');
   } catch (error) {
     el('caseTitle').textContent = `加载失败：${error.message}`;
   }
