@@ -16,6 +16,7 @@
 - [Shadow→Wuji 拇指第三版：弯曲方向与反折硬约束](shadow-wuji-thumb-v3.md)
 - [拇指第三版版本快照与旋转可视化计划](shadow-wuji-thumb-v3-rotation-plan.md)
 - [拇指第三版离线旋转可视化开发记录](shadow-wuji-thumb-v3-rotation.md)
+- [第三版接触区域与重力测试准备复核](shadow-wuji-contact-gravity-audit.md)
 - [文档体系](documentation-system.md)
 - [数据、生成与可视化边界](data-generation-visualization.md)
 - [Shadow Hand 抓取图鉴与三方向视角](shadow-taxonomy-preview.md)
