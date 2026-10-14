@@ -1,0 +1,8 @@
+# Local compliant-control ablation; does not claim matching Isaac actuator dynamics.
+base_config: mujoco_grasp_near.yaml
+overrides:
+  controller:
+    finger_kp: 5.0
+    finger_kv: 0.1
+    contact_latched_closure: false
+    parameter_source: local_compliant_controller_ablation

@@ -1,0 +1,35 @@
+schema_version: 1
+grasps_per_asset: 4
+minimum_grasps_per_asset: 3
+source_side: right
+target_side: right
+selection_index_if_target_size_unknown: 0
+family_categories:
+  sphere: [13_Precision_Sphere, 11_Power_Sphere, 14_Tripod, 26_Sphere_4_Finger]
+  bottle: [1_Large_Diameter, 3_Medium_Wrap, 2_Small_Diameter, 14_Tripod]
+  can: [1_Large_Diameter, 3_Medium_Wrap, 2_Small_Diameter, 11_Power_Sphere]
+  box: [6_Prismatic_4_Finger, 7_Prismatic_3_Finger, 9_Palmar_Pinch, 16_Lateral]
+  fruit: [11_Power_Sphere, 13_Precision_Sphere, 14_Tripod, 26_Sphere_4_Finger]
+  bowl: [12_Precision_Disk, 10_Power_Disk, 24_Tip_Pinch, 15_Fixed_Hook]
+  mug: [1_Large_Diameter, 15_Fixed_Hook, 24_Tip_Pinch, 3_Medium_Wrap]
+  plate: [12_Precision_Disk, 16_Lateral, 24_Tip_Pinch, 9_Palmar_Pinch]
+  screwdriver: [2_Small_Diameter, 3_Medium_Wrap, 5_Light_Tool, 20_Writing_Tripod]
+  hammer: [2_Small_Diameter, 3_Medium_Wrap, 5_Light_Tool, 24_Tip_Pinch]
+  wrench: [2_Small_Diameter, 5_Light_Tool, 16_Lateral, 3_Medium_Wrap]
+  pen: [20_Writing_Tripod, 29_Stick, 2_Small_Diameter, 24_Tip_Pinch]
+  brush: [2_Small_Diameter, 5_Light_Tool, 29_Stick, 14_Tripod]
+  shoe: [1_Large_Diameter, 24_Tip_Pinch, 3_Medium_Wrap, 15_Fixed_Hook]
+  pan: [2_Small_Diameter, 5_Light_Tool, 3_Medium_Wrap, 15_Fixed_Hook]
+  wineglass: [2_Small_Diameter, 12_Precision_Disk, 14_Tripod, 24_Tip_Pinch]
+  keyboard: [6_Prismatic_4_Finger, 7_Prismatic_3_Finger, 16_Lateral, 24_Tip_Pinch]
+  mouse: [11_Power_Sphere, 9_Palmar_Pinch, 13_Precision_Sphere, 14_Tripod]
+  refrigerator_model: [6_Prismatic_4_Finger, 7_Prismatic_3_Finger, 8_Prismatic_2_Finger, 24_Tip_Pinch]
+  waste_basket: [12_Precision_Disk, 24_Tip_Pinch, 10_Power_Disk, 15_Fixed_Hook]
+  drill: [5_Light_Tool, 3_Medium_Wrap, 2_Small_Diameter, 24_Tip_Pinch]
+  basket: [12_Precision_Disk, 24_Tip_Pinch, 10_Power_Disk, 15_Fixed_Hook]
+  soap_bar: [9_Palmar_Pinch, 6_Prismatic_4_Finger, 7_Prismatic_3_Finger, 24_Tip_Pinch]
+  piano_model: [6_Prismatic_4_Finger, 7_Prismatic_3_Finger, 8_Prismatic_2_Finger, 9_Palmar_Pinch]
+  puzzle_model: [24_Tip_Pinch, 16_Lateral, 9_Palmar_Pinch, 14_Tripod]
+asset_category_overrides:
+  011_banana: [3_Medium_Wrap, 2_Small_Diameter, 14_Tripod, 9_Palmar_Pinch]
+fallback_categories: [14_Tripod, 24_Tip_Pinch, 3_Medium_Wrap, 1_Large_Diameter, 9_Palmar_Pinch, 6_Prismatic_4_Finger]

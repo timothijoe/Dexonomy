@@ -1,0 +1,123 @@
+schema_version: 1
+# Semantic candidates only. Shared YCB IDs are not proof of identical meshes.
+max_candidates_per_asset: 3
+source_pose_selection: nearest_available_target_dimensions
+families:
+  sphere:
+    bench_ids: ['053', '054', '055', '056', '057', '058', '144']
+    tokens: [ball, softball, baseball, racquetball, marble, marbles]
+    grasp_categories: [13_Precision_Sphere, 11_Power_Sphere, 14_Tripod]
+    preferred_sources: [ddg_ycb_056_tennis_ball, ddg_ycb_058_golf_ball, ddg_ycb_054_softball]
+  bottle:
+    bench_ids: ['021', '080', '146', '171', '172', '173', '186', '199', '200', '211', '218', '224']
+    tokens: [bottle, bleach, cleanser, pillbottle]
+    grasp_categories: [1_Large_Diameter, 3_Medium_Wrap, 2_Small_Diameter]
+    preferred_sources: [ddg_ycb_021_bleach_cleanser]
+  can:
+    bench_ids: ['002', '010', '168']
+    tokens: [can, battery]
+    grasp_categories: [1_Large_Diameter, 3_Medium_Wrap, 2_Small_Diameter]
+  box:
+    bench_ids: ['008', '009', '036', '129', '151', '154', '169', '203']
+    tokens: [box, block, brick]
+    grasp_categories: [6_Prismatic_4_Finger, 7_Prismatic_3_Finger, 9_Palmar_Pinch]
+  fruit:
+    bench_ids: ['011', '013', '014', '017']
+    tokens: [apple, banana, lemon, orange, peach, strawberry, plum]
+    grasp_categories: [11_Power_Sphere, 13_Precision_Sphere, 3_Medium_Wrap]
+  bowl:
+    bench_ids: ['024', '065', '167']
+    tokens: [bowl, cup, cups]
+    grasp_categories: [12_Precision_Disk, 10_Power_Disk, 24_Tip_Pinch]
+  mug:
+    bench_ids: ['025']
+    tokens: [mug]
+    grasp_categories: [1_Large_Diameter, 15_Fixed_Hook, 24_Tip_Pinch]
+  plate:
+    bench_ids: ['029', '130']
+    tokens: [plate, tray]
+    grasp_categories: [12_Precision_Disk, 16_Lateral, 24_Tip_Pinch]
+  screwdriver:
+    bench_ids: ['043', '044']
+    tokens: [screwdriver]
+    grasp_categories: [2_Small_Diameter, 3_Medium_Wrap, 5_Light_Tool]
+  hammer:
+    bench_ids: ['048']
+    tokens: [hammer]
+    grasp_categories: [2_Small_Diameter, 3_Medium_Wrap, 5_Light_Tool]
+  wrench:
+    bench_ids: ['042']
+    tokens: [wrench]
+    grasp_categories: [2_Small_Diameter, 5_Light_Tool, 16_Lateral]
+  pen:
+    bench_ids: ['166', '221']
+    tokens: [pen, marker, markpen]
+    grasp_categories: [20_Writing_Tripod, 29_Stick, 2_Small_Diameter]
+  brush:
+    bench_ids: ['189']
+    tokens: [brush, toothbrush]
+    grasp_categories: [2_Small_Diameter, 5_Light_Tool, 29_Stick]
+  shoe:
+    bench_ids: ['153']
+    tokens: [shoe, sneaker]
+    grasp_categories: [1_Large_Diameter, 24_Tip_Pinch]
+  pan:
+    bench_ids: ['223']
+    tokens: [pan, frypan]
+    grasp_categories: [2_Small_Diameter, 5_Light_Tool]
+  wineglass:
+    bench_ids: ['194']
+    tokens: [wineglass, wine, glass]
+    grasp_categories: [2_Small_Diameter, 12_Precision_Disk]
+  keyboard:
+    bench_ids: ['098']
+    tokens: [keyboard]
+    grasp_categories: [6_Prismatic_4_Finger, 24_Tip_Pinch]
+    note: Whole-object shape candidate; key-press action data not provided.
+  mouse:
+    bench_ids: ['105']
+    tokens: [mouse]
+    grasp_categories: [11_Power_Sphere, 9_Palmar_Pinch]
+  refrigerator_model:
+    bench_ids: ['111']
+    tokens: [refrigerator, fridge]
+    grasp_categories: [6_Prismatic_4_Finger]
+    note: Available source is a dollhouse model; door articulation/handle actions unverified.
+  waste_basket:
+    bench_ids: ['122']
+    tokens: [waste]
+    preferred_sources: [mujoco_Hefty_Waste_Basket_Decorative_Bronze_85_liter]
+    grasp_categories: [12_Precision_Disk, 24_Tip_Pinch]
+  drill:
+    bench_ids: ['147']
+    tokens: [drill]
+    grasp_categories: [5_Light_Tool, 3_Medium_Wrap]
+  basket:
+    bench_ids: ['183']
+    tokens: [basket]
+    preferred_sources: [mujoco_Squirt_Strain_Fruit_Basket, mujoco_Spritz_Easter_Basket_Plastic_Teal]
+    grasp_categories: [12_Precision_Disk, 24_Tip_Pinch]
+  soap_bar:
+    bench_ids: ['209']
+    tokens: [soapbar]
+    grasp_categories: [9_Palmar_Pinch, 6_Prismatic_4_Finger]
+  piano_model:
+    bench_ids: ['325']
+    tokens: [piano]
+    grasp_categories: [6_Prismatic_4_Finger]
+    note: Whole-object mesh candidates do not supply piano key articulation or playing actions.
+  puzzle_model:
+    bench_ids: ['326']
+    tokens: [puzzle]
+    grasp_categories: [24_Tip_Pinch, 16_Lateral]
+    note: Toy puzzle mesh candidates; exact assembly-piece geometry unverified.
+# Bounded initial source extraction. These are candidates, not success labels.
+initial_selection:
+  - {bench_object: '056_tennis_ball', category: 13_Precision_Sphere}
+  - {bench_object: '058_golf_ball', category: 13_Precision_Sphere}
+  - {bench_object: '053_mini_soccer_ball', category: 11_Power_Sphere}
+  - {bench_object: '144_table-tennis', category: 13_Precision_Sphere}
+  - {bench_object: '013_apple', category: 11_Power_Sphere}
+  - {bench_object: '011_banana', category: 3_Medium_Wrap}
+  - {bench_object: '172_soy-sauce', category: 1_Large_Diameter}
+  - {bench_object: '173_vinegar', category: 3_Medium_Wrap}

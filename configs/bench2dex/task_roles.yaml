@@ -1,0 +1,14 @@
+schema_version: 1
+# Declared development roles; they do not grant execution/success labels.
+tasks:
+  27_ball_box_loading:
+    a212_basket: {role: destination_container, skills: [contain], required_sides: [], generation: none}
+    a053_mini_soccer_ball: {role: pick_place_target, skills: [approach, grasp, lift, transport, place, release], required_sides: [right, left], generation: spherical}
+    a056_tennis_ball: {role: pick_place_target, skills: [approach, grasp, lift, transport, place, release], required_sides: [right, left], generation: spherical}
+    a058_golf_ball: {role: pick_place_target, skills: [approach, grasp, lift, transport, place, release], required_sides: [right, left], generation: spherical}
+    a144_table_tennis: {role: pick_place_target, skills: [approach, grasp, lift, transport, place, release], required_sides: [right, left], generation: spherical}
+  21_condiment_box_loading:
+    a154_wooden_box: {role: movable_container, skills: [grasp, transport, place, release], required_sides: [right], generation: container_rim_pending}
+    a171_msg: {role: upright_pick_place_target, skills: [approach, grasp, lift, transport, upright_place, release], required_sides: [right], generation: cylindrical_pending}
+    a172_soy_sauce: {role: upright_pick_place_target, skills: [approach, grasp, lift, transport, upright_place, release], required_sides: [left], generation: cylindrical_pending}
+    a173_vinegar: {role: upright_pick_place_target, skills: [approach, grasp, lift, transport, upright_place, release], required_sides: [left], generation: cylindrical_pending}

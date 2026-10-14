@@ -12,3 +12,4 @@ assets/object
 assets/wuji-description
 MUJOCO_LOG.TXT
 task/
+build/

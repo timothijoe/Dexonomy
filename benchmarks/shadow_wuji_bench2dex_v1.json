@@ -1,0 +1,276 @@
+{
+  "schema_version": 1,
+  "name": "shadow_wuji_bench2dex_v1",
+  "purpose": "Bounded prototype on task-related assets; all cases are development, not a held-out evaluation",
+  "source_selection_config_sha256": "e4cd831a83f92b80c64f64e730de32bd28d7ac35862a80a8821f607fa6ab8b51",
+  "target_model_family": "wuji_v1_bench2dex",
+  "target_hand_xml_sha256": "41a38f015fe8f26033b50ec0d3fef975199d598b0ff327397d82764af3c1b1e5",
+  "initial_selection": [
+    {
+      "bench_object": "056_tennis_ball",
+      "category": "13_Precision_Sphere",
+      "id": "056_tennis_ball__13_Precision_Sphere",
+      "status": "source_extracted_not_transferred",
+      "dexonomy_object": "ddg_ycb_056_tennis_ball",
+      "match_level": "same_ycb_id_and_name",
+      "source": {
+        "path": "assets/object/Dexonomy_GRASP_shadow/succ_collect/13_Precision_Sphere/ddg_ycb_056_tennis_ball/floating/scale020.npy",
+        "status": "present",
+        "sha256": "561abdfdff33d99e94c7d94f9f75dc48454b4aaaf7490e87278889745514910a"
+      },
+      "source_index": 4,
+      "source_count_in_file": 14,
+      "scene_path": "assets/object/DGN_5k/scene_cfg/ddg_ycb_056_tennis_ball/floating/scale020.npy",
+      "scene_scale_multiplier": 0.28859758749604225,
+      "size_selection": {
+        "method": "nearest_sorted_AABB_extents_log_ratio",
+        "target_size_known": true,
+        "extent_log_error": 0.00659097429670721,
+        "bench_extents_m": [
+          0.06697499938309193,
+          0.06703000236302614,
+          0.06645699679211248
+        ],
+        "source_extents_m": [
+          0.06678300265587028,
+          0.0667793213050442,
+          0.066800245784528
+        ],
+        "note": "Selects an existing source pose and scale; does not rescale source grasp or certify mesh identity"
+      },
+      "geometry_identity_verified": false,
+      "physical_transfer_verified": false,
+      "split": "development"
+    },
+    {
+      "bench_object": "058_golf_ball",
+      "category": "13_Precision_Sphere",
+      "id": "058_golf_ball__13_Precision_Sphere",
+      "status": "source_extracted_not_transferred",
+      "dexonomy_object": "ddg_ycb_058_golf_ball",
+      "match_level": "same_ycb_id_and_name",
+      "source": {
+        "path": "assets/object/Dexonomy_GRASP_shadow/succ_collect/13_Precision_Sphere/ddg_ycb_058_golf_ball/floating/scale005.npy",
+        "status": "present",
+        "sha256": "8a4a339c5a8c55e8bf6774df0f7f397ad912eeb39967abeded5aab556279c62d"
+      },
+      "source_index": 2,
+      "source_count_in_file": 16,
+      "scene_path": "assets/object/DGN_5k/scene_cfg/ddg_ycb_058_golf_ball/floating/scale005.npy",
+      "scene_scale_multiplier": 1.0000000149011612,
+      "size_selection": {
+        "method": "nearest_sorted_AABB_extents_log_ratio",
+        "target_size_known": true,
+        "extent_log_error": 0.5304172245880243,
+        "bench_extents_m": [
+          0.042678999714553356,
+          0.042721000500023365,
+          0.04237499926239252
+        ],
+        "source_extents_m": [
+          0.05784696386198693,
+          0.05784991136203083,
+          0.05785560386211567
+        ],
+        "note": "Selects an existing source pose and scale; does not rescale source grasp or certify mesh identity"
+      },
+      "geometry_identity_verified": false,
+      "physical_transfer_verified": false,
+      "split": "development"
+    },
+    {
+      "bench_object": "053_mini_soccer_ball",
+      "category": "11_Power_Sphere",
+      "id": "053_mini_soccer_ball__11_Power_Sphere",
+      "status": "source_extracted_not_transferred",
+      "dexonomy_object": "ddg_gd_soccer_ball_poisson_000",
+      "match_level": "same_named_category",
+      "source": {
+        "path": "assets/object/Dexonomy_GRASP_shadow/succ_collect/11_Power_Sphere/ddg_gd_soccer_ball_poisson_000/floating/scale008.npy",
+        "status": "present",
+        "sha256": "9fcf5380aae9f491847f36c044c484cfc9a7a5b0b9e5fe971e8f3e4686eea39d"
+      },
+      "source_index": 16,
+      "source_count_in_file": 22,
+      "scene_path": "assets/object/DGN_5k/scene_cfg/ddg_gd_soccer_ball_poisson_000/floating/scale008.npy",
+      "scene_scale_multiplier": 1.2244092300534248,
+      "size_selection": {
+        "method": "nearest_sorted_AABB_extents_log_ratio",
+        "target_size_known": true,
+        "extent_log_error": 0.5148350849478217,
+        "bench_extents_m": [
+          0.15366840362548828,
+          0.15340439826250074,
+          0.150704400613904
+        ],
+        "source_extents_m": [
+          0.11419043927315906,
+          0.11416729500012888,
+          0.11171548506339118
+        ],
+        "note": "Selects an existing source pose and scale; does not rescale source grasp or certify mesh identity"
+      },
+      "geometry_identity_verified": false,
+      "physical_transfer_verified": false,
+      "split": "development"
+    },
+    {
+      "bench_object": "144_table-tennis",
+      "category": "13_Precision_Sphere",
+      "id": "144_table-tennis__13_Precision_Sphere",
+      "status": "source_extracted_not_transferred",
+      "dexonomy_object": "ddg_ycb_056_tennis_ball",
+      "match_level": "same_named_category",
+      "source": {
+        "path": "assets/object/Dexonomy_GRASP_shadow/succ_collect/13_Precision_Sphere/ddg_ycb_056_tennis_ball/floating/scale017.npy",
+        "status": "present",
+        "sha256": "c4542f38087240409d13415edcb7f7d68bc34673a715cbda01f6b6c470fb9d81"
+      },
+      "source_index": 0,
+      "source_count_in_file": 19,
+      "scene_path": "assets/object/DGN_5k/scene_cfg/ddg_ycb_056_tennis_ball/floating/scale017.npy",
+      "scene_scale_multiplier": 0.4730903488748214,
+      "size_selection": {
+        "method": "nearest_sorted_AABB_extents_log_ratio",
+        "target_size_known": true,
+        "extent_log_error": 0.01766023053385666,
+        "bench_extents_m": [
+          0.09187464714050293,
+          0.0932506978618374,
+          0.0942101001739502
+        ],
+        "source_extents_m": [
+          0.09305425992840641,
+          0.09304913039898971,
+          0.0930782862002463
+        ],
+        "note": "Selects an existing source pose and scale; does not rescale source grasp or certify mesh identity"
+      },
+      "geometry_identity_verified": false,
+      "physical_transfer_verified": false,
+      "split": "development"
+    },
+    {
+      "bench_object": "013_apple",
+      "category": "11_Power_Sphere",
+      "id": "013_apple__11_Power_Sphere",
+      "status": "source_extracted_not_transferred",
+      "dexonomy_object": "ddg_ycb_013_apple",
+      "match_level": "same_ycb_id_and_name",
+      "source": {
+        "path": "assets/object/Dexonomy_GRASP_shadow/succ_collect/11_Power_Sphere/ddg_ycb_013_apple/floating/scale005.npy",
+        "status": "present",
+        "sha256": "26c7c4298827255893f17c376d0e162e6fa7c0bb27dfcc4020043a24b9286722"
+      },
+      "source_index": 0,
+      "source_count_in_file": 14,
+      "scene_path": "assets/object/DGN_5k/scene_cfg/ddg_ycb_013_apple/floating/scale005.npy",
+      "scene_scale_multiplier": 1.3079020380973816,
+      "size_selection": {
+        "method": "first_declared_source_index",
+        "target_size_known": false
+      },
+      "geometry_identity_verified": false,
+      "physical_transfer_verified": false,
+      "split": "development"
+    },
+    {
+      "bench_object": "011_banana",
+      "category": "3_Medium_Wrap",
+      "id": "011_banana__3_Medium_Wrap",
+      "status": "source_extracted_not_transferred",
+      "dexonomy_object": "ddg_ycb_011_banana",
+      "match_level": "same_ycb_id_and_name",
+      "source": {
+        "path": "assets/object/Dexonomy_GRASP_shadow/succ_collect/3_Medium_Wrap/ddg_ycb_011_banana/floating/scale005.npy",
+        "status": "present",
+        "sha256": "cf3dcbc37e6be77dde140e58f8f4cdd93aab92b872e2e4249e70993b8b15ce38"
+      },
+      "source_index": 0,
+      "source_count_in_file": 6,
+      "scene_path": "assets/object/DGN_5k/scene_cfg/ddg_ycb_011_banana/floating/scale005.npy",
+      "scene_scale_multiplier": 2.9911625385284424,
+      "size_selection": {
+        "method": "first_declared_source_index",
+        "target_size_known": false
+      },
+      "geometry_identity_verified": false,
+      "physical_transfer_verified": false,
+      "split": "development"
+    },
+    {
+      "bench_object": "172_soy-sauce",
+      "category": "1_Large_Diameter",
+      "id": "172_soy-sauce__1_Large_Diameter",
+      "status": "source_extracted_not_transferred",
+      "dexonomy_object": "ddg_ycb_021_bleach_cleanser",
+      "match_level": "similar_geometry_family",
+      "source": {
+        "path": "assets/object/Dexonomy_GRASP_shadow/succ_collect/1_Large_Diameter/ddg_ycb_021_bleach_cleanser/floating/scale020.npy",
+        "status": "present",
+        "sha256": "c85b38fc9932b4a290933c70c90e1923b36c26bc04f267c14f17be28774a32b4"
+      },
+      "source_index": 5,
+      "source_count_in_file": 11,
+      "scene_path": "assets/object/DGN_5k/scene_cfg/ddg_ycb_021_bleach_cleanser/floating/scale020.npy",
+      "scene_scale_multiplier": 0.538344569504261,
+      "size_selection": {
+        "method": "nearest_sorted_AABB_extents_log_ratio",
+        "target_size_known": true,
+        "extent_log_error": 0.3946531081942953,
+        "bench_extents_m": [
+          0.07353299856185913,
+          0.15000000823542847,
+          0.07368899881839752
+        ],
+        "source_extents_m": [
+          0.079946858140852,
+          0.054873849577659374,
+          0.19296324878267995
+        ],
+        "note": "Selects an existing source pose and scale; does not rescale source grasp or certify mesh identity"
+      },
+      "geometry_identity_verified": false,
+      "physical_transfer_verified": false,
+      "split": "development"
+    },
+    {
+      "bench_object": "173_vinegar",
+      "category": "3_Medium_Wrap",
+      "id": "173_vinegar__3_Medium_Wrap",
+      "status": "source_extracted_not_transferred",
+      "dexonomy_object": "ddg_ycb_021_bleach_cleanser",
+      "match_level": "similar_geometry_family",
+      "source": {
+        "path": "assets/object/Dexonomy_GRASP_shadow/succ_collect/3_Medium_Wrap/ddg_ycb_021_bleach_cleanser/floating/scale008.npy",
+        "status": "present",
+        "sha256": "c8edda6c49ea04f5a12425de7974f7424fbaf4bbf4d09ba333634038e7d43bd2"
+      },
+      "source_index": 4,
+      "source_count_in_file": 7,
+      "scene_path": "assets/object/DGN_5k/scene_cfg/ddg_ycb_021_bleach_cleanser/floating/scale008.npy",
+      "scene_scale_multiplier": 1.3350502587854862,
+      "size_selection": {
+        "method": "nearest_sorted_AABB_extents_log_ratio",
+        "target_size_known": true,
+        "extent_log_error": 0.2443812645871058,
+        "bench_extents_m": [
+          0.06604469977319241,
+          0.22499999993917574,
+          0.05500724818557501
+        ],
+        "source_extents_m": [
+          0.07930465333629504,
+          0.05443305364567638,
+          0.1914131950550797
+        ],
+        "note": "Selects an existing source pose and scale; does not rescale source grasp or certify mesh identity"
+      },
+      "geometry_identity_verified": false,
+      "physical_transfer_verified": false,
+      "split": "development"
+    }
+  ],
+  "geometry_identity_verified": false,
+  "physical_transfer_verified": false
+}

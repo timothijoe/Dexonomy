@@ -1,0 +1,8 @@
+# Explicit near-pregrasp local diagnostic; not a task-start reachability test.
+base_config: mujoco_grasp.yaml
+overrides:
+  optimizer:
+    pregrasp_gap_m: 0.005
+  execution:
+    approach_offset_m: 0.005
+    approach_s: 0.8

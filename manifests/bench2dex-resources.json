@@ -1,0 +1,1603 @@
+{
+  "schema_version": 1,
+  "purpose": "Selected Wuji v1 and task 27/21 assets; one task-27 origin and replay episode; not the full dataset",
+  "bench2dex_commit": "fd90dcc625b66c2e535a8b25bcf75bc81c7b080d",
+  "resources": {
+    "assets": {
+      "repo_id": "Bench2Dex/Assets",
+      "revision": "bf65215f844d1fca30750e4cc70d7266650abf0a",
+      "files": [
+        {
+          "path": "Objects/053_mini_soccer_ball/kinbody.xml",
+          "size_bytes": 216,
+          "hash_type": "git_blob_sha1",
+          "hash": "d2f8135c6aefb8ff15a135e42e9f2a391bd0bbf4"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/nontextured.ply",
+          "size_bytes": 1007975,
+          "hash_type": "git_blob_sha1",
+          "hash": "7fa77c5bf66dc3b1b6b00c6f1ec7847f221d9f07"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/nontextured.stl",
+          "size_bytes": 819284,
+          "hash_type": "sha256",
+          "hash": "fbd3a3043c4ac01da38e5ad54dee318ee597d41079ad8bb7fe466dcd7c491f8a"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/texture_map.png",
+          "size_bytes": 6377081,
+          "hash_type": "sha256",
+          "hash": "b146adbcb6098b91f4f5a38de909e8b7998d0aac63d469d18262046e05096d60"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/textured.dae",
+          "size_bytes": 2818737,
+          "hash_type": "git_blob_sha1",
+          "hash": "da4782487d8827086be7c855eafaf9f2fbb83f60"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/textured.mtl",
+          "size_bytes": 70,
+          "hash_type": "git_blob_sha1",
+          "hash": "c6e411f88f1403a4eddf2aff5ad69428cf84e956"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/textured.obj",
+          "size_bytes": 1472156,
+          "hash_type": "sha256",
+          "hash": "e6223378447e2410cd09d2815c2c009f864ca3f59b84aad21dbaea574a8aa4de"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/usd/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "9e87a5b2e48c3122d97fbb42155e0fb9d200c440"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/usd/Props/instanceable_meshes.usd",
+          "size_bytes": 1156210,
+          "hash_type": "sha256",
+          "hash": "de95c5bc11a75f5d31d4ea938a0e4d31f6deb71c66f7dde93bf070df45989bb0"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/usd/config.yaml",
+          "size_bytes": 1485,
+          "hash_type": "git_blob_sha1",
+          "hash": "23e359fad3e6f07e3b6fa3bfaf0348917cf2d54c"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/usd/textured.usd",
+          "size_bytes": 1156121,
+          "hash_type": "sha256",
+          "hash": "d5f7e56bd0920e8312d62e42c1bd711b045beb8646ce8e753339e64f6e1b62c6"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/usd/textures/texture_map.png",
+          "size_bytes": 6377081,
+          "hash_type": "sha256",
+          "hash": "b146adbcb6098b91f4f5a38de909e8b7998d0aac63d469d18262046e05096d60"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/usd_decomposition_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "c7e6ffe43c669845c8ec13cd1d70576721ed4046"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/usd_decomposition_linux/config.yaml",
+          "size_bytes": 1434,
+          "hash_type": "git_blob_sha1",
+          "hash": "5240e3fadd35bf33dfaa736104599434ff72f95d"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/usd_decomposition_linux/textured.usd",
+          "size_bytes": 1156910,
+          "hash_type": "sha256",
+          "hash": "593da51b35f34c77617d5c18ec99371f159838ba3359861bce811055dee07e6b"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/usd_decomposition_linux/textures/texture_map.png",
+          "size_bytes": 6377081,
+          "hash_type": "sha256",
+          "hash": "b146adbcb6098b91f4f5a38de909e8b7998d0aac63d469d18262046e05096d60"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/usd_sdf_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "25f754266fa4310437bac72ee2c066ed88215932"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/usd_sdf_linux/config.yaml",
+          "size_bytes": 1331,
+          "hash_type": "git_blob_sha1",
+          "hash": "6f9113ce0061674ac8533c150351abd24ee78462"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/usd_sdf_linux/textured.usd",
+          "size_bytes": 1156906,
+          "hash_type": "sha256",
+          "hash": "4c7c770624f97b07ac85c16a638c6f3070433cd31e9acfd0528960ccc7526698"
+        },
+        {
+          "path": "Objects/053_mini_soccer_ball/usd_sdf_linux/textures/texture_map.png",
+          "size_bytes": 6377081,
+          "hash_type": "sha256",
+          "hash": "b146adbcb6098b91f4f5a38de909e8b7998d0aac63d469d18262046e05096d60"
+        },
+        {
+          "path": "Objects/056_tennis_ball/kinbody.xml",
+          "size_bytes": 206,
+          "hash_type": "git_blob_sha1",
+          "hash": "9d5524a0bdb367971c948224bf1c60216ac763d6"
+        },
+        {
+          "path": "Objects/056_tennis_ball/nontextured.ply",
+          "size_bytes": 1008960,
+          "hash_type": "git_blob_sha1",
+          "hash": "e0739649268632f43d7f2a0b1b4f7fb91f26b02c"
+        },
+        {
+          "path": "Objects/056_tennis_ball/nontextured.stl",
+          "size_bytes": 819284,
+          "hash_type": "sha256",
+          "hash": "e4a849e6bbabb5a1f964ad3d9f1e0b5459d5fe481572c47e5e972fb53bfb2dcf"
+        },
+        {
+          "path": "Objects/056_tennis_ball/texture_map.png",
+          "size_bytes": 3792497,
+          "hash_type": "sha256",
+          "hash": "7e2aef766a39b64dab16fe84e9a4a6779008727946d2a6127c6270eea10fde60"
+        },
+        {
+          "path": "Objects/056_tennis_ball/textured.dae",
+          "size_bytes": 2821164,
+          "hash_type": "git_blob_sha1",
+          "hash": "b548f0e62ca7b630061aedf1d40a09f8af91331a"
+        },
+        {
+          "path": "Objects/056_tennis_ball/textured.mtl",
+          "size_bytes": 70,
+          "hash_type": "git_blob_sha1",
+          "hash": "c6e411f88f1403a4eddf2aff5ad69428cf84e956"
+        },
+        {
+          "path": "Objects/056_tennis_ball/textured.obj",
+          "size_bytes": 1473787,
+          "hash_type": "git_blob_sha1",
+          "hash": "52260a83bbacb2bce6dda9d6301b98bd348b52aa"
+        },
+        {
+          "path": "Objects/056_tennis_ball/usd/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "4ec79bcd7af758d7df3d499186779ee8c66576d3"
+        },
+        {
+          "path": "Objects/056_tennis_ball/usd/Props/instanceable_meshes.usd",
+          "size_bytes": 1153104,
+          "hash_type": "sha256",
+          "hash": "0a1909b87c122a7f4d3c4e8cb4499b7931c47a77d82b8cc643154b12857dd220"
+        },
+        {
+          "path": "Objects/056_tennis_ball/usd/config.yaml",
+          "size_bytes": 1476,
+          "hash_type": "git_blob_sha1",
+          "hash": "ea95e117258266c3e8941a51075a6afa7d46e012"
+        },
+        {
+          "path": "Objects/056_tennis_ball/usd/textured.usd",
+          "size_bytes": 1153020,
+          "hash_type": "sha256",
+          "hash": "0ae7f55ee10d569f87f0b414b3f83e8523542036d7e7ea756c6429c287fbc6a2"
+        },
+        {
+          "path": "Objects/056_tennis_ball/usd/textures/texture_map.png",
+          "size_bytes": 3792497,
+          "hash_type": "sha256",
+          "hash": "7e2aef766a39b64dab16fe84e9a4a6779008727946d2a6127c6270eea10fde60"
+        },
+        {
+          "path": "Objects/056_tennis_ball/usd_decomposition_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "fed2d05de12588b834fe85f87e7d22a6f1dbea03"
+        },
+        {
+          "path": "Objects/056_tennis_ball/usd_decomposition_linux/config.yaml",
+          "size_bytes": 1425,
+          "hash_type": "git_blob_sha1",
+          "hash": "d73f28ec04a15ff71db6a89b9934e2c2b687ca41"
+        },
+        {
+          "path": "Objects/056_tennis_ball/usd_decomposition_linux/textured.usd",
+          "size_bytes": 1153809,
+          "hash_type": "sha256",
+          "hash": "e3d6a28b1380880831a8d08ccd17a4eb120269d44532647cc9e4a4900fdc3179"
+        },
+        {
+          "path": "Objects/056_tennis_ball/usd_decomposition_linux/textures/texture_map.png",
+          "size_bytes": 3792497,
+          "hash_type": "sha256",
+          "hash": "7e2aef766a39b64dab16fe84e9a4a6779008727946d2a6127c6270eea10fde60"
+        },
+        {
+          "path": "Objects/056_tennis_ball/usd_sdf_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "809e62192632a3fd16756109e2583d0b278691f0"
+        },
+        {
+          "path": "Objects/056_tennis_ball/usd_sdf_linux/config.yaml",
+          "size_bytes": 1322,
+          "hash_type": "git_blob_sha1",
+          "hash": "69a56d86187e5231be2d3a69e3634e8eda2dee63"
+        },
+        {
+          "path": "Objects/056_tennis_ball/usd_sdf_linux/textured.usd",
+          "size_bytes": 1153805,
+          "hash_type": "sha256",
+          "hash": "bb48fb6c3a764cd7476f440a73252379e1d3ee36f27da0daeb6e1b8b419d117c"
+        },
+        {
+          "path": "Objects/056_tennis_ball/usd_sdf_linux/textures/texture_map.png",
+          "size_bytes": 3792497,
+          "hash_type": "sha256",
+          "hash": "7e2aef766a39b64dab16fe84e9a4a6779008727946d2a6127c6270eea10fde60"
+        },
+        {
+          "path": "Objects/058_golf_ball/kinbody.xml",
+          "size_bytes": 202,
+          "hash_type": "git_blob_sha1",
+          "hash": "c22d8e32d0dcfde5b262d247d36ac2aade01998c"
+        },
+        {
+          "path": "Objects/058_golf_ball/nontextured.ply",
+          "size_bytes": 1009860,
+          "hash_type": "git_blob_sha1",
+          "hash": "d92a3e9413acc24cf384a38bffa8726911700d71"
+        },
+        {
+          "path": "Objects/058_golf_ball/nontextured.stl",
+          "size_bytes": 819284,
+          "hash_type": "sha256",
+          "hash": "2ac70ee360238397a88f2397f17d2019a379a66be141f851fdf349370b304d14"
+        },
+        {
+          "path": "Objects/058_golf_ball/texture_map.png",
+          "size_bytes": 3811105,
+          "hash_type": "sha256",
+          "hash": "6d8a8a3562bf8efe2a3dda03c587e49ad58ac820aae66e9e84e7f0008fc5a5d0"
+        },
+        {
+          "path": "Objects/058_golf_ball/textured.dae",
+          "size_bytes": 2823377,
+          "hash_type": "git_blob_sha1",
+          "hash": "36a013b28532b7706973e9365ed39c4a9a199f60"
+        },
+        {
+          "path": "Objects/058_golf_ball/textured.mtl",
+          "size_bytes": 70,
+          "hash_type": "git_blob_sha1",
+          "hash": "c6e411f88f1403a4eddf2aff5ad69428cf84e956"
+        },
+        {
+          "path": "Objects/058_golf_ball/textured.obj",
+          "size_bytes": 1476046,
+          "hash_type": "git_blob_sha1",
+          "hash": "f07fc4d5ffdcc75488522b86e318fb8f71d355a9"
+        },
+        {
+          "path": "Objects/058_golf_ball/usd/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "1a0577049cc9e8e806bb7e4dff39851df7472a64"
+        },
+        {
+          "path": "Objects/058_golf_ball/usd/Props/instanceable_meshes.usd",
+          "size_bytes": 1154106,
+          "hash_type": "sha256",
+          "hash": "824cb33d214e5f18ecd05bf9e89c3f2e6a09bf5fd7a1ed63ad756075f2d3f5a2"
+        },
+        {
+          "path": "Objects/058_golf_ball/usd/config.yaml",
+          "size_bytes": 1472,
+          "hash_type": "git_blob_sha1",
+          "hash": "22719102d03146a674d7615cd46abb93902004d6"
+        },
+        {
+          "path": "Objects/058_golf_ball/usd/textured.usd",
+          "size_bytes": 1154017,
+          "hash_type": "sha256",
+          "hash": "41070f12a7198f043f66147d96962d371d66dfd4dcf4a6634f08e9433ff8fc3e"
+        },
+        {
+          "path": "Objects/058_golf_ball/usd/textures/texture_map.png",
+          "size_bytes": 3811105,
+          "hash_type": "sha256",
+          "hash": "6d8a8a3562bf8efe2a3dda03c587e49ad58ac820aae66e9e84e7f0008fc5a5d0"
+        },
+        {
+          "path": "Objects/058_golf_ball/usd_decomposition_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "1bb1367814a313bdb65a43eeb2ff9544af150140"
+        },
+        {
+          "path": "Objects/058_golf_ball/usd_decomposition_linux/config.yaml",
+          "size_bytes": 1421,
+          "hash_type": "git_blob_sha1",
+          "hash": "adaf545170aa8403ef67009fd1abb47e206fe0be"
+        },
+        {
+          "path": "Objects/058_golf_ball/usd_decomposition_linux/textured.usd",
+          "size_bytes": 1154804,
+          "hash_type": "sha256",
+          "hash": "7584ced024df1a12c2b42b4da23eaa0ce2e87fe0c6ab85c1361d3c72d3804de3"
+        },
+        {
+          "path": "Objects/058_golf_ball/usd_decomposition_linux/textures/texture_map.png",
+          "size_bytes": 3811105,
+          "hash_type": "sha256",
+          "hash": "6d8a8a3562bf8efe2a3dda03c587e49ad58ac820aae66e9e84e7f0008fc5a5d0"
+        },
+        {
+          "path": "Objects/058_golf_ball/usd_sdf_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "2f97d085bc8d132c3e353d78951f7a49b730c42d"
+        },
+        {
+          "path": "Objects/058_golf_ball/usd_sdf_linux/config.yaml",
+          "size_bytes": 1318,
+          "hash_type": "git_blob_sha1",
+          "hash": "d732e30782e0f8adffd1507b2dbed265ce9b7362"
+        },
+        {
+          "path": "Objects/058_golf_ball/usd_sdf_linux/textured.usd",
+          "size_bytes": 1154800,
+          "hash_type": "sha256",
+          "hash": "2c5c40d7e0e10f87af8ef179d25eb718bd6027b672f9e7ce2315372a28ca0aa6"
+        },
+        {
+          "path": "Objects/058_golf_ball/usd_sdf_linux/textures/texture_map.png",
+          "size_bytes": 3811105,
+          "hash_type": "sha256",
+          "hash": "6d8a8a3562bf8efe2a3dda03c587e49ad58ac820aae66e9e84e7f0008fc5a5d0"
+        },
+        {
+          "path": "Objects/144_table-tennis/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "53469fa91ed34bf16c1f9aeee96d5da691b85d91"
+        },
+        {
+          "path": "Objects/144_table-tennis/Props/instanceable_meshes.usd",
+          "size_bytes": 1326304,
+          "hash_type": "sha256",
+          "hash": "60eb873f11efa19ecdb5650f14978760821a45422bc94d6646f9914ea435e57e"
+        },
+        {
+          "path": "Objects/144_table-tennis/base1.glb",
+          "size_bytes": 857984,
+          "hash_type": "sha256",
+          "hash": "9d3e6889b614d7e8c52e30410adda4a2e02231072a4eb7f71805d1ef508f59dd"
+        },
+        {
+          "path": "Objects/144_table-tennis/base1.usd",
+          "size_bytes": 1326164,
+          "hash_type": "sha256",
+          "hash": "507a4e77209d0d6088ccc6b2ced97d1009a57d73caafa4e0d301a7efb03e5bbc"
+        },
+        {
+          "path": "Objects/144_table-tennis/config.yaml",
+          "size_bytes": 1458,
+          "hash_type": "git_blob_sha1",
+          "hash": "88d0d39cdd0ffb6ac296d77ed7ee79348075b7ea"
+        },
+        {
+          "path": "Objects/144_table-tennis/textures/texture_diffuse.png",
+          "size_bytes": 380579,
+          "hash_type": "sha256",
+          "hash": "e1481285b6e50f3b1f4c267e61a767f6ed8d5996f1ca85419af008c9f5a87a81"
+        },
+        {
+          "path": "Objects/144_table-tennis/usd_decomposition_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "b387d484254253018b5f63c6f9039bf0bc97b514"
+        },
+        {
+          "path": "Objects/144_table-tennis/usd_decomposition_linux/base1.usd",
+          "size_bytes": 1327070,
+          "hash_type": "sha256",
+          "hash": "75bbf275d3b0e8401f1607ef66d8868c2065999edc678642fe51479e4b4db58b"
+        },
+        {
+          "path": "Objects/144_table-tennis/usd_decomposition_linux/config.yaml",
+          "size_bytes": 1419,
+          "hash_type": "git_blob_sha1",
+          "hash": "31219ad55e4b16aabdc9248e3cb13b60eb85b776"
+        },
+        {
+          "path": "Objects/144_table-tennis/usd_decomposition_linux/textures/texture_diffuse.png",
+          "size_bytes": 380579,
+          "hash_type": "sha256",
+          "hash": "e1481285b6e50f3b1f4c267e61a767f6ed8d5996f1ca85419af008c9f5a87a81"
+        },
+        {
+          "path": "Objects/144_table-tennis/usd_sdf_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "4032f1ae53072e4a5e2ab4cb873403c5184d0b8c"
+        },
+        {
+          "path": "Objects/144_table-tennis/usd_sdf_linux/base1.usd",
+          "size_bytes": 1327062,
+          "hash_type": "sha256",
+          "hash": "12f2b4731072f96530e9f8969571c401d78170c8f1bdcd924efaf9616e3fa437"
+        },
+        {
+          "path": "Objects/144_table-tennis/usd_sdf_linux/config.yaml",
+          "size_bytes": 1316,
+          "hash_type": "git_blob_sha1",
+          "hash": "476a61d6c55701b1970dae64a54a58aad4c11044"
+        },
+        {
+          "path": "Objects/144_table-tennis/usd_sdf_linux/textures/texture_diffuse.png",
+          "size_bytes": 380579,
+          "hash_type": "sha256",
+          "hash": "e1481285b6e50f3b1f4c267e61a767f6ed8d5996f1ca85419af008c9f5a87a81"
+        },
+        {
+          "path": "Objects/154_wooden_box/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "318fed615b9f9a49dd484ba1221087d956583d72"
+        },
+        {
+          "path": "Objects/154_wooden_box/Props/instanceable_meshes.usd",
+          "size_bytes": 1459989,
+          "hash_type": "sha256",
+          "hash": "9d9f9b006c8bdc1ba34563c0279b3239ef373e3efa003c7afd8e3e8596404127"
+        },
+        {
+          "path": "Objects/154_wooden_box/base0.glb",
+          "size_bytes": 2301080,
+          "hash_type": "sha256",
+          "hash": "8467f1844fd9443ef97f4e1d49667dab65ec1aa38bfcf64a21f4cf12c4081777"
+        },
+        {
+          "path": "Objects/154_wooden_box/base0.usd",
+          "size_bytes": 1459876,
+          "hash_type": "sha256",
+          "hash": "3dfb769a997031d050014fa3e6819dc383ff9eecd4294a1131cb7a429658a09a"
+        },
+        {
+          "path": "Objects/154_wooden_box/config.yaml",
+          "size_bytes": 1454,
+          "hash_type": "git_blob_sha1",
+          "hash": "23684ccc5f400d0e666d829e92bcbc1ccd7d39ac"
+        },
+        {
+          "path": "Objects/154_wooden_box/textures/Image_0.png",
+          "size_bytes": 464316,
+          "hash_type": "sha256",
+          "hash": "4da9a5b98ddaad6dcb8c0a391b6086e7adbbb3aa344e4509fcbb87c9c7d6d376"
+        },
+        {
+          "path": "Objects/154_wooden_box/textures/Image_1.png",
+          "size_bytes": 531856,
+          "hash_type": "sha256",
+          "hash": "6e25031b79a86e3b5859893b40caf4cc8e0748c4544fa3b1b1eae1ce9610fd58"
+        },
+        {
+          "path": "Objects/154_wooden_box/textures/Image_2.png",
+          "size_bytes": 674784,
+          "hash_type": "sha256",
+          "hash": "ae88b7aa09625372ec99d460e170a417aff628258f8e95bbbdcbecae60673212"
+        },
+        {
+          "path": "Objects/154_wooden_box/usd_decomposition_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "82bcabc185c0d0e1ef5b9798e9d6e3d0d2a63884"
+        },
+        {
+          "path": "Objects/154_wooden_box/usd_decomposition_linux/base0.usd",
+          "size_bytes": 1460841,
+          "hash_type": "sha256",
+          "hash": "5db17ffdabe6d2e7660a2a560aab92ef3d0b003ae3b95d5c630dfd895a2508ef"
+        },
+        {
+          "path": "Objects/154_wooden_box/usd_decomposition_linux/config.yaml",
+          "size_bytes": 1415,
+          "hash_type": "git_blob_sha1",
+          "hash": "668dfabcf33ab6b8c9324d242ace272f22c8ffcc"
+        },
+        {
+          "path": "Objects/154_wooden_box/usd_decomposition_linux/textures/Image_0.png",
+          "size_bytes": 464316,
+          "hash_type": "sha256",
+          "hash": "4da9a5b98ddaad6dcb8c0a391b6086e7adbbb3aa344e4509fcbb87c9c7d6d376"
+        },
+        {
+          "path": "Objects/154_wooden_box/usd_decomposition_linux/textures/Image_1.png",
+          "size_bytes": 531856,
+          "hash_type": "sha256",
+          "hash": "6e25031b79a86e3b5859893b40caf4cc8e0748c4544fa3b1b1eae1ce9610fd58"
+        },
+        {
+          "path": "Objects/154_wooden_box/usd_decomposition_linux/textures/Image_2.png",
+          "size_bytes": 674784,
+          "hash_type": "sha256",
+          "hash": "ae88b7aa09625372ec99d460e170a417aff628258f8e95bbbdcbecae60673212"
+        },
+        {
+          "path": "Objects/154_wooden_box/usd_sdf_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "0c2028a26376b19445ec0b2835b49dd6ed4c9023"
+        },
+        {
+          "path": "Objects/154_wooden_box/usd_sdf_linux/base0.usd",
+          "size_bytes": 1460833,
+          "hash_type": "sha256",
+          "hash": "40a6543e7a564e2454dadf77fb5567f709d4f69652f315b7c582cb19eae01abd"
+        },
+        {
+          "path": "Objects/154_wooden_box/usd_sdf_linux/config.yaml",
+          "size_bytes": 1312,
+          "hash_type": "git_blob_sha1",
+          "hash": "038f95ab480ba11ee087a24c0de07cb5c7725dbf"
+        },
+        {
+          "path": "Objects/154_wooden_box/usd_sdf_linux/textures/Image_0.png",
+          "size_bytes": 464316,
+          "hash_type": "sha256",
+          "hash": "4da9a5b98ddaad6dcb8c0a391b6086e7adbbb3aa344e4509fcbb87c9c7d6d376"
+        },
+        {
+          "path": "Objects/154_wooden_box/usd_sdf_linux/textures/Image_1.png",
+          "size_bytes": 531856,
+          "hash_type": "sha256",
+          "hash": "6e25031b79a86e3b5859893b40caf4cc8e0748c4544fa3b1b1eae1ce9610fd58"
+        },
+        {
+          "path": "Objects/154_wooden_box/usd_sdf_linux/textures/Image_2.png",
+          "size_bytes": 674784,
+          "hash_type": "sha256",
+          "hash": "ae88b7aa09625372ec99d460e170a417aff628258f8e95bbbdcbecae60673212"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/l_arm_flange.STL",
+          "size_bytes": 122084,
+          "hash_type": "sha256",
+          "hash": "fa2a1c704773eaf94b65f18ef31698c1231398ec95e25ef55f73d7ee0dae5790"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/l_hand_flange.STL",
+          "size_bytes": 391884,
+          "hash_type": "sha256",
+          "hash": "a46ca92947aff26a7830d422b37e73021187afc86b427bb3205c329194e5c888"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger1_link1.STL",
+          "size_bytes": 389384,
+          "hash_type": "sha256",
+          "hash": "ef6226834aafe36a718c3bdedd6a8a53ac076d833f4c989c4259fe111098426e"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger1_link2.STL",
+          "size_bytes": 91484,
+          "hash_type": "git_blob_sha1",
+          "hash": "673ea14be8f262cf6acff5f232f944f50e4019e1"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger1_link3.STL",
+          "size_bytes": 99384,
+          "hash_type": "git_blob_sha1",
+          "hash": "e561e78ff0fb36e5178dedb1725c20b6e7800fbb"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger1_link4.STL",
+          "size_bytes": 64584,
+          "hash_type": "git_blob_sha1",
+          "hash": "662a217d5727276f9dca1b17508d9b3a37cddbc4"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger1_tip_link.STL",
+          "size_bytes": 96384,
+          "hash_type": "git_blob_sha1",
+          "hash": "de0f27e0fb250d08a48ca4a70436747068b107b3"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger2_link1.STL",
+          "size_bytes": 67584,
+          "hash_type": "git_blob_sha1",
+          "hash": "9a4e08bcb149646a6a146f5cfba7d5b0c0a982ec"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger2_link2.STL",
+          "size_bytes": 55484,
+          "hash_type": "git_blob_sha1",
+          "hash": "9cec1ad4cf14a33070f1b5d2d07cc2677f9f66fc"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger2_link3.STL",
+          "size_bytes": 133184,
+          "hash_type": "sha256",
+          "hash": "764426f6623a6809565954770980dccfe5694d7c822b3035c75e3fad14712601"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger2_link4.STL",
+          "size_bytes": 54884,
+          "hash_type": "git_blob_sha1",
+          "hash": "d491293268e1bc1430d8271f415ae80bfb1d9c5c"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger2_tip_link.STL",
+          "size_bytes": 112784,
+          "hash_type": "sha256",
+          "hash": "ef47c5b835948311609616142247f6e764adf2fc1e060d620f64fd19efef9458"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger3_link1.STL",
+          "size_bytes": 67584,
+          "hash_type": "git_blob_sha1",
+          "hash": "78c41c4ff0e3e5470aae22d2a4ebb71f7201fd6c"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger3_link2.STL",
+          "size_bytes": 55484,
+          "hash_type": "git_blob_sha1",
+          "hash": "6265b862d0ea7dda91d3e0a75e1ff13c9ba1f16c"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger3_link3.STL",
+          "size_bytes": 133184,
+          "hash_type": "sha256",
+          "hash": "795ecf9b1fe67da36cea333d47bce7e7dc8339c058d9d6dc6dd954c93beb3ba6"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger3_link4.STL",
+          "size_bytes": 54884,
+          "hash_type": "git_blob_sha1",
+          "hash": "3692ca2894c91507d8a412dbd8fec548ad5b12a2"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger3_tip_link.STL",
+          "size_bytes": 112784,
+          "hash_type": "sha256",
+          "hash": "36b33404458a39a8e87dcc2e842f3d2679439f2a02dce37d441304060e6a235b"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger4_link1.STL",
+          "size_bytes": 67584,
+          "hash_type": "git_blob_sha1",
+          "hash": "5fa53c38aa35d88ab7143aeb57fa98d1de004c1f"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger4_link2.STL",
+          "size_bytes": 55484,
+          "hash_type": "git_blob_sha1",
+          "hash": "a9f3ed99909fa7efc2bcda16a20ba330ac43e77a"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger4_link3.STL",
+          "size_bytes": 133184,
+          "hash_type": "sha256",
+          "hash": "18d23d11f4b8735bbc0a790a3d4493eeb0389afdbdc44665f77e4c6d604c16fb"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger4_link4.STL",
+          "size_bytes": 54884,
+          "hash_type": "git_blob_sha1",
+          "hash": "df3c7ad06f05d2af1a2e06e9d9b79d68b198ef1b"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger4_tip_link.STL",
+          "size_bytes": 112784,
+          "hash_type": "sha256",
+          "hash": "67995957f5082af59a3d8745f435adc44133446b1574b7cfacf07ed02ff7aa09"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger5_link1.STL",
+          "size_bytes": 67584,
+          "hash_type": "git_blob_sha1",
+          "hash": "19bdca4aab6047892828c933cdfbc25f689927ef"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger5_link2.STL",
+          "size_bytes": 55484,
+          "hash_type": "git_blob_sha1",
+          "hash": "8b1c2e09a450c52c4bcd581780e9a87d6c057f33"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger5_link3.STL",
+          "size_bytes": 133184,
+          "hash_type": "sha256",
+          "hash": "2550cb770eba8132cab3208c10b6891de17b05c051555dea79dbb9e8dac2b011"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger5_link4.STL",
+          "size_bytes": 54884,
+          "hash_type": "git_blob_sha1",
+          "hash": "941d740392365d04f82ea617a60e44be88d2783e"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_finger5_tip_link.STL",
+          "size_bytes": 112784,
+          "hash_type": "sha256",
+          "hash": "6955f23515b68a893b6e1c9de7067c4852224e1cc8413211a948ec4c09dbf5aa"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_left/left_palm_link.STL",
+          "size_bytes": 470084,
+          "hash_type": "sha256",
+          "hash": "5a16d3510b49444857cc829a18202ce8bf62a129c20684190ccaedb545992298"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/r_arm_flange.STL",
+          "size_bytes": 122084,
+          "hash_type": "sha256",
+          "hash": "192e22867971a532d6605d9502d7b13b661637a38fa8e24dd80959b8759c7786"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/r_hand_flange.STL",
+          "size_bytes": 391884,
+          "hash_type": "sha256",
+          "hash": "dc3de59a6c2d9a2c3149fcd59913e63ce983195f05ed2b1573635f7e240463e2"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger1_link1.STL",
+          "size_bytes": 366584,
+          "hash_type": "sha256",
+          "hash": "0e32302a46cd00d6cc1e7fb03cc483988c639271708c2300a9aecc9de537e42b"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger1_link2.STL",
+          "size_bytes": 92684,
+          "hash_type": "git_blob_sha1",
+          "hash": "648a9c7c275d941ba93bc662e94c06c17eadfd4f"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger1_link3.STL",
+          "size_bytes": 89184,
+          "hash_type": "git_blob_sha1",
+          "hash": "f658dd129820604729eb1c18fa2453e75e3b00d2"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger1_link4.STL",
+          "size_bytes": 65984,
+          "hash_type": "git_blob_sha1",
+          "hash": "0bb3ab04c494d3d49b39d858483ca563fc077a3e"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger1_tip_link.STL",
+          "size_bytes": 96084,
+          "hash_type": "git_blob_sha1",
+          "hash": "273f8f16adb7abf52564aa9809923dda32a3fdf3"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger2_link1.STL",
+          "size_bytes": 56184,
+          "hash_type": "git_blob_sha1",
+          "hash": "d9b8472dc47c7d0fb2a0899352e9ad8fce556438"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger2_link2.STL",
+          "size_bytes": 51984,
+          "hash_type": "git_blob_sha1",
+          "hash": "5b0bea8093901c1100e71da3bbfa8d875d815b3c"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger2_link3.STL",
+          "size_bytes": 91284,
+          "hash_type": "git_blob_sha1",
+          "hash": "11a0b215807a1f60c8ad2b1605d847603ce24134"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger2_link4.STL",
+          "size_bytes": 54884,
+          "hash_type": "git_blob_sha1",
+          "hash": "64cb6c9a22c759ea5726916f4a089a3bddfbc602"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger2_tip_link.STL",
+          "size_bytes": 112784,
+          "hash_type": "sha256",
+          "hash": "496039ce3f4f3fbe6bac466a01567797f741af95c6f11dc61626ec2de175900b"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger3_link1.STL",
+          "size_bytes": 56184,
+          "hash_type": "git_blob_sha1",
+          "hash": "6b1e76cac9c6dde7fdb9b6239b741467a9473e52"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger3_link2.STL",
+          "size_bytes": 51984,
+          "hash_type": "git_blob_sha1",
+          "hash": "84082390f1c509587a31d459359de6068c4058b2"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger3_link3.STL",
+          "size_bytes": 91284,
+          "hash_type": "git_blob_sha1",
+          "hash": "a69ba513df59ce22240116c3aa8e25f36301a379"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger3_link4.STL",
+          "size_bytes": 54884,
+          "hash_type": "git_blob_sha1",
+          "hash": "67ca1f32cdc100da3ef322f3addf2763dfc95a45"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger3_tip_link.STL",
+          "size_bytes": 112784,
+          "hash_type": "sha256",
+          "hash": "7a99f65a6a473899913d4273e61319e3724fbf81ac8532969ed5c2ff1c1bde54"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger4_link1.STL",
+          "size_bytes": 56184,
+          "hash_type": "git_blob_sha1",
+          "hash": "68db5f87ad1c5e9babfe2ad4e903c47a5ce86dff"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger4_link2.STL",
+          "size_bytes": 51984,
+          "hash_type": "git_blob_sha1",
+          "hash": "d61a8317d033bce08426a0357975d28672717b76"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger4_link3.STL",
+          "size_bytes": 91284,
+          "hash_type": "git_blob_sha1",
+          "hash": "1c42dbef621061a7f7524d75bd229611ef1aa95f"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger4_link4.STL",
+          "size_bytes": 54884,
+          "hash_type": "git_blob_sha1",
+          "hash": "1079ae0586aa663858e1b2b4865381e207593f06"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger4_tip_link.STL",
+          "size_bytes": 113484,
+          "hash_type": "sha256",
+          "hash": "e8b1fbee8e019afe490e820b1cba5e02c5124bb4a09aa73896bd46db6586dfde"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger5_link1.STL",
+          "size_bytes": 56184,
+          "hash_type": "git_blob_sha1",
+          "hash": "09c47cd7677673ee940e3d3dbb600034299e4380"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger5_link2.STL",
+          "size_bytes": 51984,
+          "hash_type": "git_blob_sha1",
+          "hash": "1ac92055bc8bf48c374f61cffff32c59df0a53df"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger5_link3.STL",
+          "size_bytes": 91284,
+          "hash_type": "git_blob_sha1",
+          "hash": "0f40c6bc2dce5d07e203bce8aa7b19859cd687f2"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger5_link4.STL",
+          "size_bytes": 54884,
+          "hash_type": "git_blob_sha1",
+          "hash": "d40d954635d110d213215c1f8a2734b4c74c0022"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_finger5_tip_link.STL",
+          "size_bytes": 112784,
+          "hash_type": "sha256",
+          "hash": "ebbf48ca7ba3bca5f329f95277ae392d0c1a09615eda23f1bf646c5112a38cee"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/hand_right/right_palm_link.STL",
+          "size_bytes": 456184,
+          "hash_type": "sha256",
+          "hash": "1ba4495e3b7adc707d50150a8625a0ed3731fa42ab6d40e62ae7437da103ce5e"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/L_base_link.STL",
+          "size_bytes": 3614784,
+          "hash_type": "sha256",
+          "hash": "4be04206de23267ed11f25bfeafaaa3ec5230dcd3fdd1ec3c757e741eaf15978"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/base.stl",
+          "size_bytes": 28984,
+          "hash_type": "git_blob_sha1",
+          "hash": "4eb2f7eb38493e36b16587650cd65c516ea27766"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/forearm.stl",
+          "size_bytes": 52584,
+          "hash_type": "git_blob_sha1",
+          "hash": "ffbed4536ef7c23c7691736124e161a226546bb9"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/left_index_1.STL",
+          "size_bytes": 411284,
+          "hash_type": "sha256",
+          "hash": "48f8ce3d436eb448288eb02194faf27d76148db8b1d83ca64a4bc1a866bfbe33"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/left_index_2.STL",
+          "size_bytes": 333684,
+          "hash_type": "sha256",
+          "hash": "1f6ae7c570dcfc87ba8b54b19b5c8be4804d68660b4489ee0ee684d3d137401c"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/left_little_1.STL",
+          "size_bytes": 411284,
+          "hash_type": "sha256",
+          "hash": "cff441b2e940f3444a9bac52e82cbba585658d5d9385e3d24acec4d3517a7e24"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/left_little_2.STL",
+          "size_bytes": 413234,
+          "hash_type": "sha256",
+          "hash": "08dfcc448aa7f16843c760dba35c46259be38608356f7f3d168b9b6afa8d4436"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/left_middle_1.STL",
+          "size_bytes": 411284,
+          "hash_type": "sha256",
+          "hash": "45617e0af222764c1c4ea3f941c40fa303dc2a423ddeffde78bc855919226f6b"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/left_middle_2.STL",
+          "size_bytes": 182884,
+          "hash_type": "sha256",
+          "hash": "7b4f60c77f6d61a9023da3d4b03bc6d0b18e7edd92e00b757d663c94ed3ccfe2"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/left_ring_1.STL",
+          "size_bytes": 411284,
+          "hash_type": "sha256",
+          "hash": "c30bb35bc7218bbb69726e0cd3547df9d997dab1f5e65004163ca326c45ea4a8"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/left_ring_2.STL",
+          "size_bytes": 332484,
+          "hash_type": "sha256",
+          "hash": "24ef54ff3753ba36bdc2824fccf612f97f2966a9a2f0925d921b548d8861d2b8"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/left_thumb_1.STL",
+          "size_bytes": 46484,
+          "hash_type": "git_blob_sha1",
+          "hash": "ccb3be77d10642a5c01fb245a63609a9ee22abcc"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/left_thumb_2.STL",
+          "size_bytes": 920484,
+          "hash_type": "sha256",
+          "hash": "342fdd3aa3fbb9c1c4ddc476f82fde76427a049d14c4b5f523e29436e8a09c29"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/left_thumb_3.STL",
+          "size_bytes": 482684,
+          "hash_type": "sha256",
+          "hash": "dceb3bf74bec6a249907a30bb7e5ff6461b4099e7bf54e0496ab1198a88f8777"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/left_thumb_4.STL",
+          "size_bytes": 155384,
+          "hash_type": "sha256",
+          "hash": "ddbee60fba2507765e1b287f9fa36db72f3f7499f3ed0722dcba2cdb09df3711"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/shoulder.stl",
+          "size_bytes": 33784,
+          "hash_type": "git_blob_sha1",
+          "hash": "5088831c10deb4656b129feee4bd533824e7c152"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/upperarm.stl",
+          "size_bytes": 58884,
+          "hash_type": "git_blob_sha1",
+          "hash": "734386e871f9114d9be2567a68c66179ea8f16b5"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/wrist1.stl",
+          "size_bytes": 35184,
+          "hash_type": "git_blob_sha1",
+          "hash": "a960c0c571ba7366ed2a72e94ee733bcaf034485"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/wrist2.stl",
+          "size_bytes": 35184,
+          "hash_type": "git_blob_sha1",
+          "hash": "9b089de4c6077cc743130865040b934248cc5b4d"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/collision/wrist3.stl",
+          "size_bytes": 22384,
+          "hash_type": "git_blob_sha1",
+          "hash": "96c71f0413dfe4311bd253a8747824f29982aed4"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/visual/base.dae",
+          "size_bytes": 156838,
+          "hash_type": "git_blob_sha1",
+          "hash": "05477edf3f43bcfe4654b9d77f841330825b8bc2"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/visual/forearm.dae",
+          "size_bytes": 1473551,
+          "hash_type": "git_blob_sha1",
+          "hash": "6e657554f4a309d6cc6f5fc14c58e7537d5215a0"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/visual/shoulder.dae",
+          "size_bytes": 1011833,
+          "hash_type": "git_blob_sha1",
+          "hash": "8feb681bdb5dab0f83af432ae0ad6594267f6fe0"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/visual/upperarm.dae",
+          "size_bytes": 2009218,
+          "hash_type": "git_blob_sha1",
+          "hash": "fca6491758b388828eb7d098adf7865c26e0125c"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/visual/wrist1.dae",
+          "size_bytes": 952757,
+          "hash_type": "git_blob_sha1",
+          "hash": "3baee37a006e997e4c8929cb99efc9fca0ff71c0"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/visual/wrist2.dae",
+          "size_bytes": 951570,
+          "hash_type": "git_blob_sha1",
+          "hash": "53e52f368cf7afc559d7f590751ec0f5b23d9bed"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/meshes/ur5/visual/wrist3.dae",
+          "size_bytes": 127927,
+          "hash_type": "git_blob_sha1",
+          "hash": "a01700d81f020126c1b9649e31f10e5b80427e15"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/tactile_sensor/tactileSensor_map_L4F_normal.npy",
+          "size_bytes": 691328,
+          "hash_type": "sha256",
+          "hash": "71cbda83ca26b83cb33059cb10a494f6e399c38df0fd01cf4267fe4550eb9875"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/tactile_sensor/tactileSensor_map_L4F_point.npy",
+          "size_bytes": 691328,
+          "hash_type": "sha256",
+          "hash": "c73579ef0d21780919127341a811e272b6460edc1d46d67f3aa3b76b1deba69b"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/tactile_sensor/tactileSensor_map_LTH_normal.npy",
+          "size_bytes": 691328,
+          "hash_type": "sha256",
+          "hash": "42b52f2a81c5b0cb18762f274006369b4a755193799f6d6dc7dd46d945d9e0ab"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/tactile_sensor/tactileSensor_map_LTH_point.npy",
+          "size_bytes": 691328,
+          "hash_type": "sha256",
+          "hash": "4134f15dc205dfb15ac0fde4ebcaac118483996bab15715a3a130abfa5a696b4"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/tactile_sensor/tactileSensor_map_R4F_normal.npy",
+          "size_bytes": 691328,
+          "hash_type": "sha256",
+          "hash": "f7ad17714d8fb5dd7f007121d3d01780a2a747102692d440a122a094ac0618ee"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/tactile_sensor/tactileSensor_map_R4F_point.npy",
+          "size_bytes": 691328,
+          "hash_type": "sha256",
+          "hash": "36a864db5501c39eabe9113cf0f7866b5eea54c9e6c2f12a720831a22cc18102"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/tactile_sensor/tactileSensor_map_RTH_normal.npy",
+          "size_bytes": 691328,
+          "hash_type": "sha256",
+          "hash": "f54498b639de937800cb860bd79fb09b2008170da014e37ae94098abb5b8c233"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/tactile_sensor/tactileSensor_map_RTH_point.npy",
+          "size_bytes": 691328,
+          "hash_type": "sha256",
+          "hash": "d90a6d276c23e3e9893a0712dc42a39b3f5dcba3b5e63a6a1821138f07bd2052"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/tactile_sensor/tactile_sensor_left_finger1_tip_link.obj",
+          "size_bytes": 53099,
+          "hash_type": "git_blob_sha1",
+          "hash": "8ad1238913e5ed9e8917c1b51558f775884618ef"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/tactile_sensor/tactile_sensor_left_finger2_tip_link.obj",
+          "size_bytes": 81239,
+          "hash_type": "git_blob_sha1",
+          "hash": "5e3880ea33e4ac02494f1050a0256798f8cce9b6"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/tactile_sensor/tactile_sensor_right_finger1_tip_link.obj",
+          "size_bytes": 73166,
+          "hash_type": "git_blob_sha1",
+          "hash": "2f66f1d853cb991b8115df1cd2a8d9054e3f17e3"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/tactile_sensor/tactile_sensor_right_finger2_tip_link.obj",
+          "size_bytes": 84708,
+          "hash_type": "git_blob_sha1",
+          "hash": "134997eb741f73710ac0c4527ec9c0e74259e05f"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/urdf/Left_Hand.urdf",
+          "size_bytes": 31202,
+          "hash_type": "git_blob_sha1",
+          "hash": "e20b908be5c69962db8ae3e0c7e3d0d52c65af3c"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/urdf/Left_UR5_wuji_with_flange.urdf",
+          "size_bytes": 57245,
+          "hash_type": "git_blob_sha1",
+          "hash": "9affec327ce5b844c6ce8bfcdd858d3326c14757"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/urdf/Multi_UR5.urdf",
+          "size_bytes": 33606,
+          "hash_type": "git_blob_sha1",
+          "hash": "aa91c34018d9e90cc5d37e69a102127bbf990ad8"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/urdf/Multi_UR5_wuji_with_flange.urdf",
+          "size_bytes": 98861,
+          "hash_type": "git_blob_sha1",
+          "hash": "6253db05a537c0fc2d1365a7e1d601743e5b657f"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/urdf/Right_Hand.urdf",
+          "size_bytes": 29131,
+          "hash_type": "git_blob_sha1",
+          "hash": "07467b5cf9ffe22290097cba3b064f93fe58a435"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/urdf/Right_UR5_wuji_with_flange.urdf",
+          "size_bytes": 54874,
+          "hash_type": "git_blob_sha1",
+          "hash": "558bc9de1394b0f65029c23255d67a5003e61c1f"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/usd/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "b0208f659c258ea6edd76c33ce9aa80aa1533b51"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/usd/Multi_UR5_wuji_with_flange.usd",
+          "size_bytes": 1475,
+          "hash_type": "git_blob_sha1",
+          "hash": "7d5ca72894e9dc01d9cf16ac834ce6ef8b85037f"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/usd/config.yaml",
+          "size_bytes": 645,
+          "hash_type": "git_blob_sha1",
+          "hash": "d39336988f29161901731ce26468a313a85d2a94"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/usd/configuration/Multi_UR5_wuji_with_flange_base.usd",
+          "size_bytes": 16746797,
+          "hash_type": "sha256",
+          "hash": "7ae66a7b0f259d5f726087f5b4dae0686f3b671ec5fe9b3d78609c3bc14882db"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/usd/configuration/Multi_UR5_wuji_with_flange_physics.usd",
+          "size_bytes": 21177,
+          "hash_type": "git_blob_sha1",
+          "hash": "88aa3c8aaa9e2daf567093ae567d5e5e6a20d8d5"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/usd/configuration/Multi_UR5_wuji_with_flange_robot.usd",
+          "size_bytes": 4614,
+          "hash_type": "git_blob_sha1",
+          "hash": "c58a7ac94b430beccbd1647a90cc9d0e5b739c0a"
+        },
+        {
+          "path": "Robots_p/ur5+wuji/usd/configuration/Multi_UR5_wuji_with_flange_sensor.usd",
+          "size_bytes": 643,
+          "hash_type": "git_blob_sha1",
+          "hash": "070c30ac87f16e56dc0152cf6f107cb13da6dd58"
+        },
+        {
+          "path": "Objects/171_msg/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "2f5323ca0a5f7b1ca79d6627260263611f4d25dd"
+        },
+        {
+          "path": "Objects/171_msg/Props/instanceable_meshes.usd",
+          "size_bytes": 2280707,
+          "hash_type": "sha256",
+          "hash": "2be7c14ddb5b17e7bad6f55040f87749fd8847c18736546e333fdd89519d92c2"
+        },
+        {
+          "path": "Objects/171_msg/base5.glb",
+          "size_bytes": 8096820,
+          "hash_type": "sha256",
+          "hash": "5b85d2d5ae11c68b68a66e439d73b5f6f0c0e18b39f3b4972de12ea4d3d26eaf"
+        },
+        {
+          "path": "Objects/171_msg/base5.usd",
+          "size_bytes": 2280578,
+          "hash_type": "sha256",
+          "hash": "6e70bcb94ace5b0c2ab4024d88c04f71cb63035c5eb5352b13dcc79b5fea4c6c"
+        },
+        {
+          "path": "Objects/171_msg/config.yaml",
+          "size_bytes": 1440,
+          "hash_type": "git_blob_sha1",
+          "hash": "474a45d9a49d3f021219e2d67031ef6574a6a7ad"
+        },
+        {
+          "path": "Objects/171_msg/textures/texture_diffuse.png",
+          "size_bytes": 2984427,
+          "hash_type": "sha256",
+          "hash": "9ee2fb86b81ffd2e0698e6353eee9b354c4f2d8cbd11903a495784185dc9b89f"
+        },
+        {
+          "path": "Objects/171_msg/textures/texture_metallic-texture_roughness.png",
+          "size_bytes": 1479262,
+          "hash_type": "sha256",
+          "hash": "5c7e74cb88df3e5fcce6f34031b48cdc4bf6369ef4d6dbff7a2ba9dc5dffe0a3"
+        },
+        {
+          "path": "Objects/171_msg/textures/texture_normal.png",
+          "size_bytes": 2441907,
+          "hash_type": "sha256",
+          "hash": "283e8b5da896609db64d616aed9638e2546b2309a0ca3c310438b409208a446e"
+        },
+        {
+          "path": "Objects/171_msg/usd_decomposition_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "e2fb69bc963be1b210d1da35cf9ae52d41514f02"
+        },
+        {
+          "path": "Objects/171_msg/usd_decomposition_linux/base5.usd",
+          "size_bytes": 2281525,
+          "hash_type": "sha256",
+          "hash": "87cd65f4546bb8d7a368cb89ccfe2adebfc2cfb74d1a1aa41b13fcbae27657a2"
+        },
+        {
+          "path": "Objects/171_msg/usd_decomposition_linux/config.yaml",
+          "size_bytes": 1401,
+          "hash_type": "git_blob_sha1",
+          "hash": "b33b666ab76e8244456f176df1523484b01b643f"
+        },
+        {
+          "path": "Objects/171_msg/usd_decomposition_linux/textures/texture_diffuse.png",
+          "size_bytes": 2984427,
+          "hash_type": "sha256",
+          "hash": "9ee2fb86b81ffd2e0698e6353eee9b354c4f2d8cbd11903a495784185dc9b89f"
+        },
+        {
+          "path": "Objects/171_msg/usd_decomposition_linux/textures/texture_metallic-texture_roughness.png",
+          "size_bytes": 1479262,
+          "hash_type": "sha256",
+          "hash": "5c7e74cb88df3e5fcce6f34031b48cdc4bf6369ef4d6dbff7a2ba9dc5dffe0a3"
+        },
+        {
+          "path": "Objects/171_msg/usd_decomposition_linux/textures/texture_normal.png",
+          "size_bytes": 2441907,
+          "hash_type": "sha256",
+          "hash": "283e8b5da896609db64d616aed9638e2546b2309a0ca3c310438b409208a446e"
+        },
+        {
+          "path": "Objects/171_msg/usd_sdf_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "57c3e805e147d6a11f9c53734e03badac14478e1"
+        },
+        {
+          "path": "Objects/171_msg/usd_sdf_linux/base5.usd",
+          "size_bytes": 2281517,
+          "hash_type": "sha256",
+          "hash": "b9d632413a1ba386851cdfa00affe5953a1fb195abf96e93a07af24e2420e63c"
+        },
+        {
+          "path": "Objects/171_msg/usd_sdf_linux/config.yaml",
+          "size_bytes": 1298,
+          "hash_type": "git_blob_sha1",
+          "hash": "9553bd1797fc6b591cf1e72456b1f7225e002cde"
+        },
+        {
+          "path": "Objects/171_msg/usd_sdf_linux/textures/texture_diffuse.png",
+          "size_bytes": 2984427,
+          "hash_type": "sha256",
+          "hash": "9ee2fb86b81ffd2e0698e6353eee9b354c4f2d8cbd11903a495784185dc9b89f"
+        },
+        {
+          "path": "Objects/171_msg/usd_sdf_linux/textures/texture_metallic-texture_roughness.png",
+          "size_bytes": 1479262,
+          "hash_type": "sha256",
+          "hash": "5c7e74cb88df3e5fcce6f34031b48cdc4bf6369ef4d6dbff7a2ba9dc5dffe0a3"
+        },
+        {
+          "path": "Objects/171_msg/usd_sdf_linux/textures/texture_normal.png",
+          "size_bytes": 2441907,
+          "hash_type": "sha256",
+          "hash": "283e8b5da896609db64d616aed9638e2546b2309a0ca3c310438b409208a446e"
+        },
+        {
+          "path": "Objects/172_soy-sauce/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "c14f9e06810a375595e92d7611223bd123b464ac"
+        },
+        {
+          "path": "Objects/172_soy-sauce/Props/instanceable_meshes.usd",
+          "size_bytes": 2395512,
+          "hash_type": "sha256",
+          "hash": "e3297fcd862401f0b5a3de83a452bec0f7abb046882bba9c8fa29b78300ec785"
+        },
+        {
+          "path": "Objects/172_soy-sauce/base4.glb",
+          "size_bytes": 6166856,
+          "hash_type": "sha256",
+          "hash": "77c342f2f057dd49a73ce232cc501a68cb4c92072e303c864677511eb4b46435"
+        },
+        {
+          "path": "Objects/172_soy-sauce/base4.usd",
+          "size_bytes": 2395393,
+          "hash_type": "sha256",
+          "hash": "6942ce1f16a3d29b0d8efe23a15439469243ca7a87929f03a6a2477c742426a6"
+        },
+        {
+          "path": "Objects/172_soy-sauce/config.yaml",
+          "size_bytes": 1452,
+          "hash_type": "git_blob_sha1",
+          "hash": "a54ade513098eb5444451a9e8c0856780b22ebdd"
+        },
+        {
+          "path": "Objects/172_soy-sauce/textures/texture_diffuse.png",
+          "size_bytes": 1680035,
+          "hash_type": "sha256",
+          "hash": "eceef7f3189088dccfed74f336025e767bd7658fdf9edf111f90b65d3e280a19"
+        },
+        {
+          "path": "Objects/172_soy-sauce/textures/texture_metallic-texture_roughness.png",
+          "size_bytes": 1230107,
+          "hash_type": "sha256",
+          "hash": "7a8153d912ac9d95ddf122689480aba582d1fb5c0fd150849b3e80c8bcf20f50"
+        },
+        {
+          "path": "Objects/172_soy-sauce/textures/texture_normal.png",
+          "size_bytes": 2119122,
+          "hash_type": "sha256",
+          "hash": "6594e3a4af3962cd29efc9eb8a218e890e899a724344cae2e75f58d2671517b8"
+        },
+        {
+          "path": "Objects/172_soy-sauce/usd_decomposition_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "0dc480035f595768116bde1c3496dc68bdee40c6"
+        },
+        {
+          "path": "Objects/172_soy-sauce/usd_decomposition_linux/base4.usd",
+          "size_bytes": 2396341,
+          "hash_type": "sha256",
+          "hash": "44f1ad865f609bcfd2475a805d1d158ca9016a1391ee2cb389f8dd65ba626841"
+        },
+        {
+          "path": "Objects/172_soy-sauce/usd_decomposition_linux/config.yaml",
+          "size_bytes": 1413,
+          "hash_type": "git_blob_sha1",
+          "hash": "f4767be914ebc196fb530a4ad2b5d795a875dfa2"
+        },
+        {
+          "path": "Objects/172_soy-sauce/usd_decomposition_linux/textures/texture_diffuse.png",
+          "size_bytes": 1680035,
+          "hash_type": "sha256",
+          "hash": "eceef7f3189088dccfed74f336025e767bd7658fdf9edf111f90b65d3e280a19"
+        },
+        {
+          "path": "Objects/172_soy-sauce/usd_decomposition_linux/textures/texture_metallic-texture_roughness.png",
+          "size_bytes": 1230107,
+          "hash_type": "sha256",
+          "hash": "7a8153d912ac9d95ddf122689480aba582d1fb5c0fd150849b3e80c8bcf20f50"
+        },
+        {
+          "path": "Objects/172_soy-sauce/usd_decomposition_linux/textures/texture_normal.png",
+          "size_bytes": 2119122,
+          "hash_type": "sha256",
+          "hash": "6594e3a4af3962cd29efc9eb8a218e890e899a724344cae2e75f58d2671517b8"
+        },
+        {
+          "path": "Objects/172_soy-sauce/usd_sdf_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "7737885ad603d21126873327e034b8fcf87f6bf7"
+        },
+        {
+          "path": "Objects/172_soy-sauce/usd_sdf_linux/base4.usd",
+          "size_bytes": 2396333,
+          "hash_type": "sha256",
+          "hash": "a9cc6fe10ac8294ea28ca270d9e31d5ca8b0fd487f8945974e05c83b63365d77"
+        },
+        {
+          "path": "Objects/172_soy-sauce/usd_sdf_linux/config.yaml",
+          "size_bytes": 1310,
+          "hash_type": "git_blob_sha1",
+          "hash": "fbade74b70bdec39475db185877a597203ebdae2"
+        },
+        {
+          "path": "Objects/172_soy-sauce/usd_sdf_linux/textures/texture_diffuse.png",
+          "size_bytes": 1680035,
+          "hash_type": "sha256",
+          "hash": "eceef7f3189088dccfed74f336025e767bd7658fdf9edf111f90b65d3e280a19"
+        },
+        {
+          "path": "Objects/172_soy-sauce/usd_sdf_linux/textures/texture_metallic-texture_roughness.png",
+          "size_bytes": 1230107,
+          "hash_type": "sha256",
+          "hash": "7a8153d912ac9d95ddf122689480aba582d1fb5c0fd150849b3e80c8bcf20f50"
+        },
+        {
+          "path": "Objects/172_soy-sauce/usd_sdf_linux/textures/texture_normal.png",
+          "size_bytes": 2119122,
+          "hash_type": "sha256",
+          "hash": "6594e3a4af3962cd29efc9eb8a218e890e899a724344cae2e75f58d2671517b8"
+        },
+        {
+          "path": "Objects/173_vinegar/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "ed99a643fbf422b523b9ef4e310d0ccd24b522eb"
+        },
+        {
+          "path": "Objects/173_vinegar/Props/instanceable_meshes.usd",
+          "size_bytes": 2344357,
+          "hash_type": "sha256",
+          "hash": "5e098a4914bd0693f6597c48195b9b0537eccb483d462a16dbfb706bd281694c"
+        },
+        {
+          "path": "Objects/173_vinegar/base2.glb",
+          "size_bytes": 8346524,
+          "hash_type": "sha256",
+          "hash": "dc9c3c1c330188b33da05201f68a108e2e0c17391ffd59697b82b0f56a96a7f6"
+        },
+        {
+          "path": "Objects/173_vinegar/base2.usd",
+          "size_bytes": 2344235,
+          "hash_type": "sha256",
+          "hash": "2181bd92e582b53b0c5b8d12df29990338579cc8d9e0c3016321f5408c6dbd2c"
+        },
+        {
+          "path": "Objects/173_vinegar/config.yaml",
+          "size_bytes": 1448,
+          "hash_type": "git_blob_sha1",
+          "hash": "066bbbbd70905ad7520824a28b38e488556f2ae4"
+        },
+        {
+          "path": "Objects/173_vinegar/textures/texture_diffuse.png",
+          "size_bytes": 2523338,
+          "hash_type": "sha256",
+          "hash": "6eb6b046498a46351a43f934ab86d47c3e2204e45159915739a144d7d72c6c45"
+        },
+        {
+          "path": "Objects/173_vinegar/textures/texture_metallic-texture_roughness.png",
+          "size_bytes": 2073514,
+          "hash_type": "sha256",
+          "hash": "c407d4f2b6932bb88fd6844509fbdacf9bdd7c0599e404a519030411247a8595"
+        },
+        {
+          "path": "Objects/173_vinegar/textures/texture_normal.png",
+          "size_bytes": 2663475,
+          "hash_type": "sha256",
+          "hash": "8f340f6f464438e4c2d2cdd4f7d12f50353753316a8772e0d2d787debdb50e1b"
+        },
+        {
+          "path": "Objects/173_vinegar/usd_decomposition_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "ead801c726efdf568a79dc4ed77f5c5a1b575bf7"
+        },
+        {
+          "path": "Objects/173_vinegar/usd_decomposition_linux/base2.usd",
+          "size_bytes": 2345183,
+          "hash_type": "sha256",
+          "hash": "6a4b8fe3afe3166261a3f3b468d55d3dd7bb9d70fe2f69ff8eae1df8a15b03d2"
+        },
+        {
+          "path": "Objects/173_vinegar/usd_decomposition_linux/config.yaml",
+          "size_bytes": 1409,
+          "hash_type": "git_blob_sha1",
+          "hash": "5eaa9b5c09607828ef7fffcd59500338fbdd2efa"
+        },
+        {
+          "path": "Objects/173_vinegar/usd_decomposition_linux/textures/texture_diffuse.png",
+          "size_bytes": 2523338,
+          "hash_type": "sha256",
+          "hash": "6eb6b046498a46351a43f934ab86d47c3e2204e45159915739a144d7d72c6c45"
+        },
+        {
+          "path": "Objects/173_vinegar/usd_decomposition_linux/textures/texture_metallic-texture_roughness.png",
+          "size_bytes": 2073514,
+          "hash_type": "sha256",
+          "hash": "c407d4f2b6932bb88fd6844509fbdacf9bdd7c0599e404a519030411247a8595"
+        },
+        {
+          "path": "Objects/173_vinegar/usd_decomposition_linux/textures/texture_normal.png",
+          "size_bytes": 2663475,
+          "hash_type": "sha256",
+          "hash": "8f340f6f464438e4c2d2cdd4f7d12f50353753316a8772e0d2d787debdb50e1b"
+        },
+        {
+          "path": "Objects/173_vinegar/usd_sdf_linux/.asset_hash",
+          "size_bytes": 32,
+          "hash_type": "git_blob_sha1",
+          "hash": "89761d0eea644e59c3b240b2ac088e24186dbe8f"
+        },
+        {
+          "path": "Objects/173_vinegar/usd_sdf_linux/base2.usd",
+          "size_bytes": 2345174,
+          "hash_type": "sha256",
+          "hash": "f04df4a3c45c185b9a907933ba5c365b55c5b8059d6125aa1a7a5946b8b5214c"
+        },
+        {
+          "path": "Objects/173_vinegar/usd_sdf_linux/config.yaml",
+          "size_bytes": 1306,
+          "hash_type": "git_blob_sha1",
+          "hash": "34db0105fad4336d2fdcc3680f09246645f23979"
+        },
+        {
+          "path": "Objects/173_vinegar/usd_sdf_linux/textures/texture_diffuse.png",
+          "size_bytes": 2523338,
+          "hash_type": "sha256",
+          "hash": "6eb6b046498a46351a43f934ab86d47c3e2204e45159915739a144d7d72c6c45"
+        },
+        {
+          "path": "Objects/173_vinegar/usd_sdf_linux/textures/texture_metallic-texture_roughness.png",
+          "size_bytes": 2073514,
+          "hash_type": "sha256",
+          "hash": "c407d4f2b6932bb88fd6844509fbdacf9bdd7c0599e404a519030411247a8595"
+        },
+        {
+          "path": "Objects/173_vinegar/usd_sdf_linux/textures/texture_normal.png",
+          "size_bytes": 2663475,
+          "hash_type": "sha256",
+          "hash": "8f340f6f464438e4c2d2cdd4f7d12f50353753316a8772e0d2d787debdb50e1b"
+        }
+      ]
+    },
+    "demos": {
+      "repo_id": "Bench2Dex/teleopdata",
+      "revision": "dbfb05dfc5b636e5c83925bc28c3041e3d5492a8",
+      "files": [
+        {
+          "path": "dataset/27_ball_box_loading/origin-generalization/episode_000000.hdf5",
+          "size_bytes": 6135220,
+          "hash_type": "sha256",
+          "hash": "89df79b50089a838530b2ceb6f834cc46bb2327e888db400d98eab4d3feefb9e"
+        },
+        {
+          "path": "dataset/27_ball_box_loading/replay-generalization/episode_000000.hdf5",
+          "size_bytes": 221820727,
+          "hash_type": "sha256",
+          "hash": "73deaab146dd066d210bca087121e13f77e19dbb1180599d8afde6165413cca5"
+        }
+      ]
+    }
+  }
+}

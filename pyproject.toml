@@ -23,11 +23,19 @@ dependencies = [
     "ruamel.yaml==0.18.10",
 ]
 
-[tool.setuptools]
-packages = ["dexonomy"]
+[project.optional-dependencies]
+bench2dex = ["h5py>=3.10", "PyYAML>=6", "scipy>=1.10", "pillow"]
+bench2dex-usd = ["usd-core>=25.2"]
+
+[tool.setuptools.packages.find]
+include = ["dexonomy*"]
+
+[tool.setuptools.package-data]
+dexonomy = ["config/**/*.yaml"]
 
 [project.scripts]
 dexkill = "dexonomy.kill:main"
 dexrun = "dexonomy.main:main"     # Single-operation runner
 dexsyn = "dexonomy.script:main"  # Full pipeline runner
 dexsyn_admm = "dexonomy.script_admm:main"  # Full pipeline runner
+bench2dex = "dexonomy.integrations.bench2dex.cli:main"

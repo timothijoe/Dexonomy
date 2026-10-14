@@ -1,0 +1,23 @@
+schema_version: 1
+robot_key: multi_ur5_wuji_with_flange
+# Paths are relative to this configuration file, overridable on the command line.
+bench2dex_root: ../../../Bench2Dex
+asset_root: ../../../dex2bench_dataset
+demo_root: ../../../teleopdata
+tasks: [27_ball_box_loading, 21_condiment_box_loading]
+robot_usd: Robots_p/ur5+wuji/usd/Multi_UR5_wuji_with_flange.usd
+robot_urdf: Robots_p/ur5+wuji/urdf/Multi_UR5_wuji_with_flange.urdf
+hand_urdf:
+  right: Robots_p/ur5+wuji/urdf/Right_Hand.urdf
+  left: Robots_p/ur5+wuji/urdf/Left_Hand.urdf
+semantics: ../../assets/hand/wuji/bench2dex.yaml
+camera_names: [cam_wrist_right, cam_wrist_left, cam_stereo_left, cam_stereo_right]
+validation:
+  joint_tolerance_rad: 0.0001
+  fk_position_tolerance_m: 0.001
+  fk_angle_tolerance_deg: 1.0
+  penetration_tolerance_m: 0.002
+  lift_height_m: 0.05
+  hold_duration_s: 1.0
+  hold_translation_m: 0.01
+  hold_angle_deg: 10.0

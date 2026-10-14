@@ -1,0 +1,88 @@
+schema_version: 1
+generator_version: 1
+categories:
+  13_Precision_Sphere:
+    source_definition: assets/hand/shadow/raw_anno/13_Precision_Sphere.yaml
+    contact_links: [tip_link]
+  11_Power_Sphere:
+    source_definition: assets/hand/shadow/raw_anno/11_Power_Sphere.yaml
+    contact_links: [link3, link4, tip_link]
+optimizer:
+  max_nfev: 160
+  timeout_s: 30
+  contact_gap_m: 0.0002
+  contact_tolerance_m: 0.001
+  penetration_soft_m: 0.0008
+  squeeze_penetration_target_m: 0.0008
+  squeeze_max_nfev: 80
+  seed_posture_fraction: 0.5
+  initial_thumb_qpos_rad: [1.1, -0.12, 0.0, 0.04]
+  initial_other_finger_qpos_rad: [0.8, 0.1, -0.05, 0.04]
+  contact_normal_weight: 0.5
+  contact_normal_targets_right:
+    - [-0.7, -0.5, 0.5]
+    - [0.4, -0.6, -0.7]
+    - [0.4, -0.2, -0.9]
+    - [0.4, 0.2, -0.9]
+    - [0.3, 0.7, -0.6]
+  pregrasp_gap_m: 0.015
+  pregrasp_max_nfev: 60
+  pregrasp_mode: collision_surface_clearance
+collision:
+  profile: original_urdf_convex_hulls
+  # Mechanical root housings overlap in the original legal neutral pose.
+  # These exclusions are explicit; all other self collisions remain checked.
+  exclude_parent_child: true
+  exclude_palm_finger_root_links: [link1, link2]
+  exclusion_basis: original_urdf_mechanical_finger_root_assembly
+  friction_hand: [2.0, 0.005, 0.0001]
+  friction_object: [0.5, 0.005, 0.0001]
+  contact_dim: 4
+  contact_model_note: local_soft_finger_torsional_patch_5mm_not_cross_simulator_validated
+  solref: [0.002, 1.0]
+  solimp: [0.95, 0.99, 0.001]
+  cone: elliptic
+  noslip_iterations: 10
+controller:
+  physics_dt_s: 0.0005
+  control_dt_s: 0.02
+  finger_kp: 400.0
+  finger_kv: 20.0
+  effort_limits: bench2dex_override
+  finger_effort_limit_nm: 800.0
+  finger_armature: 0.000005
+  parameter_source: robots/multi_ur5_wuji_with_flange.py
+  contact_latched_closure: true
+  object_center_alignment_before_lift: true
+  wrist_velocity_feedforward: true
+  initial_contact_pressure_fraction: 0.05
+  pressure_ready_contact_count: 3
+  latch_release_after_s: 0.02
+  wrist_position_kp: 1800.0
+  wrist_position_kd: 80.0
+  wrist_rotation_kp: 50.0
+  wrist_rotation_kd: 0.15
+  wrist_force_limit_n: 100.0
+  wrist_torque_limit_nm: 15.0
+  hand_gravity_compensation: true
+execution:
+  settle_s: 0.4
+  approach_s: 1.2
+  close_s: 2.0
+  lift_s: 1.2
+  hold_s: 1.2
+  approach_offset_m: 0.06
+  palm_rotation_y_deg: 90.0
+  table_orientation_samples: 256
+  table_clearance_m: 0.002
+  approach_path_samples: 17
+  approach_path_clearance_m: 0.0005
+  pregrasp_open_rad: 0.015
+  approach_direction_palm: [-1, 0, 0]
+  lift_m: 0.07
+  squeeze_rad: 0.025
+  disturbance_directions: [[1,0,0], [-1,0,0], [0,1,0], [0,-1,0], [0,0,1], [0,0,-1]]
+  disturbance_force_weight_fraction: 0.5
+  disturbance_s: 0.2
+  recovery_s: 0.2
+  timeout_s: 60

@@ -13,6 +13,22 @@
 5. [人类操作教程](../tutorials/README.md)
 6. [外部资源清单](../manifests/README.md)
 
+## Wuji 一代与 Bench2Dex 新增需求
+
+[Wuji 一代数据集与 Bench2Dex 任务迁移需求](design/wuji-bench2dex-requirements.md)定义新的实现目标：以 Bench2Dex 评测手模型生成可执行抓取和任务演示，先验证球类装箱，再扩展到调味品装箱。需求定义时功能尚未实现；先确认原始模型与资产，再进入单物体仿真。
+
+2026-10-13 第一版已实现原始资产检查、选择性资源哈希校验、左右手转换与 URDF/MuJoCo FK 对照、HDF5 校验、ACT 数据准备及原读取器检查。新增抓取与任务扩增尚未实现，M0 的 Isaac Lab / 碰撞与动力学验收尚未完成。详见[开发记录](design/wuji-bench2dex-v1-progress.md)和[操作教程](../tutorials/bench2dex_v1.md)。
+
+后续已按用户收敛的 MuJoCo 范围完成四种球与左右手的局部抓取生成/物理验证覆盖，取得 8 个可复核的本地通过样本及真实命令重放证据。最新状态见[MuJoCo 第一版](design/wuji-mujoco-grasp-v1.md)和[教程](../tutorials/bench2dex_mujoco.md)。本地通过不代表原 Bench2Dex 完整任务或 Isaac 通过。
+
+最新按用户选定的 Shadow 来源路线完成[相关资产筛选与首批姿态迁移](design/bench2dex-dexonomy-asset-transfer-v1.md)：77 个任务资产中找到 17 个同 YCB 编号/名称与 33 个类别候选，提取首批 8 条来源并生成三阶段 Wuji 一代静态候选。这批结果使用对应 Dexonomy 来源网格，尚未完成原 Bench2Dex USD 或真实控制下的动力学验证。
+
+后续补查扩展到 59 个有来源目录，并按用户每资产 3–4 种握法的要求完成[全部当前匹配资产的批量迁移](design/shadow-wuji-matched-assets-batch-v1.md)：59 个资产 × 4 种 = 236 个覆盖条目，172 个独立来源全部生成三阶段姿态和双模式图片；151 个静态候选、21 个待调整来源。统一查看入口和离线包已生成；缺口延期，仍未把这些静态姿态当作真实抓取成功。
+
+针对用户反馈的拇指僵硬，已完成[拇指第二版成对改进](design/shadow-wuji-thumb-v2.md)：同范围 172 个来源中 132 个采用新解、40 个保留第一版，拇指代理误差与贴近限位数量改善，原静态通过零退化。提供 Source/V1/选用结果对照与未采用提案；仍需人工自然性检查及真实控制验证。
+
+针对进一步发现的反折，已完成[拇指第三版](design/shadow-wuji-thumb-v3.md)：加入实际指段方向、末端非反折可行域、组合弯曲及发布检查。全部 172 例选用姿态无末端反折；151 个通过原几何及新检查，21 个待修正，两个旧几何候选因动作误差降为待修正。59 个资产仍各提供四份审查姿态。最终入口在 `output/shadow_wuji_v3/all_matched_thumb_v3_final/`，保留首轮与一次有限修复，64 项回归、全批校验和浏览器检查通过。仍是静态结果。
+
 ## 文档分区
 
 - `design/`：文档体系及跨领域长期设计。

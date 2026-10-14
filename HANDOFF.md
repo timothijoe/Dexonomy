@@ -1,4 +1,66 @@
-# Dexonomy 项目交接（更新于 2026-09-29）
+# Dexonomy 项目交接（更新于 2026-10-14）
+
+## 当前顺序：先提交第三版，再开发旋转查看
+
+用户确认第三版整体效果，并要求按旧版 roll/pitch/yaw 控件增加旋转查看，随后明确先写 Markdown 并 commit，再开发。已完成的第三版与后续范围记录在[版本快照及旋转计划](docs/design/shadow-wuji-thumb-v3-rotation-plan.md)。当前第三版仍是固定视角页面；旋转功能只完成旧实现阅读，尚未开发。下一步在当前版本提交后按计划实施独立的离线多视角导出与同步控件，继续使用本次 Wuji 一代姿态。
+
+## 最新完成：拇指第三版与非反折可行域
+
+用户授权按实际方向、相邻指节弯曲和反折约束实施。第三版从第二版选用姿态继续，末端两关节按真实连杆夹角限制非反折及组合弯曲，根部对掌关节仍保持原范围；原始手模型、第一/二版和首轮输出只读保留。实际指段方向与弯曲目标继续参考 Shadow，负弯曲目标的可行域投影另行记录。这是机器人几何迁移约定，不是人体活动范围认证。
+
+首轮 172 次、失败子集一次修复 60 次，恢复 39 个首轮失败。最终 59 资产 / 236 条目 / 172 来源：136 个第三版通过、15 个合格第二版保留、21 个待修正，对应 205 / 31 个覆盖条目通过/待修正。全部选用姿态末端无反折，最大有向夹角约 180°、最大组合弯曲约 120.55°；全部资产至少一个通过候选，53 个资产至少三个。相比第二版有两个旧几何候选（电池大直径握法、肥皂三指棱柱握法）因动作误差转为待修正，没有放宽旧门槛。
+
+最终审查入口 `output/shadow_wuji_v3/all_matched_thumb_v3_final/index.html`，离线包 `review_v3_bundle.zip`；支持逐阶段夹角对照及首轮/修复试验。64 项回归、全部来源/矩阵/限位/实际几何角、两份试验收据及 599 张图片核对通过。Chromium 检查 59 个资产、236 张卡片、两模式 472 次图片解码，过滤/放大/Esc/移动端均通过。下一步用户统一审查手型及剩余 21 例；仍没有动力学成功或原 Bench2Dex 完整任务验证。
+
+文档：[第三版记录](docs/design/shadow-wuji-thumb-v3.md)、[教程](tutorials/shadow_wuji_thumb_v3.md)。入口 `tools/batch_shadow_thumb_v3.py`、`tools/finalize_shadow_thumb_v3.py`、`tools/check_shadow_thumb_v3.py`、`tools/review_shadow_thumb_v3.py`。
+
+## 复核记录：第二版拇指反折约束缺失
+
+用户指出拇指超过伸直 180° 的视觉反折。只读审计第二版最终 172 例三阶段：没有机械限位违例，但抓取 j3/j4 有符号几何转角 <−5° 分别有 57/19 例，−5° 只是诊断阈值。笔 Stick 样本末端按伸直为 180° 的有向夹角约 207.45°；已采用第二版的网球样本也仍有 j3 反向弯曲。第二版最小二乘没有自然屈伸/关节组合硬约束，静态通过不能视为自然性通过。新增 `tools/audit_shadow_thumb_angles.py` 并全批运行，逐姿态校验几何转角变化与 hinge q 一致。记录在[反折与优化函数复核](docs/design/shadow-wuji-thumb-angle-audit.md)，数值在 `output/shadow_wuji_v2/thumb_angle_audit_2026-10-14.json`。该只读复核本身未改模型或旧输出；后续已据此实施第三版，见上。
+
+## 已完成：拇指第二版与第一版对照
+
+用户授权自行权衡继续优化/重新优化，并实施拇指第二版。代表样本显示两种初始化结果接近，决定以第一版优化姿态继续。新增掌心相对位置、对掌、指段/参考指腹朝向、局部接触区域及软限位余量；先拇指后全手有限修正。主配置未通过保护检查时，最多试一次保守配置，仍不适合则保留第一版。旧模型、硬限位、来源/尺度与质量门槛保持，第一版结果只读。
+
+批次目录 `output/shadow_wuji_v2/all_matched_thumb_v2/`，59 个资产 / 236 个覆盖条目 / 172 个独立来源全部完成；132 例采用第二版，40 例保留第一版，实际配置尝试 222 次。153 个静态候选、19 个仍需调整，原通过状态零退化。拇指综合误差均值下降约 11.6%，抓取阶段贴近限位的案例由 122 降到 37；参考指腹角度改善较小，不能称作完全自然。对照入口 `index.html` 表示 Shadow / 第一版 / 本次选用，离线包 `review_v2_bundle.zip` 保留未采用提案。50 项回归、全批成对身份/数值校验、684 张图片及全部 59 个资产的浏览器检查通过。原手模型及第一版代码未改，原输出未覆盖。
+
+文档：[第二版记录](docs/design/shadow-wuji-thumb-v2.md)、[教程](tutorials/shadow_wuji_thumb_v2.md)。当前改善为静态姿态代理指标，指腹参考并非硬件标定，动力学仍未验证。
+
+## 已完成：全部当前匹配资产，每资产四种握法静态迁移
+
+用户要求暂不补缺口，先完成所有已有来源的 Shadow→Wuji 一代迁移并统一检查，明确每资产 3–4 种握法。本轮已完成 59 个资产、每个四种、236 个覆盖条目、172 个独立来源优化，使用原始 Wuji 一代右手。151 个独立来源通过静态筛选、21 个需调整；按目标覆盖计为 205 / 31。所有来源均有三阶段姿态和双模式图，零输入/执行/渲染错误。44 项回归、整批来源/输出/限位校验与全部 59 个资产的浏览器图片检查通过。
+
+当前目录 `output/shadow_wuji_v1/all_matched_batch_v1/`，计划/结果为 `plan.json` / `summary.json`，查看入口为 `index.html`，离线包为 `review_bundle.zip`。每例有双模式图片、三阶段 NPZ、指标与校验收据。详见[本轮记录](docs/design/shadow-wuji-matched-assets-batch-v1.md)与[教程](tutorials/shadow_wuji_matched_batch.md)。这批结果仍使用对应 Dexonomy 来源几何/尺度，尚无本批原 Bench2Dex USD 上的真实控制验证。18 个缺口延期，不启动补充。下一步先与用户统一检查已有结果，不自动扩大资产范围。
+
+## 当前迁移方向：Shadow 到 Wuji 一代
+
+用户先建议 Allegro 来源，随后明确改为五指 Shadow 优先，目标是尽量保留手型与阶段动作，再联合优化接触与稳定性。已实现[Bench2Dex 相关资产筛选与首批迁移](docs/design/bench2dex-dexonomy-asset-transfer-v1.md)：17 个同 YCB 身份线索、33 个类别候选、27 个未匹配目录；8 个目标条目提取为固定开发清单并完成三阶段静态迁移，6 个来源物体/72 个资源文件另行校验提取。最大静态穿透约 0.53–0.59 mm，6 个数值求解到达迭代上限，全部只标为静态候选。本路线的物理成功样本尚未实现，尚未把姿态换到 Bench2Dex 原始 USD 上执行。
+
+复现用 `benchmarks/shadow_wuji_bench2dex_v1.json`，工具为 `tools/match_bench2dex_dexonomy.py`、`tools/retarget_shadow_wuji_v1.py`、`tools/stage_shadow_transfer_assets.py`。实际输出在 `output/shadow_wuji_v1/asset_selection_v2/`、`selected_assets/`、`retarget_selected_v2/`；操作见[教程](tutorials/shadow_wuji_asset_transfer.md)。目标继续使用 Bench2Dex 原始 Wuji 一代，仅做 MuJoCo。Allegro 方案留作候选对照，旧 Wuji2 迁移结果不作为本次完成证据。
+
+最新资产补查扩展至 59/77 个目录有候选（17 同 YCB 身份线索 + 42 类别/家族），18 个目录仍有缺口，厨房组合另有部分组件来源。v3 清单在 `output/shadow_wuji_v1/asset_selection_v3/`，详见[剩余缺口与证据层级](docs/design/bench2dex-dexonomy-asset-gaps.md)。首批八条迁移来源不变，尚未新增动态验证；玩具冰箱、整钢琴与其他拼图模型不代表功能部件或任务动作已适配。
+
+## 最新：MuJoCo 四球双侧局部闭环
+
+用户明确本次只做 MuJoCo，Isaac 由独立 RTX 机器承接。已实现碰撞面抓取候选、开手/收紧优化、桌面与接近检查、实际闭手/抬起/保持/六方向扰动、逐步轨迹、固定预算续跑、真实指令重放与相对路径结果包。20 次声明的开发覆盖尝试取得 8 个通过样本，覆盖四种目标球的左右手全部 8 个单元；全部通过样本的命令物理重放误差为 0。不是总体成功率或完整任务成绩。
+
+当前权威事实：[MuJoCo 第一版](docs/design/wuji-mujoco-grasp-v1.md)、[增量开发记录](docs/design/wuji-bench2dex-v1-progress.md)、[操作教程](tutorials/bench2dex_mujoco.md)。M0 跨模拟器、机械臂可达性、双手完整任务与策略训练仍待完成。下方“尚无新增抓取”是先前阶段的交接状态，以上述最新记录为准。
+
+用户质疑抬升图后进行了[实际接触力复核](docs/design/wuji-mujoco-lift-audit.md)：原图样本确实由三指接触支撑，保持时向上力等于球重且无桌面支撑。全过程约 172 mm 上升包含闭手时约 103 mm，单独 lift 约 69 mm。实际接触包含指节，不能继承请求的 Precision Sphere 类别为验收标签；后续应完善执行后接触组检查和闭手路径质量。已有带高度/力文字的 GIF、MP4 和透明承力点近景；总计 35 项检查通过。
+
+## 2026-10-13 第一版实现与当前进入条件
+
+已实现 `tools/bench2dex.py` 与 `dexonomy/integrations/bench2dex/`：官方固定资源校验、资产/模型检查、左右手转换与 URDF/MuJoCo 固定姿态对照、HDF5 校验、ACT 独立副本准备、运行时 FK 文件对照和姿态预览。
+
+任务 27 所需原始资产与一条原演示/对应 RGB 重放已选择性下载到仓库外，204 个文件官方哈希校验通过；左右手四组姿态 FK 对照通过。原演示准备后 907 帧可用于训练，Bench2Dex 原 ACT Dataset/归一化函数实际读取通过。运行证据、输出路径与命令见[开发记录](docs/design/wuji-bench2dex-v1-progress.md)和[教程](tutorials/bench2dex_v1.md)。
+
+M0 仍未验收：缺少 Isaac Lab / Isaac Sim 运行时对照，原始 USD 独立解析警告和碰撞/惯性/驱动差异待核实。新增抓取、完整任务扩增、ACT 策略训练及 A/B/C 评测尚未完成。下节的“资产缺失、功能尚未实现”是需求定义时的状态，以上述开发记录为当前状态。
+
+## 2026年10月13日新增实现目标
+
+后续目标改为 Bench2Dex 实际评测的 Wuji 一代，先做任务 27 球类装箱，再做任务 21 调味品装箱。用户要求先写需求文档，再在 Dexonomy 中实现；当前交付为[Wuji 一代数据集与 Bench2Dex 任务迁移需求](docs/design/wuji-bench2dex-requirements.md)，新功能尚未实现。
+
+第一步为 M0 模型与资产检查。Bench2Dex 默认机器人与物体资产、原演示目录尚缺；本机旧 `wujihand-v1.0.2` 模型与 Bench2Dex 描述的限位存在差异，不能直接视为已确认的评测模型。下文 Wuji2 内容是保留的历史实现与实验记录，不作为新目标模型或新实验结果。
 
 ## 两个独立的 Wuji2 结果版本
 
