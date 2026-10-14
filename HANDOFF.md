@@ -1,8 +1,12 @@
 # Dexonomy 项目交接（更新于 2026-10-14）
 
-## 当前顺序：先提交第三版，再开发旋转查看
+## 当前状态：旋转完成，记录重力验证边界并提交
 
-用户确认第三版整体效果，并要求按旧版 roll/pitch/yaw 控件增加旋转查看，随后明确先写 Markdown 并 commit，再开发。已完成的第三版与后续范围记录在[版本快照及旋转计划](docs/design/shadow-wuji-thumb-v3-rotation-plan.md)。当前第三版仍是固定视角页面；旋转功能只完成旧实现阅读，尚未开发。下一步在当前版本提交后按计划实施独立的离线多视角导出与同步控件，继续使用本次 Wuji 一代姿态。
+用户确认第三版整体效果，并要求按旧版 roll/pitch/yaw 控件增加旋转查看，随后明确先写 Markdown 并 commit，再开发。已按顺序提交静态版本及计划为 `6fc28ee`，提交时工作区干净，再实施后续旋转。快照见[版本计划](docs/design/shadow-wuji-thumb-v3-rotation-plan.md)，实际完成记录见[旋转开发记录](docs/design/shadow-wuji-thumb-v3-rotation.md)。本轮按用户要求，将旋转实现、教程、测试和重力验证边界整理为后续独立提交；完成后停止开发，等待讨论。
+
+重力边界已复核并记入[第三版记录](docs/design/shadow-wuji-thumb-v3.md)：本批 172 个迁移来源尚未执行开启重力的闭手、抬升、保持或扰动。当前用 `MuJoCo_VisEnv` / `mj_fwdPosition` 作静态运动学，环境默认禁用重力，`physical_passed` / `full_task_passed` 均为 null。此前四球双侧 8 个动力学通过样本属于独立批次，不能覆盖这些迁移姿态。本轮只记录与提交，不启动新的动力学实验。
+
+旋转已完整覆盖原 172 个来源 / 236 个条目：61,920 张三版本比较帧，12 水平 × 5 俯仰，Roll 每 30° 一档，全部比较格同步。原总览顶部及逐握法新增入口，直接页面为 `output/shadow_wuji_v3/all_matched_thumb_v3_final/rotation/index.html`；静态九格及姿态数组未改。全部图片 SHA/尺寸、12,384 帧三格解码、来源姿态 SHA 核查通过。禁用 WebGL 实测全部条目的 1416 个阶段/模式组合，控件/拖动/循环/边界/异步加载/移动端均通过，66 项回归通过。入口为 `tools/export_shadow_thumb_v3_rotation.py` / `tools/review_shadow_thumb_v3_rotation.py`，使用 MuJoCo 预渲染及 Canvas 2D，仍无动力学成功标签。
 
 ## 最新完成：拇指第三版与非反折可行域
 

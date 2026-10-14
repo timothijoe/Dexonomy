@@ -51,6 +51,8 @@ Shadow 来源迁移另提供 `tools/match_bench2dex_dexonomy.py`、`tools/stage_
 
 拇指第三版用 `tools/refine_shadow_thumb_v3.py` / `tools/batch_shadow_thumb_v3.py`，从第二版选用姿态继续，加入末端非反折和组合弯曲可行域以及朝向发布检查。`tools/check_shadow_thumb_v3.py` 独立测量几何角并检查全批来源/结果，`tools/review_shadow_thumb_v3.py` 展示 Source / V2 / 本次选用。只有满足新检查的旧姿态可保留，新旧皆不合格时明确待修正。入口及边界见[第三版教程](../../../tutorials/shadow_wuji_thumb_v3.md)。
 
+`tools/export_shadow_thumb_v3_rotation.py` 从冻结的第三版 NPZ 导出相机网格，`--ids` 可作代表样本、`--prepare-only` / `--resume` 固定及校验续跑，默认最多四个 worker。`tools/review_shadow_thumb_v3_rotation.py` 生成无需 WebGL 的离线旋转页；`tools/check_shadow_thumb_v3_rotation.py` / `tools/check_shadow_thumb_v3_rotation_browser.py` 分别校验帧/姿态身份及三轴控件。完成后重跑第三版总览导出会增加逐握法旋转链接。见[旋转教程](../../../tutorials/shadow_wuji_thumb_v3_rotation.md)。
+
 MuJoCo 局部部分增加 `catalog-assets`、`generate-grasp`、`batch-grasps`、`replay-physics`、`export-grasp`。生成支持固定种子、校验续跑与只检查；批量为单 worker、显式 max-cases / seed 范围，失败保存而不无限重试。结果区分几何、MuJoCo 局部动力学及未验证的 Isaac/完整任务层级。详见[局部生成教程](../../../tutorials/bench2dex_mujoco.md)。
 
 - `skip_done=True` 会根据已有输出或路径日志跳过处理。

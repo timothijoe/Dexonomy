@@ -4,6 +4,7 @@ import argparse
 import json
 from pathlib import Path
 import sys
+from urllib.parse import quote
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from dexonomy.integrations.bench2dex.common import atomic_json
@@ -28,6 +29,8 @@ def build(root):
     rows = {r['case_id']: r for r in summary['results']}
     jobs = {j['case_id']: j for j in plan['jobs']}
     entries = []
+    rotation_path = root / 'rotation' / 'viewer.json'
+    rotation_cases = {e['caseId'] for e in json.loads(rotation_path.read_text())['entries']} if rotation_path.is_file() else set()
     match_labels = {'same_ycb_id_and_name': '同 YCB 编号/名称，网格等价待核查',
                     'same_named_category': '同名类别候选', 'similar_geometry_family': '相近几何家族候选'}
     version_labels = {'v3': '采用第三版', 'v3_rejected': '第三版待修正', 'v2_retained': '保留已通过新检查的旧版'}
@@ -71,6 +74,7 @@ def build(root):
                                      'before': r['baseline_natural']['phases'][p]['oriented_straight180_deg'],
                                      'after': natural['phases'][p]['oriented_straight180_deg']}
                                     for p in ['pregrasp', 'grasp', 'squeeze']] if r else []
+            entry['rotation'] = 'rotation/index.html#' + quote(name + '::' + grasp['category'], safe='') if cid in rotation_cases else None
             entries.append(entry)
             md.append(f'| {name} | {grasp["category"]} | {version} | {entry["geometryPassed"]} | {entry["policyPassed"]} | {entry["status"]} |')
     data = {'assetCount': plan['asset_count'], 'uniqueCases': plan['unique_source_cases'],
@@ -79,6 +83,8 @@ def build(root):
             'rejectedEntries': sum(e['status'] == 'kinematic_rejected' for e in entries),
             'deferredCount': len(plan['deferred_assets']), 'entries': entries}
     page = PAGE.replace('全资产姿态审查', '拇指 V2 / V3 对照')
+    if rotation_cases:
+        page = page.replace('</header>', '<p><a href="rotation/index.html">打开可旋转对照</a> · 水平、俯仰、滚转控件；每条握法下方也可直接进入。</p></header>', 1)
     page = page.replace('顶行 Shadow 来源，中行 Wuji 迁移初值，底行 Wuji 联合优化',
                         '顶行 Shadow 来源，中行第二版最终选用姿态，底行本次选用姿态')
     page = page.replace('当前使用 Dexonomy 来源物体与尺度，目标是 Wuji 一代右手。',
@@ -91,7 +97,7 @@ def build(root):
     page = page.replace("title.append(elem('span',labels[e.status],`badge ${e.status}`));", "title.append(elem('span',labels[e.status],`badge ${e.status}`));title.append(elem('span',' · '+e.versionLabel));")
     page = page.replace("if(e.shape!==null){", "if(e.maxOrientedAngle!==null){const n=elem('div',undefined,'metrics');n.append(elem('div','末端最大有向夹角：'+e.maxOrientedAngle.toFixed(1)+'°'),elem('div','最大组合弯曲：'+e.maxCombinedBend.toFixed(1)+'°'),elem('div','最大指段方向误差：'+e.maxBoneError.toFixed(1)+'°'),elem('div','最大参考指腹方向误差：'+e.maxPadError.toFixed(1)+'°'));d.append(n)}if(e.shape!==null){")
     page = page.replace("const links=elem('div',undefined,'links');", "if(e.phaseAngles.length){const angles=elem('details');angles.append(elem('summary','三阶段夹角：第二版 → 本次选用（伸直 180°）'));for(const p of e.phaseAngles)angles.append(elem('div',p.phase+'：关节3 '+p.before[0].toFixed(1)+'° → '+p.after[0].toFixed(1)+'°；关节4 '+p.before[1].toFixed(1)+'° → '+p.after[1].toFixed(1)+'°'));d.append(angles)}const links=elem('div',undefined,'links');")
-    page = page.replace('d.append(links);card.append(d);', "if(e.proposal)links.append(link('未采用的第三版提案',e.proposal));if(e.primaryTrial)links.append(link('首轮结果',e.primaryTrial));if(e.repairTrial)links.append(link('几何修复尝试',e.repairTrial));d.append(links);card.append(d);")
+    page = page.replace('d.append(links);card.append(d);', "if(e.rotation)links.append(link('旋转查看',e.rotation.replace('#','?mode='+(mode==='hand'?'hand':'scene')+'#')));if(e.proposal)links.append(link('未采用的第三版提案',e.proposal));if(e.primaryTrial)links.append(link('首轮结果',e.primaryTrial));if(e.repairTrial)links.append(link('几何修复尝试',e.repairTrial));d.append(links);card.append(d);")
     payload = json.dumps(data, ensure_ascii=False, allow_nan=False).replace('<', r'\u003c')
     (root / 'index.html').write_text(page.replace('__DATA__', payload), encoding='utf-8')
     atomic_json(root / 'review.json', data)

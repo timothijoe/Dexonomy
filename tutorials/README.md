@@ -22,4 +22,6 @@ Wuji 一代新增流程见[Bench2Dex 第一版检查与 ACT 数据准备](bench2
 
 拇指实际指节方向、非反折可行域及合格旧解保留，见[拇指第三版教程](shadow_wuji_thumb_v3.md)。
 
+第三版 roll/pitch/yaw 按钮、滑条与离线旋转查看，见[旋转查看教程](shadow_wuji_thumb_v3_rotation.md)。
+
 上游已有的人工标注细节保留在 `getting_started/1_annotation_tutorial.md`，完整生成参数示例保留在 `getting_started/2_running_tutorial.md`。本目录以当前仓库和当前资源布局为准。
