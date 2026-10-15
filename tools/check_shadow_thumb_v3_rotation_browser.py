@@ -19,9 +19,9 @@ def check(root):
         page = browser.new_page(viewport={'width': 1440, 'height': 1000})
         page.on('pageerror', lambda error: errors.append(str(error)))
         page.goto((root / 'index.html').as_uri())
-        def ready(count=3):
+        def ready(count=2):
             page.wait_for_function("count=>document.querySelectorAll('canvas').length===count&&document.querySelector('#loading').textContent===''", arg=count)
-        def angles(yaw, pitch, roll, count=3):
+        def angles(yaw, pitch, roll, count=2):
             page.wait_for_function("a=>document.querySelectorAll('canvas').length===a[3]&&[...document.querySelectorAll('canvas')].every(c=>c.dataset.yaw===String(a[0])&&c.dataset.pitch===String(a[1])&&c.dataset.roll===String(a[2]))&&document.querySelector('#loading').textContent===''", arg=[yaw,pitch,roll,count])
         ready(); assert page.evaluate("document.createElement('canvas').getContext('webgl')===null")
         page.click('#yawPrevious'); angles(11,2,0)
@@ -34,16 +34,23 @@ def check(root):
         page.evaluate("()=>{for(const [id,value] of [['yawRange',5],['pitchRange',4],['rollRange',3]]){const e=document.getElementById(id);e.value=value;e.dispatchEvent(new Event('input',{bubbles:true}))}}")
         angles(5,4,3)
         page.click('#reset'); angles(0,2,0)
-        page.select_option('#phase','all'); angles(0,2,0,9)
+        page.select_option('#phase','all'); angles(0,2,0,6)
         for mode in ['hand','scene']:
             page.click('#'+mode)
-            page.wait_for_function("mode=>document.querySelectorAll('canvas').length===9&&[...document.querySelectorAll('canvas')].every(c=>c.dataset.path.includes('_'+mode+'_'))&&document.querySelector('#loading').textContent===''",arg=mode)
+            page.wait_for_function("mode=>document.querySelectorAll('canvas').length===6&&[...document.querySelectorAll('canvas')].every(c=>c.dataset.path.includes('_'+mode+'_'))&&document.querySelector('#loading').textContent===''",arg=mode)
         box = page.locator('canvas').first.bounding_box()
         page.mouse.move(box['x']+100,box['y']+100);page.mouse.down()
-        page.mouse.move(box['x']+40,box['y']+55,steps=4);angles(3,3,0,9);page.mouse.up()
+        page.mouse.move(box['x']+40,box['y']+55,steps=4);angles(3,3,0,6);page.mouse.up()
+        assert page.locator('canvas').evaluate_all("cs=>cs.every(c=>c.dataset.role!=='1')")
+        page.locator('#history summary').click();angles(3,3,0,9)
+        assert page.locator('canvas[data-role="1"]').count()==3
+        page.click('#rollNext');angles(3,3,1,9)
+        page.locator('#history summary').click();angles(3,3,1,6)
+        assert page.locator('canvas[data-role="1"]').count()==0
+        page.click('#rollPrevious');angles(3,3,0,6)
         # Rapid state updates must resolve to the latest frame, for all panels.
         page.evaluate("()=>{for(const value of [1,6,2,9]){const e=document.getElementById('yawRange');e.value=value;e.dispatchEvent(new Event('input',{bubbles:true}))}}")
-        angles(9,3,0,9)
+        angles(9,3,0,6)
         page.select_option('#phase','grasp');ready()
         page.click('#reset');angles(0,2,0)
         # Check each alias entry in every phase/mode at the baseline view.
@@ -53,7 +60,17 @@ def check(root):
                 page.select_option('#phase',phase)
                 for mode in ['scene','hand']:
                     page.click('#'+mode)
-                    page.wait_for_function("a=>document.querySelectorAll('canvas').length===3&&[...document.querySelectorAll('canvas')].every(c=>c.dataset.phase===a[0]&&c.dataset.path.includes('/'+a[1]+'/')&&c.dataset.path.includes('_'+a[2]+'_'))&&document.querySelector('#loading').textContent===''",arg=[phase,entry['caseId'],mode])
+                    page.wait_for_function("a=>document.querySelectorAll('canvas').length===2&&[...document.querySelectorAll('canvas')].every(c=>c.dataset.phase===a[0]&&c.dataset.path.includes('/'+a[1]+'/')&&c.dataset.path.includes('_'+a[2]+'_'))&&document.querySelector('#loading').textContent===''",arg=[phase,entry['caseId'],mode])
+        retained=next((e for e in data['entries'] if e['selectedVersion']=='v2_retained'),None)
+        if retained:
+            page.select_option('#asset',retained['asset']);page.select_option('#grasp',retained['entryId']);ready()
+            assert '最终 Wuji（沿用 V2）' in page.locator('#panels').inner_text()
+            assert '动力学未验证' in page.locator('#meta').inner_text()
+        page.locator('#history summary').click();ready(3)
+        page.select_option('#phase','all');ready(9)
+        page.click('#hand')
+        page.wait_for_function("()=>document.querySelectorAll('canvas').length===9&&[...document.querySelectorAll('canvas')].every(c=>c.dataset.path.includes('_hand_'))&&document.querySelector('#loading').textContent===''")
+        page.locator('#history summary').click();ready(6)
         if any(e['asset']=='056_tennis_ball' for e in data['entries']):page.select_option('#asset','056_tennis_ball')
         page.select_option('#phase','grasp');ready();page.screenshot(path=str(root/'rotation_checked.png'),full_page=True)
         page.set_viewport_size({'width':430,'height':900})
@@ -64,7 +81,9 @@ def check(root):
               'baseline_phase_mode_combinations': len(data['entries'])*6,
               'three_axis_buttons_sliders_drag_reset_passed': True,
               'wrapping_pitch_clamping_and_latest_request_passed': True,
-              'all_phases_and_mobile_passed': True, 'page_errors': errors}
+              'all_phases_and_mobile_passed': True,
+              'default_two_columns_and_expandable_v2_history_passed': True,
+              'retained_v2_provenance_and_physical_status_passed': True, 'page_errors': errors}
     atomic_json(root/'browser_check.json',report)
     return report
 

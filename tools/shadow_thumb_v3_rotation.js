@@ -1,7 +1,7 @@
 const data = JSON.parse(document.getElementById('data').textContent);
 const $ = id => document.getElementById(id);
 const phases = {pregrasp:'预抓取',grasp:'抓取',squeeze:'收紧'};
-const state = {entry:null,phase:'grasp',mode:'scene',yaw:0,pitch:2,roll:0,sequence:0};
+const state = {entry:null,phase:'grasp',mode:'scene',yaw:0,pitch:2,roll:0,history:false,sequence:0};
 if(new URLSearchParams(location.search).get('mode')==='hand')state.mode='hand';
 const cache = new Map();
 let draggingCanvas = null;
@@ -56,18 +56,21 @@ async function render(){
   updateControls();const sequence=++state.sequence,entry=state.entry;
   const selectedPhases=state.phase==='all'?Object.keys(phases):[state.phase];
   const paths=selectedPhases.map(phase=>framePath(entry,phase));
+  const roles=state.history?[0,1,2]:[0,2];
   const snapshot={mode:state.mode,yaw:state.yaw,pitch:state.pitch,roll:state.roll};
   $('loading').textContent='正在加载视角…';
-  $('meta').textContent=`${entry.assetLabel} · ${entry.categoryLabel} · ${entry.status==='kinematic_candidate'?'静态检查通过':'需要调整'} · ${entry.versionLabel} · 来源：${entry.source} · ${entry.matchLabel}`;
+  $('meta').textContent=`${entry.assetLabel} · ${entry.categoryLabel} · ${entry.status==='kinematic_candidate'?'静态检查通过':'需要调整'} · ${entry.versionLabel} · ${entry.physicalPassed===true?'动力学保持检查通过':entry.physicalPassed===false?'动力学保持检查未通过':'动力学未验证'} · 来源：${entry.source} · ${entry.matchLabel}`;
   $('meta').classList.toggle('rejected',entry.status!=='kinematic_candidate');
   try{
     const images=await Promise.all(paths.map(loadFrame));if(sequence!==state.sequence)return;
     const fragment=document.createDocumentFragment();
     for(let i=0;i<selectedPhases.length;i++){
       const phase=selectedPhases[i];fragment.append(element('h2',phases[phase]));
-      const grid=element('div');grid.className='grid';
-      const selectedLabel=entry.selectedVersion==='v2_retained'?'本次选用（保留第二版）':entry.selectedVersion==='v3_rejected'?'第三版提案（待修正）':'第三版最终选用';
-      for(const [role,label] of ['Shadow 来源','第二版最终选用',selectedLabel].entries()){
+      const grid=element('div');grid.className='grid'+(state.history?' with-history':'');
+      const selectedLabel=entry.selectedVersion==='v2_retained'?'最终 Wuji（沿用 V2）':entry.selectedVersion==='v3_rejected'?'最终 Wuji 提案（待修正）':'最终 Wuji（V3）';
+      const labels=['原 Shadow','历史 V2',selectedLabel];
+      for(const role of roles){
+        const label=labels[role];
         const article=element('article');article.className=['source','v2','selected'][role];article.append(element('h3',label));
         const canvas=element('canvas');canvas.dataset.role=String(role);canvas.dataset.phase=phase;canvas.dataset.path=paths[i];
         canvas.dataset.yaw=String(snapshot.yaw);canvas.dataset.pitch=String(snapshot.pitch);canvas.dataset.roll=String(snapshot.roll);
@@ -79,7 +82,7 @@ async function render(){
     const active=draggingCanvas?.isConnected?draggingCanvas:null;
     if(active){
       const current=[...$('panels').querySelectorAll('canvas')];
-      if(current.length===selectedPhases.length*3&&current.every(c=>selectedPhases.includes(c.dataset.phase))){
+      if(current.length===selectedPhases.length*roles.length&&current.every(c=>selectedPhases.includes(c.dataset.phase)&&roles.includes(Number(c.dataset.role)))){
         for(const canvas of current){const i=selectedPhases.indexOf(canvas.dataset.phase),role=Number(canvas.dataset.role);paint(canvas,images[i],role,snapshot.roll);canvas.dataset.path=paths[i];canvas.dataset.yaw=String(snapshot.yaw);canvas.dataset.pitch=String(snapshot.pitch);canvas.dataset.roll=String(snapshot.roll)}
       }else $('panels').replaceChildren(fragment);
     }else $('panels').replaceChildren(fragment);
@@ -93,6 +96,7 @@ function chooseEntry(id){
 }
 $('asset').onchange=()=>chooseEntry(data.entries.find(e=>e.asset===$('asset').value).entryId);
 $('grasp').onchange=()=>chooseEntry($('grasp').value);
+$('history').ontoggle=()=>{state.history=$('history').open;render()};
 $('phase').onchange=()=>{state.phase=$('phase').value;render()};
 for(const mode of ['scene','hand'])$(mode).onclick=()=>{state.mode=mode;render()};
 for(const [key,delta] of [['yaw',-1],['yaw',1],['pitch',-1],['pitch',1],['roll',-1],['roll',1]]){

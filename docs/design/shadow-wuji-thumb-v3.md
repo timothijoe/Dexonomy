@@ -74,7 +74,7 @@
 - 新最终目录中 60 例的首轮/修复试验均保留，嵌套试验收据及结果 SHA 与父批次核对通过，599 张 PNG 文件校验通过。
 - Chromium 检查全部 59 个资产、236 张卡片、两模式 472 次图片解码，版本/状态筛选、文字搜索、放大/Esc 和移动端布局均通过，无页面错误。
 
-审查入口为 `index.html`，离线包为 `review_v3_bundle.zip`。图中依次为 Shadow 来源、第二版最终选用、第三版最终选用；可展开每阶段 j3/j4 的“第二版夹角→本次夹角”，并查看首轮/修复或未采用提案。`paired_check.json` 和 `browser_check.json` 保存整批验证。
+审查入口为 `index.html`，离线包为 `review_v3_bundle.zip`。当前默认原 Shadow / 最终选用 Wuji 两列，按预抓取、抓取、收紧查看；展开历史对照增加 V2 一列。最终结果沿用 V2 时直接显示并注明来源，待修正提案仍明确标记，动力学状态另行显示。可展开每阶段 j3/j4 的“第二版夹角→本次夹角”，并查看首轮/修复或未采用提案。`paired_check.json` 和 `browser_check.json` 保存整批验证。
 
 离线包已生成并校验 CRC/SHA，约 139.2 MiB、1485 个文件；归档收据为 `review_bundle_receipt.json`。最后一次完整回归实际运行 64 项，约 13 秒，全部通过；日志保存在最终目录的 `regression_check.log`。
 

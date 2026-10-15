@@ -29,10 +29,12 @@ def build(root):
         cid = Path(e['result']).parent.name
         if cid not in cases: continue
         entries.append({k: e[k] for k in ['asset', 'assetLabel', 'category', 'categoryLabel', 'status', 'versionLabel', 'selectedVersion', 'source', 'matchLabel']} |
+                       {'physicalPassed': e.get('physicalPassed')} |
                        {'caseId': cid, 'entryId': e['asset'] + '::' + e['category']})
     data = {'caseCount': len(cases), 'scope': plan['scope'], 'entries': entries,
             'width': plan['config']['width'], 'height': plan['config']['height'],
             'azimuths': plan['azimuths'], 'elevations': plan['elevations'],
+            'historyDefaultOpen': False,
             'back': Path(os.path.relpath(Path(plan['batch']) / 'index.html', root)).as_posix()}
     template = Path(__file__).with_name('shadow_thumb_v3_rotation.html').read_text()
     payload = json.dumps(data, ensure_ascii=False, allow_nan=False).replace('<', r'\u003c')
