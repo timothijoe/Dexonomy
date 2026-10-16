@@ -11,6 +11,7 @@ const assets = [...new Map(data.entries.map(e=>[e.asset,e.assetLabel])).entries(
 for(const [value,label] of assets){const option=new Option(label,value);$('asset').add(option)}
 $('counts').textContent = `${data.scope==='pilot'?'代表样本预览 · ':''}资产 ${assets.length} · 握法条目 ${data.entries.length} · 独立来源 ${data.caseCount} · 每来源 360 个比较帧`;
 if(data.back)$('back').href=data.back;
+if(data.historyLabel)$('history').querySelector('summary').textContent=data.historyLabel;
 function framePath(entry,phase){return `frames/${entry.caseId}/${phase}_${state.mode}_p${String(state.pitch).padStart(2,'0')}_y${String(state.yaw).padStart(2,'0')}.webp`}
 function loadFrame(path){
   if(!cache.has(path)){
@@ -67,8 +68,8 @@ async function render(){
     for(let i=0;i<selectedPhases.length;i++){
       const phase=selectedPhases[i];fragment.append(element('h2',phases[phase]));
       const grid=element('div');grid.className='grid'+(state.history?' with-history':'');
-      const selectedLabel=entry.selectedVersion==='v2_retained'?'最终 Wuji（沿用 V2）':entry.selectedVersion==='v3_rejected'?'最终 Wuji 提案（待修正）':'最终 Wuji（V3）';
-      const labels=['原 Shadow','历史 V2',selectedLabel];
+      const selectedLabel=entry.selectedLabel||(entry.selectedVersion==='v2_retained'?'最终 Wuji（沿用 V2）':entry.selectedVersion==='v3_rejected'?'最终 Wuji 提案（待修正）':'最终 Wuji（V3）');
+      const labels=['原 Shadow',data.baselineLabel||'历史 V2',selectedLabel];
       for(const role of roles){
         const label=labels[role];
         const article=element('article');article.className=['source','v2','selected'][role];article.append(element('h3',label));

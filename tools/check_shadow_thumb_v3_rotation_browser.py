@@ -83,7 +83,7 @@ def check(root):
               'wrapping_pitch_clamping_and_latest_request_passed': True,
               'all_phases_and_mobile_passed': True,
               'default_two_columns_and_expandable_v2_history_passed': True,
-              'retained_v2_provenance_and_physical_status_passed': True, 'page_errors': errors}
+              'retained_v2_provenance_and_physical_status_passed': True if retained else None, 'page_errors': errors}
     atomic_json(root/'browser_check.json',report)
     return report
 

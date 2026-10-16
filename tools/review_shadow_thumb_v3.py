@@ -33,6 +33,7 @@ def build(root):
     rotation = json.loads(rotation_path.read_text()) if rotation_path.is_file() else None
     rotation_cases = {e['caseId'] for e in rotation['entries']} if rotation else set()
     match_labels = {'same_ycb_id_and_name': '同 YCB 编号/名称，网格等价待核查',
+                    'native_dexonomy_model': 'Dexonomy 原模型映射；不代表 Bench2Dex 同模型',
                     'same_named_category': '同名类别候选', 'similar_geometry_family': '相近几何家族候选'}
     version_labels = {'v3': '采用第三版', 'v3_rejected': '第三版待修正', 'v2_retained': '沿用 V2，满足当前静态约束'}
     md = ['# 拇指第三版逐目标对照', '',
@@ -49,7 +50,8 @@ def build(root):
             natural = r['selected_natural'] if r else None
             version = row.get('selected_version', 'pending')
             name = asset['bench_object']; prefix = name.split('_')[0].split('-')[0]
-            entry = {'asset': name, 'assetLabel': ASSET_NAMES.get(prefix, name) + ' · ' + name,
+            label = {'can':'罐模型','bottle':'瓶模型','box':'盒模型'}.get(asset.get('family'),name) if asset['match_level']=='native_dexonomy_model' else ASSET_NAMES.get(prefix,name)
+            entry = {'asset': name, 'assetLabel': label + ' · ' + name,
                      'category': grasp['category'],
                      'categoryLabel': CATEGORY_NAMES.get(grasp['category'].split('_')[0], grasp['category']) + ' · ' + grasp['category'],
                      'source': job['selection']['dexonomy_object'], 'status': row.get('status', 'pending'),

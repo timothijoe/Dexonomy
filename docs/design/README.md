@@ -18,6 +18,7 @@
 - [拇指第三版离线旋转可视化开发记录](shadow-wuji-thumb-v3-rotation.md)
 - [Shadow→Wuji 审查界面调整与提交记录（2026-10-15）](shadow-wuji-review-ui-2026-10-15.md)
 - [第三版接触区域与重力测试准备复核](shadow-wuji-contact-gravity-audit.md)
+- [Shadow→Wuji 边缘接触再优化与更多模型试验](shadow-wuji-edge-refinement-expansion.md)
 - [文档体系](documentation-system.md)
 - [数据、生成与可视化边界](data-generation-visualization.md)
 - [Shadow Hand 抓取图鉴与三方向视角](shadow-taxonomy-preview.md)
