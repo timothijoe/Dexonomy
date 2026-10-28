@@ -10,9 +10,12 @@ function elem(tag,text,className){const n=document.createElement(tag);if(text!==
 function link(label,url){const a=elem('a',label);a.href=url;a.target='_blank';a.rel='noopener';return a}
 const assets=[...new Map(data.entries.map(e=>[e.asset,e.assetLabel])).entries()];
 for(const [id,label]of assets)$('asset').append(new Option(label,id));
+const categories=[...new Map(data.entries.map(e=>[e.category,e.categoryLabel])).entries()].sort((a,b)=>parseInt(a[0])-parseInt(b[0]));
+for(const [id,label]of categories)$('category').append(new Option(label,id));
 $('counts').textContent=`资产 ${data.assetCount} · 握法条目 ${data.entries.length} · 独立迁移 ${data.completedCases}/${data.uniqueCases} · 静态筛选通过 ${data.candidateEntries} · 待调整 ${data.rejectedEntries} · 缺口资产 ${data.deferredCount}`;
 $('rotationLink').hidden=!data.entries.some(e=>e.rotation);
-function finalLabel(e){return e.selectedVersion==='v2_retained'?'最终 Wuji（沿用 V2）':e.selectedVersion==='v3_rejected'?'最终 Wuji 提案（待修正）':'最终 Wuji（V3）'}
+if(data.defaultAsset)$('asset').value=data.defaultAsset;
+function finalLabel(e){return e.selectedLabel||(e.selectedVersion==='v2_retained'?'最终 Wuji（沿用 V2）':e.selectedVersion==='v3_rejected'?'最终 Wuji 提案（待修正）':'最终 Wuji（V3）')}
 function loadImage(url){
   if(!imageCache.has(url)){
     const promise=new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=()=>reject(new Error('对照图加载失败：'+url));image.src=url});
@@ -33,7 +36,7 @@ async function loadComparison(entry){
 function comparison(loaded,entry,zoom){
   const view=elem('div',undefined,'comparison');
   const roles=$('history').open?[0,1,2]:[0,2];
-  const titles=['原 Shadow','历史 V2',finalLabel(entry)];
+  const titles=['原 Shadow',entry.baselineLabel||'历史 V2',finalLabel(entry)];
   for(let phase=0;phase<3;phase++){
     view.append(elem('h4',phases[phase]));
     const grid=elem('div',undefined,'posture-grid'+($('history').open?' with-history':''));
@@ -98,22 +101,27 @@ function picture(entry,url){
   };
   return holder;
 }
+function contactMatches(e){const f=e.contactFlags||[],v=$('contact').value;return !v||(v==='required_drift'&&e.requiredPatchDrift)||(v==='flagged'&&f.length>0)||(v==='no_flags'&&f.length===0)}
 function show(){
   observer.disconnect();
-  const entries=data.entries.filter(e=>(!$('asset').value||e.asset===$('asset').value)&&(!$('status').value||e.status===$('status').value)&&(!$('version').value||e.selectedVersion===$('version').value)&&(!$('search').value||[e.assetLabel,e.category,e.categoryLabel,e.source].join(' ').toLowerCase().includes($('search').value.toLowerCase())));
+  const entries=data.entries.filter(e=>contactMatches(e)&&(!$('category').value||e.category===$('category').value)&&(!$('asset').value||e.asset===$('asset').value)&&(!$('status').value||e.status===$('status').value)&&(!$('version').value||e.selectedVersion===$('version').value)&&(!$('search').value||[e.assetLabel,e.category,e.categoryLabel,e.source].join(' ').toLowerCase().includes($('search').value.toLowerCase())));
   $('cards').replaceChildren();$('empty').style.display=entries.length?'none':'block';
   for(const e of entries){
     const card=elem('article');card.append(elem('h2',e.assetLabel));
-    const title=elem('h3',e.categoryLabel+' · ');title.append(elem('span',labels[e.status],`badge ${e.status}`));card.append(title);
+    const title=elem('h3',e.categoryLabel+' · ');title.append(elem('span',labels[e.status],`badge ${e.status}`));if(e.requiredPatchDrift)title.append(elem('span','原接触区域待审查','badge kinematic_rejected'));card.append(title);
     const url=mode==='object'?e.image:e.handImage;
-    if(url){const holder=picture(e,url);card.append(holder);observer.observe(holder)}else card.append(elem('div','对照图未生成','placeholder'));
+    if(url||(data.camera&&e.rotationCase)){const holder=picture(e,url||e.rotationCase);card.append(holder);observer.observe(holder)}else card.append(elem('div',e.visualPending?'静态姿态已生成，旋转视角生成中':'对照图未生成','placeholder'));
     const d=elem('div',undefined,'details');
     d.append(elem('div','结果来源：'+e.versionLabel),elem('div',e.physicalPassed===true?'动力学检查通过':e.physicalPassed===false?'动力学检查未通过':'动力学未验证'),elem('div','来源：'+e.source,'source'),elem('div','对应关系：'+e.matchLabel,'source'));
+    if(e.sourceExtentsMm)d.append(elem('div','来源尺寸：'+e.sourceExtentsMm.map(v=>v.toFixed(1)).join(' × ')+' mm；相对参考 ×'+e.sourceReferenceRatio.toFixed(2),'source'));
     if(e.maxOrientedAngle!==null){const n=elem('div',undefined,'metrics');n.append(elem('div','末端最大有向夹角：'+e.maxOrientedAngle.toFixed(1)+'°'),elem('div','最大组合弯曲：'+e.maxCombinedBend.toFixed(1)+'°'),elem('div','最大指段方向误差：'+e.maxBoneError.toFixed(1)+'°'),elem('div','最大参考指腹方向误差：'+e.maxPadError.toFixed(1)+'°'));d.append(n)}
     if(e.shape!==null){const m=elem('div',undefined,'metrics');m.append(elem('div','抓取手型误差：'+e.shape.toFixed(3)),elem('div','阶段动作误差：'+e.transition.toFixed(3)),elem('div','最大穿透：'+e.penetration.toFixed(2)+' mm'),elem('div','求解停止：'+e.terminationLabel));d.append(m)}
+    if(e.requiredPatchDrift)d.append(elem('div','必需手指原接触区域偏移候选（>5 mm），需审查','reason'));
+    if(e.contactFlags&&e.contactFlags.length){const diagnostic=elem('details');diagnostic.append(elem('summary','接触诊断（几何代理）'));const names={source_patch_displaced:'原区域偏移',touching_another_patch:'接触其他位置',finger_contact_lost:'部分手指/掌心接近丢失',contact_segment_substitution:'对应指段接触替换',source_edge_not_preserved:'原边缘接触未保留',deep_penetration:'较深穿透'};diagnostic.append(elem('div',e.contactFlags.map(f=>names[f]||f).join('；')));if(e.contactAudit)diagnostic.append(link('接触审计详情',e.contactAudit));d.append(diagnostic)}
     if(e.reasons.length)d.append(elem('div',e.reasons.join('；'),'reason'));if(e.error)d.append(elem('div',e.error,'reason'));
-    if(e.phaseAngles.length){const angles=elem('details');angles.append(elem('summary','三阶段夹角：V2 → 最终（伸直 180°）'));for(const p of e.phaseAngles)angles.append(elem('div',p.phase+'：关节3 '+p.before[0].toFixed(1)+'° → '+p.after[0].toFixed(1)+'°；关节4 '+p.before[1].toFixed(1)+'° → '+p.after[1].toFixed(1)+'°'));d.append(angles)}
+    if(e.phaseAngles.length){const angles=elem('details');angles.append(elem('summary','三阶段夹角：'+(e.baselineLabel||'V2')+' → 最终（伸直 180°）'));for(const p of e.phaseAngles)angles.append(elem('div',p.phase+'：关节3 '+p.before[0].toFixed(1)+'° → '+p.after[0].toFixed(1)+'°；关节4 '+p.before[1].toFixed(1)+'° → '+p.after[1].toFixed(1)+'°'));d.append(angles)}
     const links=elem('div',undefined,'links');
+    if(e.visualPending&&e.result)links.append(link('固定视角预览（静态）',e.result.replace('result.json',mode==='object'?'comparison.png':'hand_only/comparison.png')));
     if(e.result)links.append(link('详细指标',e.result));if(e.postures)links.append(link('三阶段姿态 NPZ',e.postures));
     if(e.rotation)links.append(link('旋转查看',e.rotation.replace('#','?mode='+(mode==='object'?'scene':'hand')+'#')));
     const history=elem('details');history.append(elem('summary','历史文件与优化尝试'));
@@ -122,10 +130,25 @@ function show(){
     d.append(links,history);card.append(d);$('cards').append(card);
   }
 }
-for(const id of ['asset','status','version','search'])$(id).addEventListener(id==='search'?'input':'change',show);
+for(const id of ['asset','category','contact','status','version','search'])$(id).addEventListener(id==='search'?'input':'change',show);
 $('history').ontoggle=()=>{show();refreshModal()};
 $('withObject').onclick=()=>{mode='object';$('withObject').classList.add('active');$('handOnly').classList.remove('active');show()};
 $('handOnly').onclick=()=>{mode='hand';$('handOnly').classList.add('active');$('withObject').classList.remove('active');show()};
 function closeModal(){$('modal').classList.remove('open');$('large').replaceChildren();modalImage=null;modalSequence++}
 $('close').onclick=closeModal;$('modal').onclick=e=>{if(e.target===$('modal'))closeModal()};
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});show();
+
+if(data.batchProgressScript){
+  const batchStatus=elem('p');$('counts').after(batchStatus);
+  window.updateBatchProgress=progress=>{batchStatus.textContent=progress.finished?(progress.stage==='complete'?'全部结果已生成，请刷新页面获取最新统计和三轴控件。':'数值优化已完成，旋转视角和接触审计另行处理。'):'当前阶段：'+progress.stage+' · 已处理 '+progress.completed+'/'+progress.total+'（初始化数量不计作最终合格数量）'};
+  const refresh=()=>{const script=elem('script');script.src=data.batchProgressScript+'?t='+Date.now();script.onload=script.onerror=()=>script.remove();document.body.append(script)};
+  refresh();setInterval(refresh,30000);
+}
+
+if(data.coverageNote)$('counts').after(elem('p',data.coverageNote));
+if(!data.camera&&data.batchProgressScript)$('cameraNote').textContent='本批仍在生成姿态和旋转视角；完成后这里直接提供 Yaw / Pitch / Roll。';
+
+$('contact').hidden=!data.hasContactDiagnostics;
+if(data.historyLabel)$('history').querySelector('summary').textContent=data.historyLabel;
+if(data.entries.some(e=>e.selectedVersion==='contact_repair'))$('version').append(new Option('采用接触修复','contact_repair'));
+if(data.contactSummary)$('counts').after(elem('p',data.contactSummary));

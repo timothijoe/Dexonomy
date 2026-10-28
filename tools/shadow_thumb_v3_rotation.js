@@ -69,7 +69,7 @@ async function render(){
       const phase=selectedPhases[i];fragment.append(element('h2',phases[phase]));
       const grid=element('div');grid.className='grid'+(state.history?' with-history':'');
       const selectedLabel=entry.selectedLabel||(entry.selectedVersion==='v2_retained'?'最终 Wuji（沿用 V2）':entry.selectedVersion==='v3_rejected'?'最终 Wuji 提案（待修正）':'最终 Wuji（V3）');
-      const labels=['原 Shadow',data.baselineLabel||'历史 V2',selectedLabel];
+      const labels=['原 Shadow',entry.baselineLabel||data.baselineLabel||'历史 V2',selectedLabel];
       for(const role of roles){
         const label=labels[role];
         const article=element('article');article.className=['source','v2','selected'][role];article.append(element('h3',label));
